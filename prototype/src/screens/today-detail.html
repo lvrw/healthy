@@ -1,0 +1,56 @@
+<section class="screen no-tabbar" id="screen-today-detail" data-screen="today-detail" aria-label="详细解读弹层">
+  <header class="modal-head">
+    <button type="button" class="circle-btn is-green" data-go="today" aria-label="关闭详细解读并返回今日"><i class="icon" data-icon="close"></i></button>
+    <h1>详细解读</h1><span></span>
+  </header>
+
+  <article class="card" style="text-align:center">
+    <p class="hero-caption" style="margin-bottom:4px">Hi 融望 吕，你今日综合压力状态 <button type="button" class="i-btn" data-sheet="stress-levels" aria-label="压力水平说明"><i class="icon" data-icon="info"></i></button></p>
+    <p class="hero-state" style="font-size:29px">状态优秀</p>
+    <div class="status-scale" style="margin:0 30px 18px" role="img" aria-label="压力状态四段指示，当前状态优秀"><i></i><i></i><i></i><i></i></div>
+    <div class="hr-metric" style="text-align:left">
+      <div><p class="metric-label">今日平均HRV</p><p class="big-value">40<span class="unit">ms</span></p><p class="metric-note c-green">▲ 近期平均30ms</p></div>
+      <div><p class="metric-label">静息心率</p><p class="big-value muted">—</p><p class="metric-note">近期平均69bpm</p></div>
+    </div>
+    <div class="advice" style="text-align:left"><i class="icon" data-icon="ghost"></i><span>状态不错，试试接触一点自然光、活动几分钟，让身体保持良好的节奏。</span></div>
+    <p class="body-copy" style="text-align:left">综合今日的HRV和静息心率情况看，你今天整体状态优秀，身体压力状态较小，能很好应对今日工作生活中的挑战。相信自己，你一定可以实现你的目标！</p>
+    <div class="card-foot" style="grid-template-columns:1fr"><button type="button" data-go="ai-chat">问问AI</button></div>
+  </article>
+
+  <article class="card tight">
+    <p class="body-copy" style="margin:6px 0 14px">今日平均HRV (rmssd) 40ms，高于近30日平均线 (基准线) 30ms。</p>
+    <div class="center-link" style="padding:0 0 4px"><button type="button" class="link-green" data-go="ai-article">了解更多</button></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:15px;font-weight:700;margin-bottom:12px">今日平均 HRV 40ms</h2>
+    <div class="chart" data-series="today-detail-hrv-line" data-chart="line" data-values="18,72,44,32,25" data-colors="lavender,green,green,lavender,orange" data-baseline="40" data-labels="00:00|05:00|12:00" data-aria="今日平均 HRV 与近 30 日平均线对比"></div>
+    <div class="chart-legend"><span class="key"><i class="dashed"></i> 今日平均HRV</span><span class="key"><i></i> 近30日平均HRV</span></div>
+    <div class="divider"></div>
+    <h2 style="font-size:15px;font-weight:700;margin-bottom:8px">暂无今日静息心率数据</h2>
+    <div class="empty-state" style="padding:8px 0;text-align:left"><span class="empty-art compact" data-art="ill-empty-watch-pending"></span><strong class="c-muted" style="font-weight:500">等待 Apple Watch 采集数据</strong></div>
+    <div class="chart" data-series="today-detail-rhr-wave" data-chart="wave" data-height="120" data-band="1" data-ylabels="90||0" data-labels="00:00|06:00|12:00" data-aria="今日静息心率波形与近 60 日平均对比"></div>
+    <div class="chart-legend"><span class="key"><i class="pinkline"></i> 今日静息心率</span><span class="key"><i class="grayline"></i> 近60日平均静息心率</span></div>
+  </article>
+
+  <article class="card tight">
+    <h2 style="font-size:15px;font-weight:700;margin-bottom:8px">状态总结</h2>
+    <p class="body-copy">综合今日的HRV(rMSSD)和静息心率情况看，你的自主神经系统适应性和恢复能力保持在稳定水平。整体状态优秀，身体压力状态较小，能很好应对今日工作生活中的挑战，请继续保持优秀状态。</p>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:15px;font-weight:700;margin:2px 0 12px">StressWatch常见问题</h2>
+    <div style="display:grid;gap:14px">
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">StressWatch什么时候会提示压力过载？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">StressWatch测量的什么压力？测量原理是什么？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-sheet="stress-levels">实时压力与HRV关系是什么？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">什么是HRV？HRV意味着什么？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">StressWatch的HRV跟苹果健康的数值为什么不一样？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-mock="该 FAQ 正文未在截图中提供">StressWatch自动测量的频率是什么？我可以手动测量吗？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">HRV越高越好吗？如何提升HRV？</button>
+      <button type="button" class="link-green" style="justify-content:flex-start;text-decoration:underline;color:#5E666B;font-weight:500;text-align:left" data-go="ai-article">什么是静息心率？静息心率意味着什么？</button>
+    </div>
+    <div class="divider"></div>
+    <button type="button" class="link-green" style="color:#6C7378;text-decoration:underline" data-mock="更多相关问题页面未在截图中提供">更多相关问题</button>
+  </article>
+</section>

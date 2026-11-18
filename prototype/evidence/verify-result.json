@@ -1,0 +1,137 @@
+{
+  "version": "1.0.0",
+  "screens": [
+    {
+      "id": "today",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "actions",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "insights",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "trends",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "health",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "today-detail",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "record-detail",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "day-hrv",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "ai-chat",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "ai-article",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "sleep-day",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "sleep-month",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "sleep-vitals",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "body-age",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    },
+    {
+      "id": "vo2max",
+      "shown": true,
+      "active": true,
+      "visibleScreens": 1,
+      "scrollWidth": 372,
+      "clientWidth": 372
+    }
+  ],
+  "overflow": [],
+  "unnamed": [],
+  "errors": [],
+  "interactions": {
+    "tooltip": true,
+    "sheetOpen": true,
+    "sheetClosed": true,
+    "sendDisabledWhenEmpty": true,
+    "sendEnabledWhenTyped": true,
+    "emptyStateVisible": true,
+    "sleepMonthSwitch": true
+  }
+}

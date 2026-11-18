@@ -1,0 +1,48 @@
+<section class="screen no-tabbar" id="screen-body-age" data-screen="body-age" aria-label="身体年龄">
+  <header class="detail-nav">
+    <button type="button" class="circle-btn is-green" data-go="health" aria-label="返回健康"><i class="icon" data-icon="back"></i></button>
+    <div class="detail-title"><strong>身体年龄</strong></div>
+    <span class="nav-slot"><button type="button" class="pill-btn" style="color:#DE8B5C" data-mock="分享为本地 mock，未调用系统分享"><i class="icon" data-icon="share"></i> 分享</button></span>
+  </header>
+  <div class="age-hero">
+    <div class="chart" data-series="body-age-disc" data-chart="disc" data-title="身体年龄" data-value="34.2" data-note="多5.9岁" data-aria="身体年龄仪表盘：34.2 岁"></div>
+  </div>
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 12px">衰老速度</h2>
+    <div class="age-row"><p class="metric-value c-green">-0.2<span class="unit">x</span></p><span class="badge green"><i class="icon xs" data-icon="leaf"></i> 加速年轻中</span></div>
+    <div class="gradient-bar" style="margin:14px 0 0"><span class="marker" style="left:29%"></span></div>
+    <div class="scale-labels"><span>-1x</span><span>1x</span><span>3x</span></div>
+    <div class="advice" style="margin-top:18px"><i class="icon" data-icon="ghost"></i><span>你的衰老速度已经降到 -0.2，身体正在一点点变年轻。身体年龄目前还是 34.2，但整体方向已经对了，请继续行动下去！</span></div>
+    <p class="peach-note">每日凌晨更新数据 · 2026年11月7日</p>
+    <div class="card-foot" style="grid-template-columns:1fr"><button type="button" data-go="ai-chat">问问AI</button></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">影响因素</h2>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-purple" data-icon="moon"></i><span class="row-main"><span class="row-title">睡眠时长</span></span><span class="row-value orange">+0.2岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-purple" data-icon="clock"></i><span class="row-main"><span class="row-title">睡眠一致性</span></span><span class="row-value green">-1.1岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-purple" data-icon="bike"></i><span class="row-main"><span class="row-title">Z1-Z3训练时长/周</span></span><span class="row-value orange">+0.5岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-pink" data-icon="run"></i><span class="row-main"><span class="row-title">Z4-Z5训练时长/周</span></span><span class="row-value orange">+0.4岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-pink" data-icon="weights"></i><span class="row-main"><span class="row-title">力量训练时长/周</span></span><span class="row-value orange">+0.8岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-green" data-icon="steps"></i><span class="row-main"><span class="row-title">步数</span></span><span class="row-value orange">+0.3岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-orange" data-icon="vo2"></i><span class="row-main"><span class="row-title">最大摄氧量</span></span><span class="row-value orange">+4.4岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-green" data-icon="heart"></i><span class="row-main"><span class="row-title">静息心率</span></span><span class="row-value orange">+0.5岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="age-factor"><i class="icon c-orange" data-icon="gauge"></i><span class="row-main"><span class="row-title">体脂率</span></span><span class="row-value orange">+0.1岁</span><i class="icon chev" data-icon="chevron-right"></i></button>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>身体年龄周趋势 <span class="pro">PRO</span></h2></div>
+    <div class="age-trend-head"><div><p class="metric-label">最高</p><strong>36.7</strong><small>10月24日</small></div><div><p class="metric-label">最低</p><strong>33.3</strong><small>6月20日</small></div><div><p class="metric-label">平均</p><strong>35</strong></div></div>
+    <div class="chart" data-series="body-age-week-area" data-chart="area" data-values="33.2,33.1,33.4,33.3,33.8,33.9,34,34.2,34.1,34.5,34.7,34.8,34.1" data-max="41" data-min="20" data-baseline="30" data-fill="green" data-line="chartLineGreen" data-ylabels="41|34|27|20" data-labels="5月30日|8月18日|11月7日" data-aria="身体年龄周趋势面积图"></div>
+    <div class="legend"><span><i class="dot-status green"></i> 身体年龄</span><span><i class="dot-status" style="background:#B9BEC2"></i> 实际年龄</span></div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>衰老速度周趋势 <span class="pro">PRO</span></h2></div>
+    <div class="age-trend-head"><div><p class="metric-label">最高</p><strong>1<span class="unit">x</span></strong><small>9月5日</small></div><div><p class="metric-label">最低</p><strong>-0.4<span class="unit">x</span></strong><small>8月22日</small></div><div><p class="metric-label">平均</p><strong>0.3<span class="unit">x</span></strong></div></div>
+    <div class="chart" data-series="body-age-aging-rate-area" data-chart="area" data-values="-.2,0,.5,.7,.7,.3,.2,.1,0,-.2,.2,.8,.8,.3,0" data-max="3" data-min="-1" data-fill="sky" data-line="sky" data-ylabels="3.0x|1.0x|-1.0x" data-labels="5月30日|8月18日|11月7日" data-aria="衰老速度周趋势面积图"></div>
+    <div class="legend"><span><i class="dot-status sky"></i> 衰老速度</span></div>
+  </article>
+
+  <article class="card tight"><button type="button" class="list-row" data-go="ai-article" style="padding:4px 0"><span class="row-main"><span class="row-title">关于身体年龄</span></span><i class="icon chev" data-icon="chevron-right"></i></button></article>
+</section>

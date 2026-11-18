@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="差值区间的最大值端与最小值端由标尺相连；HRV 分量示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M92 52h114"/><path d="M206 52v56"/><path d="M206 108h22"/>
+  </g>
+  <rect x="56" y="52" width="36" height="88" rx="8" fill="#4EA974"/>
+  <rect x="228" y="108" width="36" height="32" rx="8" fill="#79C98E"/>
+  <path d="M56 140h208" fill="none" stroke="#E4E7E9" stroke-width="2" stroke-linecap="round"/>
+  <path d="M190 52v56" fill="none" stroke="#57BFE6" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="190" cy="52" r="3.4" fill="#FFFFFF"/><circle cx="190" cy="108" r="3.4" fill="#FFFFFF"/>
+</svg>

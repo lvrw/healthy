@@ -1,0 +1,31 @@
+<section class="screen chat-screen no-tabbar" id="screen-ai-chat" data-screen="ai-chat" aria-label="问问 AI 对话弹层">
+  <header class="chat-head">
+    <button type="button" class="circle-btn is-green" data-go="today" aria-label="关闭问问AI并返回今日"><i class="icon" data-icon="close"></i></button>
+    <button type="button" class="circle-btn" data-mock="已复制回答（本地 mock）" aria-label="复制回答"><i class="icon" data-icon="copy"></i></button>
+  </header>
+  <div class="chat-scroll" id="chat-scroll">
+    <div class="chat-answer">
+      <p class="quote">状态不错，试试接触一点自然光、活动几分钟，让身体保持良好的节奏。</p>
+      <p class="quote">综合今日的HRV和静息心率情况看，你今天整体状态优秀，身体压力状态较小，能很好应对今日工作生活中的挑战。相信自己，你一定可以实现你的目标！</p>
+      <p>根据你今日的HRV数据来看，你的平均HRV（rmssd）达到了40.58ms，比近30天的基准平均线30.74ms高出不少，这说明你的自主神经调节状态很不错，身体应对压力的弹性很强，整体压力处于较低的优秀状态，完全可以轻松应对今天的日常事务。</p>
+      <p>不过目前还没有采集到你今日的静息心率数据，记得佩戴好苹果手表，等它收集到足够的HRV和静息心率数据后，就能为你展示更完整的今日压力状态了。</p>
+      <p>今天是周六，刚好是周末的第一天，你可以试着去窗边或者户外晒10-15分钟的自然光，这不仅能帮你调整生物钟，还能进一步巩固现在的良好状态。也可以花5-10分钟做一些简单的伸展活动，比如转转头、耸耸肩、拉伸一下四肢，让身体保持良好的循环节奏。</p>
+    </div>
+    <div class="chat-actions">
+      <button type="button" data-mock="已复制回答（本地 mock）" aria-label="复制"><i class="icon" data-icon="copy"></i></button>
+      <button type="button" data-chat-toggle aria-pressed="false" aria-label="赞"><i class="icon" data-icon="thumb-up"></i></button>
+      <button type="button" data-chat-toggle aria-pressed="false" aria-label="踩"><i class="icon" data-icon="thumb-down"></i></button>
+    </div>
+    <p class="chat-prompt"><i class="icon" data-icon="ghost"></i> 你是否还想了解：</p>
+    <button type="button" class="suggestion" data-suggest="周末有哪些低强度的活动可以帮助维持良好的压力状态？"><span>周末有哪些低强度的活动可以帮助维持良好的压力状态？</span><i class="icon" data-icon="arrow-up"></i></button>
+    <button type="button" class="suggestion" data-suggest="如何能让苹果手表更准确地采集静息心率数据？"><span>如何能让苹果手表更准确地采集静息心率数据？</span><i class="icon" data-icon="arrow-up"></i></button>
+    <div class="chat-loading" id="chat-loading" hidden><span class="spinner"></span> 正在生成回答…（本地 mock，不调用任何接口）</div>
+    <div class="chat-reply" id="chat-reply" hidden></div>
+  </div>
+  <form class="chat-input" id="chat-form" novalidate>
+    <label class="sr-only" for="chat-input">询问 StressWatch 任何问题</label>
+    <input id="chat-input" type="text" placeholder="询问 StressWatch 任何问题" autocomplete="off">
+    <button type="submit" id="chat-send" disabled aria-label="发送"><i class="icon" data-icon="arrow-up"></i></button>
+  </form>
+  <p class="tiny c-muted" style="text-align:center;margin:8px 0 0">以上回答为界面演示用的本地 mock 内容</p>
+</section>

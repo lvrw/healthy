@@ -1,0 +1,76 @@
+<section class="screen no-tabbar article-screen" id="screen-ai-article" data-screen="ai-article" aria-label="知识文章阅读页">
+  <header class="reader-bar">
+    <button type="button" data-mock="文章菜单未在截图中展开" aria-label="菜单"><i class="icon" data-icon="menu"></i></button>
+    <button type="button" class="ghost" data-go="today" aria-label="返回 StressWatch"><i class="icon" data-icon="ghost"></i></button>
+    <button type="button" data-mock="亮度切换为界面占位（无截图依据）" aria-label="亮度"><i class="icon" data-icon="sun"></i></button>
+  </header>
+  <nav class="reader-toc" aria-label="文章与章节（原型内导航）">
+    <button type="button" data-article="hrv" aria-pressed="true">HRV 分量解释</button>
+    <button type="button" data-article="age" aria-pressed="false">什么是身体年龄</button>
+    <button type="button" data-scroll-to="sec-sdnn">SDNN</button>
+    <button type="button" data-scroll-to="sec-meanrr">Mean RR</button>
+    <button type="button" data-scroll-to="sec-pnn50">pNN50</button>
+    <button type="button" data-scroll-to="sec-mxdmn">MxDMn</button>
+    <button type="button" data-scroll-to="sec-cv">HRV CV</button>
+  </nav>
+  <div class="reader">
+    <div data-article-body="hrv">
+      <h1>HRV 分量解释</h1>
+      <figure class="article-figure" data-art="art-hrv-cover" aria-label="心跳 RR 间期序列在时间轴上起伏；知识文章示意插画，非真实测量数据。来源：风格化补齐"><figcaption>心跳间隔的起伏，就是 HRV</figcaption><div class="figure-note note-source-figure">HRV 分量 · 单位 ms · 示意图，非真实测量数据</div></figure>
+      <div class="section" id="sec-sdnn">
+        <figure class="article-figure" data-art="art-hrv-sdnn" aria-label="一组 RR 间期柱分布在均值线两侧；HRV 分量示意插画，非真实测量数据。来源：风格化补齐"><figcaption>SDNN：间期相对均值的离散程度</figcaption><div class="figure-note note-source-figure">SDNN · 单位 ms · 示意图，非真实测量数据</div></figure>
+        <p>SDNN 代表"标准差(RR 间期)的平均值"（Standard Deviation of NN Intervals），是指心率变异性（HRV）分析中的一个参数。</p>
+        <p>心率变异性是指心率在一定时间内的波动性，也就是心跳间隔时间的变化。正常情况下，心跳间隔时间并不是完全恒定的，而是会在某种范围内波动。这种波动性是心脏自主神经系统的表现，受交感神经和副交感神经调控。</p>
+        <p>SDNN 用于量化相邻两个心跳间隔时间（NN 间期）之间的标准差。在心率变异性分析中，SDNN 被认为是反映总体心率变异性水平的指标。较高的 SDNN 值通常被认为是较好的，因为它暗示着心脏自主神经系统的适应能力较强，对外界刺激有更灵活的调节能力。相反，SDNN 较低可能与心脏健康问题或其他疾病相关。</p>
+        <p>心率变异性及其参数（如 SDNN）在临床上用于评估心脏健康、自主神经系统功能以及一些疾病的风险预测。它也被广泛应用于心身健康研究和压力水平评估等领域。</p>
+      </div>
+      <div class="section" id="sec-meanrr">
+        <figure class="article-figure" data-art="art-hrv-mean-rr" aria-label="多个 RR 间期箭头汇入一条平均间期；HRV 分量示意插画，非真实测量数据。来源：风格化补齐"><figcaption>Mean RR：所有间期的平均值</figcaption><div class="figure-note note-source-figure">Mean RR · 单位 ms · 示意图，非真实测量数据</div></figure>
+        <p>Mean RR 代表"平均 RR 间期"（Mean RR Interval），是心率变异性（HRV）分析中的另一个参数。</p>
+        <p>心率变异性是指心率在一定时间内的波动性，即心跳间隔时间的变化。平均 RR 间期是指在某段时间内，记录到的相邻两个心跳间隔时间（RR 间期）的平均值。</p>
+        <p>计算平均 RR 间期的方法很简单，只需将记录的所有 RR 间期相加，然后除以心跳的总数，即可得到平均值。它代表了在所选时间段内，平均每个心跳之间的时间间隔。</p>
+        <p>平均 RR 间期也是心率变异性分析中的重要指标之一。与 SDNN 一样，较高的平均 RR 间期通常被认为是较好的，表明心脏自主神经系统的适应能力较强，而较低的平均 RR 间期可能与心脏健康问题或其他疾病相关。</p>
+        <p>心率变异性及其参数，如平均 RR 间期，可用于评估心脏功能、自主神经系统状态、疾病风险等，是临床研究和健康评估中的重要工具。</p>
+      </div>
+      <div class="section" id="sec-pnn50">
+        <figure class="article-figure" data-art="art-hrv-pnn50" aria-label="相邻间期差值条与 50ms 阈值线对照；HRV 分量示意插画，非真实测量数据。来源：风格化补齐"><figcaption>pNN50：差值超 50ms 的占比</figcaption><div class="figure-note note-source-figure">pNN50 · 单位 % · 示意图，非真实测量数据</div></figure>
+        <p>pNN50 代表"相邻两个心跳间期差异大于 50 毫秒的百分比"（Percentage of adjacent NN intervals with a difference greater than 50 milliseconds），是心率变异性（HRV）分析中的另一个重要参数。</p>
+        <p>心率变异性是指心率在一定时间内的波动性，即心跳间隔时间的变化。pNN50 用于量化相邻两个心跳间期（NN 间期）之间差异大于 50 毫秒的比例。</p>
+        <p>计算 pNN50 的方法是首先在记录中找到所有相邻两个 NN 间期，然后计算其中相邻两个 NN 间期差异大于 50 毫秒的数量，最后将这个数量除以总的相邻 NN 间期数，再乘以 100，得到的百分比就是 pNN50。</p>
+        <p>pNN50 通常被用作心率变异性分析的一个指标，它反映了心脏自主神经系统的活动和对外界刺激的调节能力。较高的 pNN50 值通常被认为是较好的，表明心脏自主神经系统对于心跳间隔的调节更为灵活，而较低的 pNN50 可能与心脏健康问题或其他疾病相关。</p>
+        <p>心率变异性及其参数，如 pNN50，可用于评估心脏功能、自主神经系统状态、疾病风险等，是临床研究和健康评估中的重要工具。</p>
+      </div>
+      <div class="section" id="sec-mxdmn">
+        <figure class="article-figure" data-art="art-hrv-mxdmn" aria-label="差值区间的最大值端与最小值端由标尺相连；HRV 分量示意插画，非真实测量数据。来源：风格化补齐"><figcaption>MxDMn：最大差值减最小差值</figcaption><div class="figure-note note-source-figure">MxDMn · 单位 ms · 示意图，非真实测量数据</div></figure>
+        <p>对于心率变异性（HRV）中的 "MxDMn"，通常是指"最大差值最小值"（Maximum Difference Minimum）。</p>
+        <p>MxDMn 是心率变异性分析中的一个参数，它用于描述心跳间隔时间（NN 间期）序列中的最大差值和最小差值之间的差异。具体计算步骤如下：</p>
+        <ol><li>首先，从心率变异性的 NN 间期序列中找到相邻两个 NN 间期的差值（也称为 RR 间期）。</li><li>接着，找出这些差值中的最大值和最小值。</li><li>最后，计算最大值与最小值之间的差异，即 MxDMn = 最大值 - 最小值。</li></ol>
+        <p>MxDMn 反映了心跳间隔时间序列中波动的范围。较大的 MxDMn 值表明心率变异性较高，而较小的 MxDMn 值则意味着心率变异性较低。</p>
+        <p>HRV 分析在临床研究和健康评估中扮演着重要角色，通过测量心脏自主神经系统的活动来评估心脏功能、压力水平、心理状态以及一些疾病的风险预测等。MxDMn 是其中的一个参数，用于提供有关心率变异性的信息。</p>
+      </div>
+      <div class="section" id="sec-cv">
+        <figure class="article-figure" data-art="art-hrv-cv" aria-label="两条波动程度不同的曲线与「标准差/均值×100」分数式；HRV 分量示意插画，非真实测量数据。来源：风格化补齐"><figcaption>HRV CV：标准差与均值的比值</figcaption><div class="figure-note note-source-figure">HRV CV · 单位 % · 示意图，非真实测量数据</div></figure>
+        <p>在心率变异性（HRV）分析中，"HRV CV" 指的是"心率变异性的系数变异"（Coefficient of Variation of HRV）。</p>
+        <p>心率变异性是指心率在一定时间内的波动性，即心跳间隔时间的变化。心率变异性的系数变异是用来衡量心率变异性在一段时间内的稳定性或波动程度。它是通过计算心率变异性的标准差与平均值之间的比值来得到的。</p>
+        <p>计算 HRV CV 的步骤如下：</p>
+        <ol><li>首先，从心率变异性的 NN 间期序列中找到相邻两个 NN 间期的差值（也称为 RR 间期）。</li><li>然后，计算这些差值的平均值（通常是平均 RR 间期）和标准差。</li><li>最后，计算 HRV CV，即 HRV CV = (标准差 / 平均值) × 100。</li></ol>
+        <p>HRV CV 可以用来评估心脏自主神经系统的稳定性和灵活性。较低的 HRV CV 值表示心率变异性较为稳定，而较高的 HRV CV 值意味着心率变异性较为不稳定或波动较大。</p>
+        <p>心率变异性及其参数，如 HRV CV，被广泛用于临床研究、健康评估以及压力水平评估等领域。它提供了有关心脏功能和自主神经系统状态的重要信息。</p>
+      </div>
+    </div>
+    <div data-article-body="age" hidden>
+      <h1>什么是身体年龄</h1>
+      <figure class="article-figure" data-art="art-age-cover" aria-label="两条并列年龄刻度，一条标实际年龄、一条标生物年龄；知识文章示意插画，非真实测量数据。来源：风格化补齐"><figcaption>实际年龄≠身体的真实年龄</figcaption><div class="figure-note note-source-figure">身体年龄 · 单位 岁 · 示意图，非真实测量数据</div></figure>
+      <div class="section">
+        <p>在传统认知中，年龄不可逆转，年龄越长，越不健康。每过 365 天，年龄就增长一岁，我们离衰老和死亡更进一步。</p>
+        <p>然而，事实并不是这样，相同年龄的两个人，健康状况可能天差地别。生活习惯不好的人，可能在 40 岁时就会血压偏高、血糖偏高，而坚持锻炼的人在 50 岁，心血管还能保持健康。</p>
+        <p>实际年龄只能告诉我们"活了多久"，而不能告诉我们活得是否健康。为了解决这个问题，长寿医学的科学家们发明了生物年龄（Biological Age）。生物年龄反映身体真实衰老状态的"生理时钟"，可能比实际年龄大或小。如果生物年龄小于实际年龄，则代表我们更健康，更长寿。</p>
+        <p>StressWatch 的"身体年龄"正是基于这一科学洞察而生。StressWatch 结合你的睡眠、运动以及体能数据，综合计算得到身体年龄。它不仅仅反映了你"活了多久"，还告诉你活得健不健康。</p>
+      </div>
+      <figure class="article-figure" data-art="art-age-biological" aria-label="两位同龄人剪影与健康指标对照；身体年龄示意插画，非真实测量数据。来源：风格化补齐"><figcaption>同龄人，身体年龄可以差很多</figcaption><div class="figure-note note-source-figure">生物年龄 · 单位 岁 · 示意图，非真实测量数据</div></figure>
+      <h2>什么是衰老速度？</h2>
+      <div class="section"><p>生物年龄反映的是你身体长期的机能状态。如果你想知道"我最近这2周的表现如何？"，那就需要看衰老速度。</p><figure class="article-figure" data-art="art-age-aging-rate" aria-label="长期生物年龄曲线上的近两周短窗放大与趋势箭头；身体年龄示意插画，非真实测量数据。来源：风格化补齐"><figcaption>衰老速度：最近两周的变化快慢</figcaption><div class="figure-note note-source-figure">衰老速度 · 单位 x（倍） · 示意图，非真实测量数据</div></figure><p class="tiny c-muted">（截图在此处截断，后续正文未提供，按原设计风格保留占位段落。）</p></div>
+    </div>
+  </div>
+  <button type="button" class="circle-btn" data-action="scroll-top" aria-label="返回顶部" style="position:sticky;left:calc(100% - 62px);bottom:18px;margin-top:-4px;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.12)"><i class="icon" data-icon="arrow-up"></i></button>
+</section>

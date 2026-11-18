@@ -1,0 +1,62 @@
+<template id="sheet-stress-levels" data-title="压力水平">
+  <div class="sheet-body">
+    <h3 style="color:#3B4146;font-size:17px">综合压力四档</h3>
+    <p>截图中「压力水平」卡片给出的阈值：</p>
+    <div class="list-row"><span class="dot-status green"></span><span class="row-main"><strong>状态优秀</strong><span class="row-sub">HRV &gt; 33ms / 实时压力 1% - 20%</span></span></div>
+    <div class="list-row"><span class="dot-status lav"></span><span class="row-main"><strong>状态正常</strong><span class="row-sub">HRV 24-33ms / 实时压力 21% - 60%</span></span></div>
+    <div class="list-row"><span class="dot-status orange"></span><span class="row-main"><strong>注意压力</strong><span class="row-sub">HRV 20-24ms / 实时压力 61% - 80%</span></span></div>
+    <div class="list-row"><span class="dot-status pink"></span><span class="row-main"><strong>压力过载</strong><span class="row-sub">HRV &lt; 20ms / 实时压力 81% - 100%</span></span></div>
+    <div class="divider"></div>
+    <p><strong>补充资料（用户提供文档，非截图内容）</strong>：docs.ideation.love 的「StressWatch 测量的什么压力？」说明四档含义为——状态优秀：对比个人历史有较高的 HRV 水平与较低的静息心率水平；状态正常：HRV 与静息心率均正常；注意压力：HRV 偏低或静息心率偏高；压力过载：HRV 明显降低且静息心率明显升高。</p>
+    <p class="tiny c-muted">截图注明：实时压力在睡眠期间标准会不同。</p>
+  </div>
+</template>
+
+<template id="sheet-sleep-hr-dip" data-title="睡眠心率变化">
+  <div class="sheet-body">
+    <h3>优秀</h3>
+    <p class="sheet-sub">下降 24%</p>
+    <div class="seg-legend"><span>注意<small>&lt;10%</small></span><span>正常<small>10-20%</small></span><span>优秀<small>&gt;20%</small></span></div>
+    <p>睡眠心率下降（Sleep Heart Rate Dip）指的是人们在夜间睡眠时，心率比白天清醒时有所下降的现象。这种降低通常反映了身体的放松状态和恢复过程。正常的睡眠心率降低可以视为心脏健康的一个指标。</p>
+    <p>一般来说，睡眠心率下降的幅度越高，代表睡眠时身体越放松，身体疲劳恢复更好。</p>
+    <p>白天心率数据我们会剔除运动和站立相关的数据，仅保留白天静息状态下的心率。</p>
+    <p>该数据需要在睡眠时佩戴手表。</p>
+  </div>
+</template>
+
+<template id="sheet-key-actions" data-title="关键行动">
+  <div class="sheet-body">
+    <p>StressWatch通过分析不同行动，将带有该行动日子的压力趋势，与不带有该行动日子的压力趋势进行对比，从而分析出个性化数据，帮你了解哪些习惯对压力状态影响最大。</p>
+    <p>了解个性化的影响之后，你可以在接下来的行动中，坚持积极的行动，减少消极行动，改善压力状态。</p>
+    <p>注意，此处我们仅收录至少有5天数据以上的行动，确保数据具备足够的参考性。</p>
+  </div>
+</template>
+
+<template id="sheet-action-vs-stress" data-title="行动 v.s. 压力趋势">
+  <div class="sheet-body">
+    <p>StressWatch通过筛选不同标签，例如「睡够7小时」「大于20分钟晒太阳」，你可以对比符合条件的不符合筛选条件的过去60日趋势。每个习惯都有可能对压力趋势产生影响，通过对比不同习惯与压力趋势，可以更了解不同习惯对综合压力趋势的影响，洞察自身的习惯与身体反应。</p>
+  </div>
+</template>
+
+<template id="sheet-sleep-80" data-title="行动详情">
+  <div class="sheet-star"><i class="icon" data-icon="star"></i></div>
+  <h2 class="sheet-title">睡眠质量80分以上</h2>
+  <div class="sheet-body">
+    <p style="text-align:center">过去60日里，共有 <strong>9天</strong> 符合条件</p>
+    <div class="feeling-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="chart" data-series="sheet-sleep80-stack" data-chart="stack" data-segments="22:orange|33:lavender|45:green" data-aria="压力状态分布条"></div>
+    <div class="grid-2" style="margin-top:12px"><span><i class="dot-status green" style="display:inline-block;margin-right:5px"></i>状态优秀 <strong>4天</strong></span><span><i class="dot-status lav" style="display:inline-block;margin-right:5px"></i>状态正常 <strong>3天</strong></span><span><i class="dot-status orange" style="display:inline-block;margin-right:5px"></i>注意压力 <strong>2天</strong></span><span><i class="dot-status pink" style="display:inline-block;margin-right:5px"></i>压力过载 <strong>0天</strong></span></div>
+    <p style="margin-top:16px">"睡眠质量80分以上"的日子里，综合压力比其它日子平均<strong class="c-green">低9%</strong>；平均静息心率<strong class="c-green">低2bpm</strong></p>
+    <div class="divider"></div>
+    <div class="impact-scale">积极影响程度：<div class="gradient-bar"><span class="marker" style="left:12%"></span></div><strong class="c-green">小</strong></div>
+    <p class="tiny c-muted">大：&gt;30%　中：10%-30%　小：0&lt;10%</p>
+  </div>
+</template>
+
+<template id="sheet-generic" data-title="说明">
+  <div class="sheet-body">
+    <p><strong>该说明弹层的正文未在 53 张参考截图中出现。</strong></p>
+    <p id="sheet-generic-note">为避免虚构数据规则，此处仅保留弹层的结构与本地关闭操作。</p>
+    <p class="tiny c-muted">此弹层为界面级占位，不代表后台规则或真实功能。</p>
+  </div>
+</template>

@@ -1,0 +1,80 @@
+<section class="screen no-tabbar" id="screen-sleep-month" data-screen="sleep-month" aria-label="睡眠报告 · 月">
+  <div style="display:grid;grid-template-columns:46px 1fr 46px;align-items:center;gap:8px;padding:10px 20px 6px">
+    <button type="button" class="circle-btn is-purple" data-go="today" aria-label="关闭睡眠报告"><i class="icon" data-icon="close"></i></button>
+    <div class="segmented is-purple" role="group" aria-label="睡眠报告时间范围" data-segment-group="sleep-range" style="margin:0"><button type="button" data-value="day" aria-pressed="false">天</button><button type="button" data-value="week" aria-pressed="false">周</button><button type="button" data-value="month" aria-pressed="true">月</button></div>
+    <button type="button" class="circle-btn is-purple" data-mock="睡眠报告设置未在截图中提供" aria-label="睡眠报告设置"><i class="icon" data-icon="hex"></i></button>
+  </div>
+  <div class="date-nav is-purple"><button type="button" class="circle-btn" disabled aria-label="上一月（已到边界）"><i class="icon" data-icon="chevron-left"></i></button><button type="button" class="date-value" data-mock="日期选择器未在截图中提供">11月1日 - 11月30日 <i class="icon small" data-icon="chevron-down"></i></button></div>
+
+  <div class="grid-2" style="margin:0 24px 16px"><div><p class="metric-label"><i class="icon xs c-purple" data-icon="moon"></i> 平均时长</p><p class="metric-value">6<span class="unit">小时</span>9<span class="unit">分钟</span></p><p class="metric-note c-green">▲ 比上月 8%</p></div><div><p class="metric-label"><i class="icon xs c-purple" data-icon="star"></i> 平均质量 <button type="button" class="i-btn" data-sheet="sleep-quality" aria-label="说明"><i class="icon" data-icon="info"></i></button></p><p class="metric-value">正常 <span class="unit">69%</span></p><p class="metric-note c-green">▲ 比上月 6%</p></div></div>
+
+  <article class="card">
+    <div class="card-head"><h2>睡眠时长</h2><span class="tiny c-muted">目标睡眠时长: 7小时</span></div>
+    <div class="legend" style="margin-bottom:8px"><span><i class="dot-status green"></i> 达标：1日</span><span><i class="dot-status purple"></i> 未达标：6日</span></div>
+    <div class="chart" data-series="sleep-month-duration-bars" data-chart="bars" data-values="8.3,6.4,4.25,6.8,7.1,7.3,5.1" data-colors="purple,purple,purple,purple,purple,purple,purple" data-barwidth="12" data-max="10" data-avg="6.15" data-ylabels="10|7.5|5|0" data-labels="01/周日|07/周六" data-aria="11 月 1-7 日睡眠时长柱状图"></div>
+    <div class="chart-legend"><span class="key"><i style="background:var(--purple)"></i> 平均</span><span class="key"><i style="background:repeating-linear-gradient(90deg,#7BD3AC 0 3px,transparent 3px 6px)"></i> 目标</span></div>
+    <div class="divider"></div>
+    <div class="grid-2"><div><p class="metric-label"><i class="dot-status green" style="display:inline-block;margin-right:5px"></i> 睡眠最长</p><p class="metric-value">8<span class="unit">小时</span>20<span class="unit">分钟</span></p><p class="metric-note">11月1日 周日</p></div><div><p class="metric-label"><i class="dot-status pink" style="display:inline-block;margin-right:5px"></i> 睡眠最短</p><p class="metric-value">4<span class="unit">小时</span>15<span class="unit">分钟</span></p><p class="metric-note">11月3日 周二</p></div></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">睡眠质量</h2>
+    <div class="chart" data-series="sleep-month-quality-bars" data-chart="bars" data-values="82,70,48,78,84,75,66" data-colors="lavender,lavender,lavender,lavender,lavender,lavender,lavender" data-barwidth="9" data-max="100" data-avg="75" data-ylabels="100|75|50|25" data-labels="01/周日|07/周六" data-aria="11 月 1-7 日睡眠质量柱状图"></div>
+    <div class="divider"></div>
+    <div class="grid-2"><div><p class="metric-label"><i class="dot-status green" style="display:inline-block;margin-right:5px"></i> 质量最佳</p><p class="metric-value">82<span class="unit">分</span></p><p class="metric-note">11月6日 周五</p></div><div><p class="metric-label"><i class="dot-status pink" style="display:inline-block;margin-right:5px"></i> 质量最差</p><p class="metric-value">48<span class="unit">分</span></p><p class="metric-note">11月3日 周二</p></div></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">晚睡日历</h2>
+    <div class="grid-2"><div><p class="metric-label"><i class="icon xs c-purple" data-icon="moon"></i> 平均入睡</p><p class="metric-value">01:03</p><p class="metric-note">目标时间: 00:00</p></div><div><p class="metric-label"><i class="icon xs c-green" data-icon="target"></i> 目标达成</p><p class="metric-value">0<span class="unit">次</span></p><p class="metric-note">达成率: 0%</p></div></div>
+    <div class="calendar" aria-label="11 月晚睡日历">
+      <span class="wd">一</span><span class="wd">二</span><span class="wd">三</span><span class="wd">四</span><span class="wd">五</span><span class="wd">六</span><span class="wd">日</span>
+      <span class="cell is-blank"></span><span class="cell is-blank"></span><span class="cell is-blank"></span><span class="cell is-blank"></span><span class="cell is-blank"></span><span class="cell is-blank"></span><span class="cell is-late face-peach">08<small>00:44</small></span>
+      <span class="cell is-late face-red">03<small>01:03</small></span><span class="cell is-late face-red">04<small>01:04</small></span><span class="cell is-late face-orange">05<small>00:57</small></span><span class="cell is-late face-orange">06<small>00:23</small></span><span class="cell is-late face-orange">07<small>00:22</small></span><span class="cell is-late face-red">02<small>02:47</small></span><span class="cell is-empty">09<small>--</small></span>
+      <span class="cell is-empty">10<small>--</small></span><span class="cell is-empty">11<small>--</small></span><span class="cell is-empty">12<small>--</small></span><span class="cell is-empty">13<small>--</small></span><span class="cell is-empty">14<small>--</small></span><span class="cell is-empty">15<small>--</small></span><span class="cell is-empty">16<small>--</small></span>
+      <span class="cell is-empty">17<small>--</small></span><span class="cell is-empty">18<small>--</small></span><span class="cell is-empty">19<small>--</small></span><span class="cell is-empty">20<small>--</small></span><span class="cell is-empty">21<small>--</small></span><span class="cell is-empty">22<small>--</small></span><span class="cell is-empty">23<small>--</small></span>
+      <span class="cell is-empty">24<small>--</small></span><span class="cell is-empty">25<small>--</small></span><span class="cell is-empty">26<small>--</small></span><span class="cell is-empty">27<small>--</small></span><span class="cell is-empty">28<small>--</small></span><span class="cell is-empty">29<small>--</small></span><span class="cell is-empty">30<small>--</small></span>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">睡眠规律性</h2>
+    <div class="grid-2"><div><p class="metric-label"><i class="icon xs c-purple" data-icon="moon"></i> 平均入睡</p><p class="metric-value">01:03</p></div><div><p class="metric-label"><i class="icon xs c-orange" data-icon="sun"></i> 平均起床</p><p class="metric-value">07:31</p></div></div>
+    <div class="chart" data-series="sleep-month-regularity-bars" data-chart="bars" data-values="85,70,92,88,95,62,40" data-colors="purple,purple,purple,purple,purple,purple,purple" data-barwidth="8" data-max="100" data-avg="78" data-labels="01/周日|07/周六" data-aria="睡眠规律性：每日起床与入睡时间分布"></div>
+    <div class="divider"></div>
+    <div class="grid-2"><div><p class="metric-label"><i class="icon xs c-purple" data-icon="moon"></i> 最晚入睡</p><p class="metric-value">02:47</p><p class="metric-note">11月7日 周六</p></div><div><p class="metric-label"><i class="icon xs c-orange" data-icon="sun"></i> 最早醒来</p><p class="metric-value">05:35</p><p class="metric-note">11月3日 周二</p></div></div>
+    <div class="chart" data-series="sleep-month-late-bedtime-stack" data-chart="stack" data-segments="0:green|57:orange|43:pink" style="margin:16px 0 6px" data-aria="晚睡分布条"></div>
+    <div class="legend"><span><i class="dot-status green"></i> 0天 · 目标达成 · 早于00:00</span></div>
+    <div class="legend" style="margin-top:6px"><span><i class="dot-status orange"></i> 4天 · 略微晚睡 · 00:00-01:00</span></div>
+    <div class="legend" style="margin-top:6px"><span><i class="dot-status pink"></i> 3天 · 过度熬夜 · 晚于01:00</span></div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2><span class="dot-status purple"></span> 恢复性睡眠 <span class="pro">PRO</span></h2><button type="button" class="link-green" data-mock="时长&占比切换未在截图中提供">时长&占比 <i class="icon xs" data-icon="sort"></i></button></div>
+    <div class="grid-2"><div><p class="metric-label">月平均总时长</p><p class="metric-value">2<span class="unit">小时</span>36<span class="unit">分钟</span></p></div><div><p class="metric-label">月平均占比</p><p class="metric-value">41<span class="unit">%</span></p><p class="metric-note">较高 <button type="button" class="i-btn" data-sheet="recovery-sleep" aria-label="说明"><i class="icon" data-icon="info"></i></button></p></div></div>
+    <div class="chart" data-series="sleep-month-recovery-dualbars" data-chart="dualbars" data-values="3.1,2.2,3.4,2.6,3,1.9,1.4" data-values-b="1,1.4,1.2,1.5,1.1,.9,.8" data-avg="2.6" data-max="4" data-labels="01|02|03|04|05|06|07" data-aria="恢复性睡眠时长与占比堆叠柱状图"></div>
+    <div class="legend" style="justify-content:center"><span><i class="dot-status teal"></i> 快速眼动</span><span><i class="dot-status purple"></i> 深度睡眠</span><span><i class="dot-status lav"></i> 平均</span></div>
+    <p class="body-copy small" style="margin:14px 0 0">恢复性睡眠（深度睡眠 + 快速眼动）至关重要，有助于身心恢复。其占比与时长是睡眠质量的重要指标。</p>
+    <div class="center-link"><button type="button" class="link-green" data-sheet="recovery-sleep">了解更多</button></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">连续性</h2>
+    <div class="chart" data-series="sleep-month-continuity-bars" data-chart="bars" data-values="88,96,92,84,90,78,0" data-colors="sky,sky,sky,sky,sky,sky,sky" data-barwidth="9" data-max="100" data-avg="79" data-ylabels="100|75|50|25|0" data-labels="01/周日|07/周六" data-aria="睡眠连续性柱状图"></div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">有效睡眠占比</h2>
+    <div class="chart" data-series="sleep-month-efficiency-bars" data-chart="bars" data-values="100,100,100,100,100,100,100" data-colors="purple,purple,purple,purple,purple,purple,purple" data-barwidth="8" data-max="100" data-avg="96" data-ylabels="100|75|50|25|0" data-labels="01/周日|07/周六" data-aria="有效睡眠占比柱状图"></div>
+    <div class="chart-legend"><span class="key"><i style="background:var(--lav)"></i> 平均</span></div>
+    <div class="divider"></div>
+    <div class="grid-2"><div><p class="metric-label"><i class="dot-status green" style="display:inline-block;margin-right:5px"></i> 最多一天</p><p class="metric-value">100<span class="unit">%</span></p><p class="metric-note">11月2日 周一</p></div><div><p class="metric-label"><i class="dot-status pink" style="display:inline-block;margin-right:5px"></i> 最少一天</p><p class="metric-value">87<span class="unit">%</span></p><p class="metric-note">11月1日 周日</p></div></div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>睡眠心率变化 <button type="button" class="i-btn" data-sheet="sleep-hr-dip" aria-label="睡眠心率变化说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="grid-3"><div><p class="metric-label">日平均变化</p><p class="metric-value">22<span class="unit">%</span></p><span class="badge green" style="margin-top:6px">★ 优秀</span></div><div><p class="metric-label">醒时平均</p><p class="metric-value">78<span class="unit">BPM</span></p></div><div><p class="metric-label">睡眠平均</p><p class="metric-value">61<span class="unit">BPM</span></p></div></div>
+    <div class="chart" data-series="sleep-month-hr-dip-bars" data-chart="bars" data-values="72,66,74,68,62,60,58" data-colors="orange,orange,orange,orange,orange,orange,orange" data-barwidth="7" data-max="90" data-ylabels="90|80|70|60|50" data-labels="01|07" data-aria="睡眠心率变化柱状图"></div>
+  </article>
+  <div data-sleep-panel="week" hidden><article class="card"><div class="empty-state"><span class="empty-art" data-art="ill-empty-range" data-tone="white"></span><strong>周视图未提供截图</strong>53 张参考截图包含「天」与「月」视图，不包含周视图。</div></article></div>
+</section>

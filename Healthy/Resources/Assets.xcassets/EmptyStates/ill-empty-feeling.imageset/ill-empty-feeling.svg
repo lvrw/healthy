@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 88" role="img" aria-label="空的气泡与几何线描组成的空状态插画；示意插画，非真实测量数据。来源：风格化补齐">
+  <rect x="27" y="18" width="66" height="44" rx="12" fill="#FFFFFF" stroke="#C9CDD2" stroke-width="3"/>
+  <path d="M42 62v7a4 4 0 0 0 4 4h9" fill="none" stroke="#C9CDD2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#B7BCC1"><circle cx="46" cy="40" r="2.6"/><circle cx="60" cy="40" r="2.6"/><circle cx="74" cy="40" r="2.6"/></g>
+  <rect x="80" y="47" width="16" height="12" rx="4" fill="none" stroke="#E4E7E9" stroke-width="2.5"/>
+  <circle cx="90" cy="22" r="4" fill="#79C98E"/>
+</svg>

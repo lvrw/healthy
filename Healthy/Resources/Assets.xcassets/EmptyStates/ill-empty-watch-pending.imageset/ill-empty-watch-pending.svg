@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 88" role="img" aria-label="手表与等待弧线组成的线描空状态插画；示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M33 46a27 27 0 0 1 54 0"/><path d="M33 46a27 27 0 0 0 54 0"/>
+  </g>
+  <g fill="none" stroke="#C9CDD2" stroke-width="3">
+    <rect x="47" y="16" width="26" height="12" rx="6"/><rect x="47" y="60" width="26" height="12" rx="6"/>
+    <rect x="43" y="28" width="34" height="32" rx="10" fill="#FFFFFF"/>
+  </g>
+  <path d="M60 36a8 8 0 0 1 8 8" fill="none" stroke="#B7BCC1" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="60" cy="44" r="2.4" fill="#B7BCC1"/>
+  <circle cx="88" cy="52" r="3.6" fill="#79C98E"/>
+</svg>

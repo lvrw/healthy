@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="prototype-source" content="local-screenshots-only">
+<title>StressWatch · 截图表原型</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="stylesheet" href="./prototype.css">
+<script src="./prototype.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#screen-scroller">跳到原型内容</a>
+<div class="workspace">
+  <aside class="sidebar" aria-label="原型页面导航">
+    <p class="brandline"><i class="icon" data-icon="ghost"></i> StressWatch 原型</p>
+    <p class="brand-sub">53 张截图 · 界面级还原 · 本地离线</p>
+    <label class="side-search"><i class="icon" data-icon="search"></i><span class="sr-only">搜索页面</span><input type="search" id="side-search" placeholder="搜索页面 / 模块" autocomplete="off"></label>
+    <nav id="side-nav" aria-label="页面清单">{{NAV}}</nav>
+    <p class="side-foot">所有数值、登录、分享与保存均为本地 mock。<br>未连接任何后端、账号或外部资源。<br>原始截图保持不变。</p>
+  </aside>
+
+  <main class="stage-wrap">
+    <div class="stage-top">
+      <p class="stage-title">界面原型预览 <span>桌面 1440px / 手机 375px 基线</span></p>
+      <div class="viewport-toggle" role="group" aria-label="画布尺寸">
+        <button type="button" data-viewport="390" aria-pressed="true">390 × 844</button>
+        <button type="button" data-viewport="430" aria-pressed="false">430 × 932</button>
+      </div>
+    </div>
+    <div class="mobile-bar">
+      <strong>页面</strong>
+      <label class="sr-only" for="mobile-select">选择原型页面</label>
+      <select id="mobile-select">{{MOBILE_OPTIONS}}</select>
+    </div>
+    <div class="phone" id="phone" data-tone="white">
+      <div class="phone-screen">
+        <div class="island" aria-hidden="true"></div>
+        <div class="status-bar" aria-hidden="true">
+          <span class="status-left"><span id="status-time">10:06</span><i class="icon xs" data-icon="moon"></i></span>
+          <span class="status-right"><i class="icon" data-icon="noise"></i><i class="icon" data-icon="sun"></i><span class="battery">46</span></span>
+        </div>
+        <div class="screen-scroller" id="screen-scroller" tabindex="-1">{{SCREENS}}</div>
+        <nav class="tabbar" id="tabbar" aria-label="主导航">
+          <button type="button" class="tab-item is-active" data-tab="today" aria-current="page"><i class="icon" data-icon="today"></i><span>今日</span></button>
+          <button type="button" class="tab-item" data-tab="actions" aria-current="false"><i class="icon" data-icon="play"></i><span>行动</span></button>
+          <button type="button" class="tab-item" data-tab="trends" aria-current="false"><i class="icon" data-icon="trend"></i><span>趋势</span></button>
+          <button type="button" class="tab-item" data-tab="health" aria-current="false"><i class="icon" data-icon="heart"></i><span>健康</span></button>
+          <button type="button" class="tab-item is-disabled" data-tab="settings" aria-disabled="true"><i class="icon" data-icon="settings"></i><span>设置</span></button>
+        </nav>
+        <div class="sheet-backdrop" id="sheet-backdrop" hidden>
+          <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" id="sheet">
+            <div class="sheet-grabber" aria-hidden="true"></div>
+            <div class="sheet-head">
+              <button type="button" class="circle-btn" data-close-sheet aria-label="关闭说明"><i class="icon" data-icon="close"></i></button>
+              <h2 id="sheet-title">说明</h2><span></span>
+            </div>
+            <div id="sheet-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="inspector" id="inspector" aria-label="页面与截图对应关系">
+    <h2 id="insp-title">今日</h2>
+    <p class="insp-sub" id="insp-group">主页面 · 底部导航</p>
+    <h3>对应截图</h3>
+    <div id="insp-sources"></div>
+    <h3>已实现状态</h3>
+    <div id="insp-states"></div>
+    <h3>观察 / 推断 / 待确认</h3>
+    <ul id="insp-notes"></ul>
+    <div class="insp-note">所有交互均为本地 mock：不写入数据、不调用接口、不请求网络。截图未提供的页面不作补绘。</div>
+  </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+{{SHEETS}}
+</body>
+</html>

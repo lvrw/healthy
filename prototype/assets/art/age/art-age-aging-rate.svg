@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="长期生物年龄曲线上的近两周短窗放大与趋势箭头；身体年龄示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M216 130v16"/><path d="M288 130v16"/><path d="M216 146h72"/>
+  </g>
+  <path d="M24 128L60 120L96 112L132 106L168 96L204 88L240 78L276 66L296 60" fill="none" stroke="#F79B62" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="216" y="34" width="72" height="96" rx="12" fill="#FFF2EC"/>
+  <path d="M226 108L242 96L258 84L274 70" fill="none" stroke="#EE6E88" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="274" cy="70" r="4.2" fill="#FFFFFF"/>
+</svg>

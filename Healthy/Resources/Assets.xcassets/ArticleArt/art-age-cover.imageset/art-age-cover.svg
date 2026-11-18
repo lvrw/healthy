@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" role="img" aria-label="两条并列年龄刻度，一条标实际年龄、一条标生物年龄；知识文章示意插画，非真实测量数据。来源：风格化补齐">
+  <defs><linearGradient id="art-age-cover-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF2EC"/><stop offset="1" stop-color="#F8FAF9"/></linearGradient></defs>
+  <rect width="320" height="160" fill="url(#art-age-cover-bg)"/>
+  <rect x="150" y="52" width="146" height="18" rx="9" fill="#F0F1F3"/>
+  <rect x="150" y="52" width="86" height="18" rx="9" fill="#F79B62"/>
+  <rect x="150" y="94" width="146" height="18" rx="9" fill="#F0F1F3"/>
+  <rect x="150" y="94" width="122" height="18" rx="9" fill="#6C5AD9"/>
+  <g fill="#FFFFFF"><circle cx="236" cy="61" r="9"/><circle cx="272" cy="103" r="9"/></g>
+  <g fill="#F79B62"><circle cx="236" cy="61" r="5"/></g>
+  <g fill="#6C5AD9"><circle cx="272" cy="103" r="5"/></g>
+  <g fill="none" stroke="#E4E7E9" stroke-width="1.5" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M236 72v20"/><path d="M272 72v20"/>
+  </g>
+  <g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".75">
+    <path d="M186 57v8"/><path d="M222 57v8"/><path d="M186 99v8"/><path d="M222 99v8"/>
+  </g>
+</svg>

@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-11-09T04:26:08.140Z",
+  "tool": "Chrome CDP Emulation.setDeviceMetricsOverride",
+  "captures": [
+    {
+      "name": "viewport-1440-today",
+      "requested": "1440x900",
+      "mobile": false,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-1440-today.png",
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "screen": "today",
+        "phoneRect": {
+          "x": 497.5,
+          "y": 90.140625,
+          "width": 390,
+          "height": 782,
+          "top": 90.140625,
+          "right": 887.5,
+          "bottom": 872.140625,
+          "left": 497.5
+        },
+        "tabbarRect": {
+          "x": 522.5,
+          "y": 781.140625,
+          "width": 340,
+          "height": 66,
+          "top": 781.140625,
+          "right": 862.5,
+          "bottom": 847.140625,
+          "left": 522.5
+        },
+        "scrollerClientWidth": 372,
+        "activeScreenScrollWidth": 372,
+        "bodyScrollWidth": 1425,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    },
+    {
+      "name": "viewport-1440-trends",
+      "requested": "1440x900",
+      "mobile": false,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-1440-trends.png",
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "screen": "trends",
+        "phoneRect": {
+          "x": 497.5,
+          "y": 90.140625,
+          "width": 390,
+          "height": 782,
+          "top": 90.140625,
+          "right": 887.5,
+          "bottom": 872.140625,
+          "left": 497.5
+        },
+        "tabbarRect": {
+          "x": 522.5,
+          "y": 781.140625,
+          "width": 340,
+          "height": 66,
+          "top": 781.140625,
+          "right": 862.5,
+          "bottom": 847.140625,
+          "left": 522.5
+        },
+        "scrollerClientWidth": 372,
+        "activeScreenScrollWidth": 372,
+        "bodyScrollWidth": 1425,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    },
+    {
+      "name": "viewport-1440-sleep-day",
+      "requested": "1440x900",
+      "mobile": false,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-1440-sleep-day.png",
+      "metrics": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "screen": "sleep-day",
+        "phoneRect": {
+          "x": 497.5,
+          "y": 90.140625,
+          "width": 390,
+          "height": 782,
+          "top": 90.140625,
+          "right": 887.5,
+          "bottom": 872.140625,
+          "left": 497.5
+        },
+        "tabbarRect": null,
+        "scrollerClientWidth": 372,
+        "activeScreenScrollWidth": 372,
+        "bodyScrollWidth": 1425,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    },
+    {
+      "name": "viewport-375-today",
+      "requested": "375x812",
+      "mobile": true,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-375-today.png",
+      "metrics": {
+        "innerWidth": 375,
+        "innerHeight": 812,
+        "screen": "today",
+        "phoneRect": {
+          "x": 0,
+          "y": 54,
+          "width": 375,
+          "height": 756,
+          "top": 54,
+          "right": 375,
+          "bottom": 810,
+          "left": 0
+        },
+        "tabbarRect": {
+          "x": 12,
+          "y": 734,
+          "width": 351,
+          "height": 66,
+          "top": 734,
+          "right": 363,
+          "bottom": 800,
+          "left": 12
+        },
+        "scrollerClientWidth": 375,
+        "activeScreenScrollWidth": 375,
+        "bodyScrollWidth": 375,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    },
+    {
+      "name": "viewport-375-health",
+      "requested": "375x812",
+      "mobile": true,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-375-health.png",
+      "metrics": {
+        "innerWidth": 375,
+        "innerHeight": 812,
+        "screen": "health",
+        "phoneRect": {
+          "x": 0,
+          "y": 54,
+          "width": 375,
+          "height": 756,
+          "top": 54,
+          "right": 375,
+          "bottom": 810,
+          "left": 0
+        },
+        "tabbarRect": {
+          "x": 12,
+          "y": 734,
+          "width": 351,
+          "height": 66,
+          "top": 734,
+          "right": 363,
+          "bottom": 800,
+          "left": 12
+        },
+        "scrollerClientWidth": 375,
+        "activeScreenScrollWidth": 375,
+        "bodyScrollWidth": 375,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    },
+    {
+      "name": "viewport-375-sleep-day",
+      "requested": "375x812",
+      "mobile": true,
+      "file": "/Users/lvrongwang/workspace/healthy/prototype/evidence/viewport-375-sleep-day.png",
+      "metrics": {
+        "innerWidth": 375,
+        "innerHeight": 812,
+        "screen": "sleep-day",
+        "phoneRect": {
+          "x": 0,
+          "y": 54,
+          "width": 375,
+          "height": 756,
+          "top": 54,
+          "right": 375,
+          "bottom": 810,
+          "left": 0
+        },
+        "tabbarRect": null,
+        "scrollerClientWidth": 375,
+        "activeScreenScrollWidth": 375,
+        "bodyScrollWidth": 375,
+        "horizontalOverflow": false
+      },
+      "pageErrors": []
+    }
+  ]
+}

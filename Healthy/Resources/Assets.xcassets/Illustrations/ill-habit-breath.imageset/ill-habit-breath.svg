@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" role="img" aria-label="莲花与呼吸弧线组成的正念插画；按同套风格补齐的示意插画，非截图内容。来源：风格化补齐">
+  <circle cx="30" cy="30" r="24" fill="none" stroke="#F0F1F3" stroke-width="7"/>
+  <circle cx="30" cy="30" r="18" fill="#EDE8FC"/>
+  <g fill="none" stroke="#57BFE6" stroke-width="2.6" stroke-linecap="round">
+    <path d="M18 30a12 12 0 0 1 24 0"/><path d="M24 30a6 6 0 0 1 12 0" opacity=".7"/>
+  </g>
+  <ellipse cx="30" cy="35" rx="5.4" ry="9" fill="#57BFE6"/>
+  <ellipse cx="23" cy="37" rx="4.8" ry="8" fill="#57BFE6" transform="rotate(-32 23 37)"/>
+  <ellipse cx="37" cy="37" rx="4.8" ry="8" fill="#57BFE6" transform="rotate(32 37 37)"/>
+  <circle cx="30" cy="39" r="2.6" fill="#FFFFFF"/>
+</svg>

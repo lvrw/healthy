@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="多个 RR 间期箭头汇入一条平均间期；HRV 分量示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M50 50L160 98"/><path d="M108 50L160 98"/><path d="M172 50L160 98"/><path d="M232 50L160 98"/>
+  </g>
+  <g fill="#79C98E">
+    <rect x="30" y="36" width="40" height="14" rx="7"/><rect x="82" y="36" width="52" height="14" rx="7"/>
+    <rect x="146" y="36" width="34" height="14" rx="7"/><rect x="196" y="36" width="56" height="14" rx="7"/>
+  </g>
+  <rect x="46" y="116" width="228" height="18" rx="9" fill="#4EA974"/>
+  <path d="M160 98v12" fill="none" stroke="#57BFE6" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#FFFFFF"><circle cx="160" cy="125" r="4" opacity=".85"/><circle cx="90" cy="125" r="3" opacity=".7"/><circle cx="230" cy="125" r="3" opacity=".7"/></g>
+</svg>

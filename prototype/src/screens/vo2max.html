@@ -1,0 +1,38 @@
+<section class="screen no-tabbar" id="screen-vo2max" data-screen="vo2max" aria-label="最大摄氧量">
+  <header class="detail-nav">
+    <button type="button" class="circle-btn is-green" data-go="health" aria-label="返回健康"><i class="icon" data-icon="back"></i></button>
+    <div class="detail-title"><strong>最大摄氧量 <i class="icon xs c-muted" data-icon="chevron-down"></i></strong></div><span class="nav-slot"></span>
+  </header>
+  <div class="segmented" role="group" aria-label="最大摄氧量时间范围" data-segment-group="vo2-range">
+    <button type="button" data-value="30d" aria-pressed="true">30日</button>
+    <button type="button" data-value="90d" aria-pressed="false">90日</button>
+    <button type="button" data-value="1y" aria-pressed="false">1年</button>
+  </div>
+  <div class="date-nav"><button type="button" class="circle-btn" disabled aria-label="上一周期（已到边界）"><i class="icon" data-icon="chevron-left"></i></button><button type="button" class="date-value" data-mock="日期选择器未在截图中提供">10月9日-11月7日 <i class="icon small" data-icon="chevron-down"></i></button></div>
+
+  <div data-range-panel="30d">
+    <div class="vo2-head">
+      <div><p class="big-value">38</p><p class="metric-note">11月6日 周五</p><p class="metric-note"><span class="dot-status orange" style="display:inline-block;margin-right:5px"></span>尚可</p></div>
+      <div><p class="big-value">38-57</p><p class="metric-note">最新正常范围 <button type="button" class="i-btn" data-sheet="vo2-range" aria-label="正常范围说明"><i class="icon" data-icon="info"></i></button></p></div>
+    </div>
+    <article class="card">
+      <div class="chart" data-series="vo2max-line" data-chart="line" data-values="38,38,39,38" data-colors="white,pink,orange,orange" data-stroke="#C7C4E8" data-grid="none" data-baseline="38" data-baseline-color="lavender" data-max="67" data-min="28" data-labels="10月9日|10月24日|11月7日" data-aria="最大摄氧量近 30 日趋势，平均 38"></div>
+      <div class="chart-legend"><span class="key"><i class="dashed"></i> 最大摄氧量</span><span class="key"><i style="background:var(--lav)"></i> 平均值: 38</span></div>
+      <div class="divider"></div>
+      <p class="body-copy small">最大摄氧量（VO2 Max）反映心肺耐力上限，数值越高代表有氧能力越强，也与寿命和心血管健康密切相关。</p>
+    </article>
+    <article class="card">
+      <div class="advice"><i class="icon" data-icon="ghost"></i><span>你的最大摄氧量略低于同龄人平均水平，心肺功能基本正常，但在持续运动或体力消耗较大时，可能会比预期更容易感到疲劳。<br><br>建议养成规律运动的习惯，从轻松的有氧活动开始，坚持一段时间后通常可见明显改善。</span></div>
+      <div class="card-foot" style="grid-template-columns:1fr"><button type="button" data-go="ai-chat">问问AI</button></div>
+    </article>
+    <article class="card">
+      <h2 style="font-size:17px;font-weight:750;margin:2px 0 12px">常见问题</h2>
+      <div class="faq-cards">
+        <button type="button" data-go="ai-article" style="text-align:left"><div class="faq-art peach" data-art="ill-faq-vo2max-what"></div><p class="faq-caption">最大摄氧量是什么？</p></button>
+        <button type="button" data-go="ai-article" style="text-align:left"><div class="faq-art mint" data-art="ill-faq-vo2max-improve"></div><p class="faq-caption">如何提升最大摄氧量？</p></button>
+      </div>
+      <p class="tiny c-muted" style="margin-top:10px">（截图在卡片插画处截断，标题按可见范围与同设计风格补齐。）</p>
+    </article>
+  </div>
+  <div data-range-panel="other" hidden><article class="card"><div class="empty-state"><span class="empty-art" data-art="ill-empty-range" data-tone="mint"></span><strong>该时间范围未提供截图</strong>参考截图只包含「30日」视图，此处不虚构 90 日 / 1 年数据。</div></article></div>
+</section>

@@ -1,0 +1,57 @@
+<section class="screen has-tabbar" id="screen-health" data-screen="health" aria-label="健康页面">
+  <header class="page-head"><h1>健康</h1><p class="subtitle">身体比你想象的更诚实，它记得你每一次选择</p></header>
+  <button type="button" class="card" data-go="body-age" style="display:block;width:calc(100% - 40px);text-align:left">
+    <div class="card-head" style="margin-bottom:10px"><h2>身体年龄</h2><i class="icon sm c-muted" data-icon="chevron-right"></i></div>
+    <p class="big-value">34.2</p>
+    <div class="grid-2" style="margin:6px 0 14px"><p class="metric-note" style="font-size:12.5px">多5.9岁</p><p class="metric-note" style="text-align:right;font-size:12.5px">衰老速度 -0.2x</p></div>
+    <div class="gradient-bar"><span class="marker" style="left:29%"></span></div>
+    <div class="scale-labels"><span>-1x</span><span>1x</span><span>3x</span></div>
+  </button>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 16px">心脏健康</h2>
+    <div style="display:grid;grid-template-columns:1fr 110px;gap:12px;align-items:center">
+      <div>
+        <button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-go="vo2max"><i class="icon sm c-orange" data-icon="vo2"></i> 最大摄氧量 <i class="icon xs" data-icon="chevron-right"></i></button>
+        <p class="big-value" style="margin:8px 0 4px">38</p>
+        <p class="metric-note"><span class="dot-status orange" style="display:inline-block;margin-right:5px"></span>尚可 · 38-48</p>
+      </div>
+      <div style="background:#F7F8F9;border-radius:12px;padding:12px 8px"><div class="chart" data-series="health-vo2-spark" data-chart="spark" data-values="30,28,32,34" data-color="gray" data-dot="orange" data-fill="none" data-aria="最大摄氧量迷你趋势"></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="HRV 基线详情未在截图中提供"><i class="icon sm c-green" data-icon="vo2"></i> HRV基线 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">30.7<span class="unit">ms</span></p><p class="metric-note c-lav">= 近7日稳定</p><div class="chart" data-series="health-hrv-baseline-spark" data-chart="spark" data-values="26,18,22,24,25" data-color="gray" data-dot="none" data-aria="HRV 基线趋势"></div></div>
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="静息心率基线详情未在截图中提供"><i class="icon sm c-lav" data-icon="heart"></i> 静息心率基线 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">69.1<span class="unit">bpm</span></p><p class="metric-note c-lav">= 近7日稳定</p><div class="chart" data-series="health-rhr-baseline-spark" data-chart="spark" data-values="30,26,22,19,18" data-color="gray" data-dot="none" data-aria="静息心率基线趋势"></div></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 16px">消耗</h2>
+    <button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="日均消耗详情未在截图中提供"><i class="icon sm c-red" data-icon="flame"></i> 日均消耗 <i class="icon xs" data-icon="chevron-right"></i></button>
+    <p class="big-value" style="margin:8px 0 4px">1956<span class="unit">千卡/天</span></p>
+    <p class="metric-note c-lav">= 近30日稳定</p>
+    <div class="bar-compare">
+      <div class="bar-row"><div class="bar orange" style="width:92%">1956</div><div class="bar-note">近30日<br>10月9日-11月7日</div></div>
+      <div class="bar-row"><div class="bar pink" style="width:88%">1883</div><div class="bar-note">近60日<br>9月9日-11月7日</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="基础代谢详情未在截图中提供"><i class="icon sm c-green" data-icon="leaf"></i> 日均基础代谢 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">1701<span class="unit">千卡/天</span></p><p class="metric-note c-lav">= 近30日稳定</p></div>
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="日均活动详情未在截图中提供"><i class="icon sm c-orange" data-icon="run"></i> 日均活动 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">255<span class="unit">千卡/天</span></p><p class="metric-note c-green">▲ 近30日上升</p></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card-head"><h2>身体测量</h2><button type="button" class="circle-btn" style="width:30px;height:30px;background:#E8F4FF;color:var(--sky);border:0" data-mock="新增身体测量表单未在截图中提供" aria-label="新增身体测量"><i class="icon sm" data-icon="plus"></i></button></div>
+    <button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="体重详情未在截图中提供"><i class="icon sm c-sky" data-icon="gauge"></i> 体重 <i class="icon xs" data-icon="chevron-right"></i></button>
+    <div style="display:grid;grid-template-columns:1fr 130px;gap:8px;align-items:end">
+      <div><p class="metric-value" style="margin:8px 0 2px">78.2<span class="unit">千克</span></p><p class="metric-note c-lav">▲ 近14日上升</p></div>
+      <div class="chart" data-series="health-weight-spark" data-chart="spark" data-values="30,30,30,30,30,30,32" data-color="gray" data-dot="sky" data-fill="none" data-aria="体重近 14 日趋势"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="grid-2">
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="去脂体重详情未在截图中提供"><i class="icon sm c-green" data-icon="leaf"></i> 去脂体重 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">61<span class="unit">千克</span></p><p class="metric-note c-lav">= 近14日稳定</p></div>
+      <div><button type="button" class="link-green" style="justify-content:flex-start;padding:0" data-mock="体脂率详情未在截图中提供"><i class="icon sm c-orange" data-icon="gauge"></i> 体脂率 <i class="icon xs" data-icon="chevron-right"></i></button><p class="metric-value" style="margin:8px 0 2px">22<span class="unit">%</span></p><p class="metric-note c-lav">= 近14日稳定</p></div>
+    </div>
+  </article>
+</section>

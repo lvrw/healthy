@@ -1,0 +1,69 @@
+{
+  "checks": {
+    "noUnresolvedIcons": true,
+    "noUnresolvedCharts": true,
+    "noExternalResources": true,
+    "noJavascriptUrl": true,
+    "noDataUrl": true,
+    "noInlineEvents": true,
+    "noIframe": true,
+    "noFetch": true,
+    "allScreensPresent": true,
+    "semanticSections": true,
+    "escapedMeta": true
+  },
+  "runtimeLint": {
+    "status": "run",
+    "checks": {
+      "doctype": true,
+      "semanticMain": true,
+      "noInlineEvents": true,
+      "noExternalResources": true,
+      "noJavascriptUrl": true,
+      "noIframe": true,
+      "contentEscaped": true
+    },
+    "passed": true
+  },
+  "iconCount": 211,
+  "chartCount": 50,
+  "seriesCount": 50,
+  "artCount": 29,
+  "artResourceCount": 24,
+  "artIds": [
+    "art-age-aging-rate",
+    "art-age-biological",
+    "art-age-cover",
+    "art-hrv-cover",
+    "art-hrv-cv",
+    "art-hrv-mean-rr",
+    "art-hrv-mxdmn",
+    "art-hrv-pnn50",
+    "art-hrv-sdnn",
+    "ill-empty-feeling",
+    "ill-empty-range",
+    "ill-empty-watch-pending",
+    "ill-faq-measure-principle",
+    "ill-faq-stress-overload",
+    "ill-faq-vo2max-improve",
+    "ill-faq-vo2max-what",
+    "ill-habit-breath",
+    "ill-habit-caffeine",
+    "ill-habit-noise",
+    "ill-habit-steps",
+    "ill-habit-sun",
+    "ill-habit-water",
+    "ill-hero-pool-relax",
+    "ill-promo-understand-trend"
+  ],
+  "screenCount": 15,
+  "sourceCount": 53,
+  "discDecorativeDots": 46,
+  "manifestContract": {
+    "resources": 24,
+    "chartKinds": 14,
+    "seriesIdsCovered": 50,
+    "darkVariantReserved": "24/24",
+    "prototypeDarkSvgFiles": 0
+  }
+}

@@ -1,0 +1,90 @@
+<section class="screen has-tabbar" id="screen-today" data-screen="today" aria-label="今日页面">
+  <div class="hero-art" role="img" aria-label="绿色卡通角色戴墨镜在泳池中放松；按截图风格重绘的示意插画，非原始数据截图。来源：截图复刻" data-art="ill-hero-pool-relax"></div>
+  <p class="hero-caption">Hi 融望 吕，你今日综合压力状态 <button type="button" class="i-btn" data-sheet="stress-levels" aria-label="查看压力水平说明"><i class="icon" data-icon="info"></i></button></p>
+  <p class="hero-state">状态优秀</p>
+  <div class="hero-scale status-scale" role="img" aria-label="压力状态四段指示，当前为状态优秀"><i></i><i></i><i></i><i></i></div>
+
+  <article class="card">
+    <div class="hr-metric">
+      <div><p class="metric-label">今日平均HRV</p><p class="big-value">40<span class="unit">ms</span></p><p class="metric-note c-green">▲ 近期平均30ms</p><div class="chart" data-series="today-hrv-spark" data-chart="spark" data-values="14,26,22,20,17,15" data-color="gray" data-dot="orange" data-aria="今日平均 HRV 迷你趋势"></div></div>
+      <div><p class="metric-label">静息心率</p><p class="big-value muted">—</p><p class="metric-note">近期平均69bpm</p><div class="chart" data-series="today-rhr-spark" data-chart="spark" data-values="18,22,17,24,19,22,20,25,21,23" data-color="gray" data-dot="none" data-aria="静息心率迷你趋势"></div></div>
+    </div>
+    <div class="advice"><i class="icon" data-icon="ghost"></i><span>状态不错，试试接触一点自然光、活动几分钟，让身体保持良好的节奏。</span></div>
+    <p class="body-copy">综合今日的HRV和静息心率情况看，你今天整体状态优秀，身体压力状态较小，能很好应对今日工作生活中的挑战。相信自己，你一定可以实现你的目标！</p>
+    <p class="update-note">数据更新于 10:05</p>
+    <div class="card-foot">
+      <button type="button" data-go="today-detail">详细解读</button>
+      <button type="button" data-go="ai-chat">问问AI</button>
+    </div>
+  </article>
+
+  <header class="page-head"><h1>StressWatch</h1></header>
+  <article class="card">
+    <div class="card-head"><h2>今日HRV趋势 <button type="button" class="i-btn" data-sheet="hrv-trend" aria-label="今日 HRV 趋势说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="chart-wrap">
+      <div class="chart" data-series="today-hrv-line" data-chart="line" data-values="18,72,44,32,25" data-colors="lavender,green,green,lavender,orange" data-labels="00:00|06:00|12:00" data-aria="今日 HRV 趋势：5 个采样点，最新为注意压力"></div>
+      <button type="button" class="chart-hit" data-action="toggle-tooltip" aria-label="查看 08:42 数据点" style="right:22%;top:36%"></button>
+      <div class="chart-tooltip" id="hrv-tooltip" hidden><strong>◎ 注意压力</strong><br>♡ HRV 24ms · 08:42</div>
+    </div>
+    <div class="divider"></div>
+    <div class="card-head" style="margin-bottom:6px"><h2>实时压力 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="stress-live" aria-label="实时压力说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="chart" data-series="today-stress-hist" data-chart="hist" data-seed="11" data-aria="00:00 至 12:00 实时压力直方图，紫色区域为睡眠时段"></div>
+    <button type="button" class="link-green center-link" data-mock="原始心率数据为本地 mock，未连接健康数据源" style="width:100%">原始心率数据</button>
+    <div class="card-foot">
+      <button type="button" data-mock="分享为本地 mock，未调用系统分享"><i class="icon sm" data-icon="share"></i> 分享</button>
+      <button type="button" data-go="day-hrv">全部记录</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <p class="record-head">08:42 (最近一次)</p>
+    <h2 class="record-title"><span class="dot-status orange"></span> 24ms · 注意压力</h2>
+    <p class="body-copy">此刻你的 HRV 心率变异性略低于日常水平，需要注意此刻的身体和心理压力状态。</p>
+    <div class="divider"></div>
+    <button type="button" class="list-row" data-go="record-detail" style="padding:4px 0 0">
+      <span class="row-main"><span class="row-title">查看本次记录详情</span></span><i class="icon chev" data-icon="chevron-right"></i>
+    </button>
+  </article>
+
+  <div class="section-head"><h2>关键行动</h2></div>
+  <article class="card">
+    <div class="card-head"><h2>睡眠</h2><button type="button" class="link-green" data-go="sleep-day">查看睡眠报告 <i class="icon xs" data-icon="chevron-right"></i></button></div>
+    <div class="sleep-summary">
+      <div><p class="metric-label c-purple">时长</p><p class="metric-value">4<span class="unit">小时</span>47<span class="unit">分钟</span></p></div>
+      <div><p class="metric-label c-purple">质量</p><p class="metric-value c-orange">注意</p></div>
+      <div><p class="metric-label">平均心率</p><p class="metric-value">59<span class="unit">bpm</span></p></div>
+      <div class="ring-mini" aria-hidden="true"></div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2>睡眠生命体征</h2><button type="button" class="link-green" data-go="sleep-vitals" aria-label="查看睡眠生命体征"><i class="icon sm" data-icon="chevron-right"></i></button></div>
+    <div class="vitals-strip">
+      <div class="vital-tile"><div class="chart" data-series="today-vital-mini-hrv" data-chart="mini" data-color="green" data-aria="HRV 趋势"></div><span class="dot-status green"></span></div>
+      <div class="vital-tile"><div class="chart" data-series="today-vital-mini-hr" data-chart="mini" data-aria="心率趋势"></div><span class="dot-status lav"></span></div>
+      <div class="vital-tile"><div class="chart" data-series="today-vital-mini-resp" data-chart="mini" data-aria="呼吸频率趋势"></div><span class="dot-status lav"></span></div>
+      <div class="vital-tile"><div class="chart" data-series="today-vital-mini-spo2" data-chart="mini" data-aria="血氧趋势"></div><span class="dot-status lav"></span></div>
+      <div class="vital-tile"><div class="chart" data-series="today-vital-mini-wrist" data-chart="mini" data-aria="手腕温度趋势"></div><span class="dot-status lav"></span></div>
+    </div>
+    <div class="vitals-icons">
+      <div><i class="icon" data-icon="heart"></i><strong>40</strong><small>ms</small></div>
+      <div><i class="icon" data-icon="heart"></i><strong>59</strong><small>bpm</small></div>
+      <div><i class="icon" data-icon="lungs"></i><strong>12</strong><small>br/min</small></div>
+      <div><i class="icon" data-icon="drop"></i><strong>96.3</strong><small>%</small></div>
+      <div><i class="icon" data-icon="thermo"></i><strong>34.9</strong><small>°C</small></div>
+    </div>
+  </article>
+  <div class="section-head"><h2>StressWatch常见问题</h2></div>
+  <div class="card flat" style="background:transparent;box-shadow:none;padding:0 20px;margin-bottom:16px">
+    <div class="faq-cards">
+      <button type="button" data-go="ai-article" style="text-align:left">
+        <div class="faq-art green" data-art="ill-faq-stress-overload"></div>
+        <p class="faq-caption">StressWatch什么时候会提示压力过载？</p>
+      </button>
+      <button type="button" data-go="ai-article" style="text-align:left">
+        <div class="faq-art green" data-art="ill-faq-measure-principle"></div>
+        <p class="faq-caption">StressWatch测量的什么压力？测量原理是什么？</p>
+      </button>
+    </div>
+    <p class="tiny muted" style="margin-top:12px;line-height:1.7">温馨提示：Apple Watch 上的「正念」并非压力数据，不能取代压力建议。因此 StressWatch 基于此提供的信息都仅供参考，请勿替代专业的医疗建议。</p>
+  </div>
+</section>

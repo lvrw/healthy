@@ -1,0 +1,35 @@
+<section class="screen no-tabbar" id="screen-day-hrv" data-screen="day-hrv" aria-label="2026年11月7日 HRV 日详情">
+  <header class="detail-nav">
+    <button type="button" class="circle-btn is-green" data-go="today" aria-label="返回今日"><i class="icon" data-icon="back"></i></button>
+    <div class="detail-title"><strong>2026年11月7日</strong></div>
+    <span class="nav-slot"><button type="button" class="pill-btn" data-mock="分享为本地 mock，未调用系统分享"><i class="icon" data-icon="share"></i> 分享</button></span>
+  </header>
+  <article class="card">
+    <div class="card-head"><h2>今日HRV趋势 <button type="button" class="i-btn" data-sheet="hrv-trend" aria-label="HRV 趋势说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="chart" data-series="day-hrv-line" data-chart="line" data-values="18,72,44,32,25" data-colors="lavender,green,green,lavender,orange" data-labels="00:00|06:00|12:00" data-aria="今日 HRV 趋势折线图"></div>
+    <div class="divider"></div>
+    <div class="card-head" style="margin-bottom:6px"><h2>实时压力 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="stress-live" aria-label="实时压力说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="chart" data-series="day-hrv-hist" data-chart="hist" data-seed="11" data-aria="实时压力直方图，紫色区域为睡眠时段"></div>
+    <div class="center-link"><button type="button" class="link-green" data-mock="原始心率数据为本地 mock">原始心率数据</button></div>
+  </article>
+  <p class="body-copy small" style="padding:2px 24px 16px">StressWatch 使用 RMSSD 计算 HRV 心率变异性，更适合衡量短时间内的 HRV 变化。由于 Apple 健康中的心率变异性采用 SDNN 计算，两者数值会有所不同。<br>iOS 27 及以上版本新增了恢复心率变异性数据类型，其计算方式同样为 RMSSD，与 StressWatch 一致。</p>
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 18px">压力水平</h2>
+    <div class="list-row"><span class="dot-status green"></span><span class="row-main"><span class="row-title">状态优秀</span><span class="row-sub">HRV &gt; 33ms / 实时压力 1% - 20%</span></span></div>
+    <div class="list-row"><span class="dot-status lav"></span><span class="row-main"><span class="row-title">状态正常</span><span class="row-sub">HRV 24-33ms / 实时压力 21% - 60%</span></span></div>
+    <div class="list-row"><span class="dot-status orange"></span><span class="row-main"><span class="row-title">注意压力</span><span class="row-sub">HRV 20-24ms / 实时压力 61% - 80%</span></span></div>
+    <div class="list-row"><span class="dot-status pink"></span><span class="row-main"><span class="row-title">压力过载</span><span class="row-sub">HRV &lt; 20ms / 实时压力 81% - 100%</span></span></div>
+    <p class="metric-label" style="margin-top:16px">备注：</p>
+    <p class="metric-note">实时压力在睡眠期间标准会不同</p>
+    <div class="divider"></div>
+    <div class="center-link" style="padding:0"><button type="button" class="link-green" data-sheet="stress-levels">了解更多</button></div>
+  </article>
+  <article class="card">
+    <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">所有数据</h2>
+    <button type="button" class="list-row" data-go="record-detail"><span class="dot-status orange"></span><span class="row-main"><span class="row-title">注意压力 · 24ms</span></span><span class="row-value muted">08:42</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-go="record-detail"><span class="dot-status lav"></span><span class="row-main"><span class="row-title">状态正常 · 32ms</span></span><span class="row-value muted">06:43</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-go="record-detail"><span class="dot-status green"></span><span class="row-main"><span class="row-title">状态优秀 · 48ms</span></span><span class="row-value muted">04:42</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-go="record-detail"><span class="dot-status green"></span><span class="row-main"><span class="row-title">状态优秀 · 69ms</span></span><span class="row-value muted">02:43</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-go="record-detail"><span class="dot-status lav"></span><span class="row-main"><span class="row-title">状态正常 · 28ms</span></span><span class="row-value muted">01:26</span><i class="icon chev" data-icon="chevron-right"></i></button>
+  </article>
+</section>

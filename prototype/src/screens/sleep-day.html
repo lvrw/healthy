@@ -1,0 +1,88 @@
+<section class="screen no-tabbar" id="screen-sleep-day" data-screen="sleep-day" aria-label="睡眠报告 · 天">
+  <div style="display:grid;grid-template-columns:46px 1fr 46px;align-items:center;gap:8px;padding:10px 20px 6px">
+    <button type="button" class="circle-btn is-purple" data-go="today" aria-label="关闭睡眠报告"><i class="icon" data-icon="close"></i></button>
+    <div class="segmented is-purple" role="group" aria-label="睡眠报告时间范围" data-segment-group="sleep-range" style="margin:0"><button type="button" data-value="day" aria-pressed="true">天</button><button type="button" data-value="week" aria-pressed="false">周</button><button type="button" data-value="month" aria-pressed="false">月</button></div>
+    <button type="button" class="circle-btn is-purple" data-mock="睡眠报告设置未在截图中提供" aria-label="睡眠报告设置"><i class="icon" data-icon="hex"></i></button>
+  </div>
+  <div class="date-nav is-purple"><button type="button" class="circle-btn" disabled aria-label="上一天（已到边界）"><i class="icon" data-icon="chevron-left"></i></button><button type="button" class="date-value" data-mock="日期选择器未在截图中提供">2026年11月7日 <i class="icon small" data-icon="chevron-down"></i></button></div>
+
+  <div data-sleep-panel="day">
+    <div class="sleep-hero">
+      <div class="chart" data-series="sleep-day-ring" data-chart="ring" data-aria="睡眠时长与睡眠质量双环图"></div>
+      <h1>需要重视睡眠了</h1>
+    </div>
+    <article class="card">
+      <div class="sleep-hero-metrics">
+        <div><p class="metric-label"><i class="icon xs c-purple" data-icon="moon"></i> 睡眠时长</p><p class="metric-value">4<span class="unit">小时</span>47<span class="unit">分钟</span></p><div style="display:flex;align-items:center;gap:6px"><span class="tiny c-muted">/7小时</span><span class="badge orange" style="padding:2px 8px;font-size:10px"><i class="icon xs" data-icon="warning"></i> 未达标</span></div></div>
+        <div><p class="metric-label"><i class="icon xs c-purple" data-icon="star"></i> 睡眠质量 <button type="button" class="i-btn" data-sheet="sleep-quality" aria-label="睡眠质量说明"><i class="icon" data-icon="info"></i></button></p><p class="metric-value c-orange">注意</p><p class="tiny c-muted">49分</p></div>
+      </div>
+      <div class="divider"></div>
+      <div class="advice"><i class="icon c-green" data-icon="ghost"></i><span>你离睡眠目标较远，并且睡眠质量需要注意，其中恢复性睡眠的占比较低。需要及时重视睡眠，给自己更多时间休息。注意劳逸结合、睡前进行适当的放松，以获取高质量的睡眠。</span></div>
+      <div class="card-foot" style="grid-template-columns:1fr"><button type="button" data-go="ai-chat">问问AI</button></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>睡眠质量维度 <button type="button" class="i-btn" data-sheet="sleep-quality" aria-label="睡眠质量维度说明"><i class="icon" data-icon="info"></i></button></h2></div>
+      <button type="button" class="list-row" data-sheet="sleep-duration"><i class="icon c-lav" data-icon="moon"></i><span class="row-main"><span class="row-title">总睡眠时长</span><span class="row-sub">4小时47分钟</span><span class="progress"><i style="width:65%"></i></span></span><i class="icon chev" data-icon="chevron-right"></i></button>
+      <button type="button" class="list-row" data-sheet="recovery-sleep"><i class="icon c-lav" data-icon="heart"></i><span class="row-main"><span class="row-title">恢复性睡眠</span><span class="row-sub"><span class="c-orange">注意</span> · 2小时12分钟 · 45%占比</span><span class="progress"><i style="width:45%"></i></span></span><i class="icon chev" data-icon="chevron-right"></i></button>
+      <button type="button" class="list-row" data-sheet="sleep-continuity"><i class="icon c-lav" data-icon="refresh"></i><span class="row-main"><span class="row-title">连续性</span><span class="row-sub"><span class="c-green">优秀</span> · 清醒 3次 · 8分钟</span><span class="progress"><i style="width:86%"></i></span></span><i class="icon chev" data-icon="chevron-right"></i></button>
+      <button type="button" class="list-row" data-sheet="sleep-efficiency"><i class="icon c-lav" data-icon="clock"></i><span class="row-main"><span class="row-title">有效睡眠占比</span><span class="row-sub"><span class="c-green">优秀</span> · 4小时47分钟/4小时55分钟</span><span class="progress"><i style="width:97%"></i></span></span><i class="icon chev" data-icon="chevron-right"></i></button>
+      <button type="button" class="list-row" data-sheet="sleep-regularity"><i class="icon c-lav" data-icon="clock"></i><span class="row-main"><span class="row-title">规律性</span><span class="row-sub"><span class="c-orange">注意</span> · 02:47 - 07:42</span><span class="progress"><i style="width:48%"></i></span></span><i class="icon chev" data-icon="chevron-right"></i></button>
+    </article>
+
+    <article class="card">
+      <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">睡眠阶段</h2>
+      <div class="chart" data-series="sleep-day-stage-step" data-chart="step" data-segments="0:8:20:core|8:3:95:wake|11:4:45:rem|15:8:20:core|23:4:5:deep|27:8:20:core|35:34:45:rem|69:26:20:core|95:3:95:wake|98:2:45:rem" data-aria="02:47 至 07:42 睡眠阶段分布"></div>
+      <div class="stage-legend">
+        <div class="row"><span class="dot-status orange"></span><span class="name">清醒 <strong>3次 · 8分钟</strong></span><span class="pct">3%</span></div>
+        <div class="row"><span class="dot-status teal"></span><span class="name">快速眼动 <strong>1小时33分钟</strong></span><span class="pct">32%</span></div>
+        <div class="row"><span class="dot-status lav"></span><span class="name">核心睡眠 <strong>2小时34分钟</strong></span><span class="pct">52%</span></div>
+        <div class="row"><span class="dot-status purple"></span><span class="name">深度睡眠 <strong>38分钟</strong></span><span class="pct">13%</span></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2><span class="dot-status purple"></span> 恢复性睡眠 <span class="pro">PRO</span></h2></div>
+      <p class="big-value" style="margin:2px 0 10px">49<span class="unit">分 / 100分</span></p>
+      <span class="badge orange"><i class="icon xs" data-icon="warning"></i> 注意 <button type="button" class="i-btn" data-sheet="recovery-sleep" aria-label="恢复性睡眠说明"><i class="icon" data-icon="info"></i></button></span>
+      <div class="chart" data-series="sleep-day-recovery-stack" data-chart="stack" data-segments="13:purple|32:teal|55:grayLine" style="margin:16px 0 4px" data-aria="恢复性睡眠阶段占比"></div>
+      <div class="list-row"><span class="dot-status purple"></span><span class="row-main"><span class="row-title">深度睡眠</span></span><span class="row-value muted">38分钟 · 13%</span></div>
+      <div class="list-row"><span class="dot-status teal"></span><span class="row-main"><span class="row-title">快速眼动</span></span><span class="row-value muted">1小时33分钟 · 32%</span></div>
+      <div class="list-row"><span class="dot-status" style="background:#CFCBF0"></span><span class="row-main"><span class="row-title">非深度/非快速眼动</span></span><span class="row-value muted">2小时43分钟 · 55%</span></div>
+      <div class="divider"></div>
+      <div class="grid-2"><div><p class="metric-label">恢复性睡眠时长</p><p class="metric-value">2<span class="unit">小时</span>12<span class="unit">分钟</span></p><p class="metric-note">近30日平均 1小时49分钟</p></div><div><p class="metric-label">恢复性睡眠占比</p><p class="metric-value">45<span class="unit">%</span></p><p class="metric-note">较高 <button type="button" class="i-btn" data-sheet="recovery-sleep" aria-label="说明"><i class="icon" data-icon="info"></i></button></p></div></div>
+      <p class="body-copy small" style="margin:14px 0 0">恢复性睡眠（深度睡眠 + 快速眼动）至关重要，有助于身心恢复。其占比与时长是睡眠质量的重要指标。</p>
+      <div class="center-link"><button type="button" class="link-green" data-sheet="recovery-sleep">了解更多</button></div>
+    </article>
+
+    <article class="card">
+      <h2 style="font-size:17px;font-weight:750;margin:2px 0 10px">睡眠时心率</h2>
+      <div class="chart" data-series="sleep-day-hr-wave" data-chart="wave" data-height="118" data-ylabels="80|60|50" data-labels="02:50|05:11|07:33" data-aria="睡眠时心率波形"></div>
+      <div class="grid-3" style="margin-top:14px"><div><p class="metric-label">平均</p><p class="metric-value">59<span class="unit">BPM</span></p></div><div><p class="metric-label">最高</p><p class="metric-value">71<span class="unit">BPM</span></p><p class="metric-note">07:31</p></div><div><p class="metric-label">最低</p><p class="metric-value">53<span class="unit">BPM</span></p><p class="metric-note">06:52</p></div></div>
+      <div class="center-link"><button type="button" class="link-green" data-sheet="sleep-hr">了解更多</button></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>睡眠心率变化 <button type="button" class="i-btn" data-sheet="sleep-hr-dip" aria-label="睡眠心率变化说明"><i class="icon" data-icon="info"></i></button></h2></div>
+      <p class="metric-label">下降</p><p class="big-value" style="margin:2px 0 6px">24<span class="unit">%</span></p>
+      <span class="badge green">★ 优秀</span>
+      <div class="rate-line" style="margin-top:18px"></div>
+      <div class="bpm-markers"><div class="bpm-marker"><div class="box orange"><i class="icon" data-icon="sun"></i></div><strong>78bpm</strong><small>醒时平均</small></div><div class="bpm-marker"><div class="box purple"><i class="icon" data-icon="moon"></i></div><strong>59bpm</strong><small>睡眠平均</small></div></div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>睡眠生命体征</h2><button type="button" class="link-green" data-go="sleep-vitals" aria-label="查看睡眠生命体征"><i class="icon sm" data-icon="chevron-right"></i></button></div>
+      <div class="vitals-strip">
+        <div class="vital-tile"><div class="chart" data-series="sleep-day-vital-mini-hrv" data-chart="mini" data-color="green" data-aria="HRV 趋势"></div><span class="dot-status green"></span></div>
+        <div class="vital-tile"><div class="chart" data-series="sleep-day-vital-mini-hr" data-chart="mini" data-aria="心率趋势"></div><span class="dot-status lav"></span></div>
+        <div class="vital-tile"><div class="chart" data-series="sleep-day-vital-mini-resp" data-chart="mini" data-aria="呼吸频率趋势"></div><span class="dot-status lav"></span></div>
+        <div class="vital-tile"><div class="chart" data-series="sleep-day-vital-mini-spo2" data-chart="mini" data-aria="血氧趋势"></div><span class="dot-status lav"></span></div>
+        <div class="vital-tile"><div class="chart" data-series="sleep-day-vital-mini-wrist" data-chart="mini" data-aria="手腕温度趋势"></div><span class="dot-status lav"></span></div>
+      </div>
+      <div class="vitals-icons"><div><i class="icon" data-icon="heart"></i><strong>40</strong><small>ms</small></div><div><i class="icon" data-icon="heart"></i><strong>59</strong><small>bpm</small></div><div><i class="icon" data-icon="lungs"></i><strong>12</strong><small>br/min</small></div><div><i class="icon" data-icon="drop"></i><strong>96.3</strong><small>%</small></div><div><i class="icon" data-icon="thermo"></i><strong>34.9</strong><small>°C</small></div></div>
+    </article>
+    <article class="card tight"><button type="button" class="list-row" data-go="ai-article" style="padding:4px 0"><span class="row-main"><span class="row-title">更多睡眠知识</span></span><i class="icon chev" data-icon="chevron-right"></i></button></article>
+  </div>
+
+  <div data-sleep-panel="week" hidden><article class="card"><div class="empty-state"><span class="empty-art" data-art="ill-empty-range" data-tone="white"></span><strong>周视图未提供截图</strong>53 张参考截图包含「天」与「月」视图，不包含周视图；此处不虚构内容。</div></article></div>
+</section>

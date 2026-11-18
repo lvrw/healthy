@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="两条波动程度不同的曲线与「标准差/均值×100」分数式；HRV 分量示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M24 58h180"/><path d="M24 118h180"/>
+  </g>
+  <path d="M28 58L52 52L76 64L100 50L124 66L148 54L172 62L196 56" fill="none" stroke="#79C98E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 118L52 96L76 140L100 88L124 146L148 92L172 138L196 100" fill="none" stroke="#57BFE6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <g><circle cx="252" cy="60" r="8" fill="#4EA974"/><path d="M230 84h44" fill="none" stroke="#4EA974" stroke-width="4" stroke-linecap="round"/><circle cx="252" cy="104" r="8" fill="#4EA974"/></g>
+</svg>

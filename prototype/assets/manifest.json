@@ -1,0 +1,710 @@
+{
+  "version": "1.0.0",
+  "resources": [
+    {
+      "id": "ill-hero-pool-relax",
+      "kind": "ill",
+      "path": "ill/hero/ill-hero-pool-relax.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 390 292",
+      "page": "today",
+      "scenario": "今日页顶部绿色角色插画，锚定「状态优秀」的轻松情绪；构图锚点按截图 1:1 保持",
+      "alt": "绿色卡通角色戴墨镜在泳池中放松；按截图风格重绘的示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "数据来自 原型演示数据 · 更新于 2026-11-07 10:05",
+      "palette": [
+        "#E4F4EA",
+        "#D9F0E9",
+        "#73C493",
+        "#79C98E",
+        "#202A26"
+      ],
+      "variants": [
+        "--tone-white",
+        "--tone-mint",
+        "--tone-lavender",
+        "--tone-peach"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-hero-pool-relax.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-faq-stress-overload",
+      "kind": "ill",
+      "path": "ill/faq/ill-faq-stress-overload.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 160 116",
+      "page": "today",
+      "scenario": "「StressWatch什么时候会提示压力过载？」FAQ 卡线描几何画（对话气泡 + 箭头）",
+      "alt": "线描对话气泡与向右箭头组成的几何画；FAQ 示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "示意图 · 非真实测量数据",
+      "palette": [
+        "#5AA97B",
+        "#A7DDBC"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-faq-stress-overload.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-faq-measure-principle",
+      "kind": "ill",
+      "path": "ill/faq/ill-faq-measure-principle.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 160 116",
+      "page": "today",
+      "scenario": "「StressWatch测量的什么压力？测量原理是什么？」FAQ 卡线描几何画（表盘/手表）",
+      "alt": "手表与弧形刻度组成的线描几何画；FAQ 示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "示意图 · 非真实测量数据",
+      "palette": [
+        "#5AA97B",
+        "#A7DDBC",
+        "#28332C",
+        "#8ED3A6"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-faq-measure-principle.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-steps",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-steps.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "步数习惯卡进度环插画，显示 515/6000 的局部完成量",
+      "alt": "绿色进度环与两枚脚印组成的步数插画；习惯卡示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "数据来自 原型演示数据 · 更新于 2026-11-07 10:05",
+      "palette": [
+        "#E7F4EC",
+        "#66BE8B",
+        "#BFE3CC"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-steps.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-noise",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-noise.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "环境音量习惯卡：喇叭 + 对勾，表示「正常」",
+      "alt": "喇叭与对勾组成的环境音量插画；习惯卡示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "示意图 · 非真实测量数据",
+      "palette": [
+        "#F8C792",
+        "#74C69D",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-noise.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-water",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-water.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "喝水习惯卡水滴插画，配合 + 按钮递增 0/2000 ml",
+      "alt": "水滴与水纹组成的喝水插画；习惯卡示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "本地 mock，未连接健康数据源",
+      "palette": [
+        "#DCEEF4",
+        "#C6E3EC"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-water.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-caffeine",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-caffeine.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "咖啡因习惯卡咖啡杯插画，配合 + 按钮递增 0/400 mg",
+      "alt": "咖啡杯与杯柄组成的咖啡因插画；习惯卡示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "本地 mock，未连接健康数据源",
+      "palette": [
+        "#F6E2DA"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-caffeine.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-promo-understand-trend",
+      "kind": "ill",
+      "path": "ill/promo/ill-promo-understand-trend.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 118 78",
+      "page": "trends",
+      "scenario": "「如何理解压力趋势？」双人物横幅，解释压力趋势读法",
+      "alt": "橙色与绿色两个人物并排的横幅插画；趋势提示示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "",
+      "palette": [
+        "#F8C6A0",
+        "#FFF4E5",
+        "#79C98E",
+        "#26302B",
+        "#7A5540",
+        "#F6A96B"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-promo-understand-trend.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-faq-vo2max-what",
+      "kind": "ill",
+      "path": "ill/faq/ill-faq-vo2max-what.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 160 116",
+      "page": "vo2max",
+      "scenario": "「最大摄氧量是什么？」FAQ 卡线描心形几何画（蜜桃底色）",
+      "alt": "蜜桃底色上线描心形组成的几何画；FAQ 示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "",
+      "palette": [
+        "#F0A36E"
+      ],
+      "variants": [
+        "--peach"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-faq-vo2max-what.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-faq-vo2max-improve",
+      "kind": "ill",
+      "path": "ill/faq/ill-faq-vo2max-improve.svg",
+      "origin": "screenshot",
+      "viewBox": "0 0 160 116",
+      "page": "vo2max",
+      "scenario": "「如何提升最大摄氧量？」FAQ 卡线描心形几何画（薄荷底色）",
+      "alt": "薄荷底色上线描心形组成的几何画；FAQ 示意插画，非原始数据截图。来源：截图复刻",
+      "caption": "",
+      "sourceNote": "示意图 · 非真实测量数据",
+      "palette": [
+        "#6FC08C"
+      ],
+      "variants": [
+        "--mint"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-faq-vo2max-improve.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-sun",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-sun.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "晒太阳习惯卡风格化补齐插画（截图缺该张），与 4 张复刻插画同构",
+      "alt": "太阳与光芒组成的晒太阳插画；按同套风格补齐的示意插画，非截图内容。来源：风格化补齐",
+      "caption": "",
+      "sourceNote": "示意图 · 非截图内容",
+      "palette": [
+        "#F79B62",
+        "#E7F5EC",
+        "#F0F1F3",
+        "#FFFFFF"
+      ],
+      "variants": [
+        "--tone-mint"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-sun.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-habit-breath",
+      "kind": "ill",
+      "path": "ill/habit/ill-habit-breath.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 60 60",
+      "page": "actions",
+      "scenario": "呼吸正念习惯卡风格化补齐插画（截图缺该张）",
+      "alt": "莲花与呼吸弧线组成的正念插画；按同套风格补齐的示意插画，非截图内容。来源：风格化补齐",
+      "caption": "",
+      "sourceNote": "示意图 · 非截图内容",
+      "palette": [
+        "#57BFE6",
+        "#EDE8FC",
+        "#F0F1F3",
+        "#FFFFFF"
+      ],
+      "variants": [
+        "--tone-mint"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "Illustrations/ill-habit-breath.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-empty-feeling",
+      "kind": "ill",
+      "path": "ill/empty/ill-empty-feeling.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 120 88",
+      "page": "actions",
+      "scenario": "「你现在的感受如何？」「暂无感受记录」等空态的线描几何画，按模块底色出 tone 变体",
+      "alt": "空的气泡与几何线描组成的空状态插画；示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "",
+      "sourceNote": "该状态为界面级占位，不代表后台规则",
+      "palette": [
+        "#F0F1F3",
+        "#C9CDD2",
+        "#B7BCC1",
+        "#79C98E",
+        "#FFFFFF"
+      ],
+      "variants": [
+        "--tone-mint",
+        "--tone-white"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "EmptyStates/ill-empty-feeling.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-empty-range",
+      "kind": "ill",
+      "path": "ill/empty/ill-empty-range.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 120 88",
+      "page": "trends",
+      "scenario": "「该时间范围未提供截图」空态线描几何画，按页面底色出 tone 变体",
+      "alt": "日历与趋势线组成的线描空状态插画；示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "",
+      "sourceNote": "53 张参考截图仅包含周视图",
+      "palette": [
+        "#F0F1F3",
+        "#C9CDD2",
+        "#B7BCC1",
+        "#8D90E4",
+        "#FFFFFF"
+      ],
+      "variants": [
+        "--tone-white",
+        "--tone-mint"
+      ],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "EmptyStates/ill-empty-range.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "ill-empty-watch-pending",
+      "kind": "ill",
+      "path": "ill/empty/ill-empty-watch-pending.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 120 88",
+      "page": "today-detail",
+      "scenario": "「等待 Apple Watch 采集数据」空态线描几何画（手表 + 等待弧线）",
+      "alt": "手表与等待弧线组成的线描空状态插画；示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "",
+      "sourceNote": "数据来自 原型演示数据 · 更新于 2026-11-07 10:05",
+      "palette": [
+        "#F0F1F3",
+        "#C9CDD2",
+        "#B7BCC1",
+        "#79C98E",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "EmptyStates/ill-empty-watch-pending.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-cover",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-cover.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 160",
+      "page": "ai-article",
+      "scenario": "文章封面：以 RR 间期起伏解释 HRV 的来源",
+      "alt": "心跳 RR 间期序列在时间轴上起伏；知识文章示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "心跳间隔的起伏，就是 HRV",
+      "sourceNote": "HRV 分量 · 单位 ms · 示意图，非真实测量数据",
+      "palette": [
+        "#E7F5EC",
+        "#F8FAF9",
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-cover.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-age-cover",
+      "kind": "art",
+      "path": "art/age/art-age-cover.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 160",
+      "page": "ai-article",
+      "scenario": "文章封面：以两条年龄刻度对照说明「实际年龄 ≠ 生物年龄」",
+      "alt": "两条并列年龄刻度，一条标实际年龄、一条标生物年龄；知识文章示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "实际年龄≠身体的真实年龄",
+      "sourceNote": "身体年龄 · 单位 岁 · 示意图，非真实测量数据",
+      "palette": [
+        "#FFF2EC",
+        "#F8FAF9",
+        "#F79B62",
+        "#6C5AD9",
+        "#F0F1F3"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-age-cover.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-sdnn",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-sdnn.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "SDNN 章节：RR 间期相对均值的离散程度",
+      "alt": "一组 RR 间期柱分布在均值线两侧；HRV 分量示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "SDNN：间期相对均值的离散程度",
+      "sourceNote": "SDNN · 单位 ms · 示意图，非真实测量数据",
+      "palette": [
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6",
+        "#E4E7E9",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-sdnn.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-mean-rr",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-mean-rr.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "Mean RR 章节：所有 RR 间期求和后取平均",
+      "alt": "多个 RR 间期箭头汇入一条平均间期；HRV 分量示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "Mean RR：所有间期的平均值",
+      "sourceNote": "Mean RR · 单位 ms · 示意图，非真实测量数据",
+      "palette": [
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6",
+        "#E4E7E9"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-mean-rr.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-pnn50",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-pnn50.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "pNN50 章节：相邻间期差值超过 50ms 的比例",
+      "alt": "相邻间期差值条与 50ms 阈值线对照；HRV 分量示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "pNN50：差值超 50ms 的占比",
+      "sourceNote": "pNN50 · 单位 % · 示意图，非真实测量数据",
+      "palette": [
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6",
+        "#E4E7E9",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-pnn50.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-mxdmn",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-mxdmn.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "MxDMn 章节：最大差值与最小差值之差",
+      "alt": "差值区间的最大值端与最小值端由标尺相连；HRV 分量示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "MxDMn：最大差值减最小差值",
+      "sourceNote": "MxDMn · 单位 ms · 示意图，非真实测量数据",
+      "palette": [
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6",
+        "#E4E7E9",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-mxdmn.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-hrv-cv",
+      "kind": "art",
+      "path": "art/hrv/art-hrv-cv.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "HRV CV 章节：标准差与均值之比衡量稳定性",
+      "alt": "两条波动程度不同的曲线与「标准差/均值×100」分数式；HRV 分量示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "HRV CV：标准差与均值的比值",
+      "sourceNote": "HRV CV · 单位 % · 示意图，非真实测量数据",
+      "palette": [
+        "#79C98E",
+        "#4EA974",
+        "#57BFE6",
+        "#E4E7E9"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-hrv-cv.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-age-biological",
+      "kind": "art",
+      "path": "art/age/art-age-biological.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "生物年龄章节：同龄人因生活习惯产生健康差异",
+      "alt": "两位同龄人剪影与健康指标对照；身体年龄示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "同龄人，身体年龄可以差很多",
+      "sourceNote": "生物年龄 · 单位 岁 · 示意图，非真实测量数据",
+      "palette": [
+        "#F79B62",
+        "#6C5AD9",
+        "#F0F1F3",
+        "#E4E7E9",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-age-biological.imageset",
+      "darkVariant": "reserved"
+    },
+    {
+      "id": "art-age-aging-rate",
+      "kind": "art",
+      "path": "art/age/art-age-aging-rate.svg",
+      "origin": "stylized",
+      "viewBox": "0 0 320 180",
+      "page": "ai-article",
+      "scenario": "衰老速度章节：近 2 周变化快慢，区别于长期生物年龄",
+      "alt": "长期生物年龄曲线上的近两周短窗放大与趋势箭头；身体年龄示意插画，非真实测量数据。来源：风格化补齐",
+      "caption": "衰老速度：最近两周的变化快慢",
+      "sourceNote": "衰老速度 · 单位 x（倍） · 示意图，非真实测量数据",
+      "palette": [
+        "#F79B62",
+        "#EE6E88",
+        "#FFF2EC",
+        "#E4E7E9",
+        "#FFFFFF"
+      ],
+      "variants": [],
+      "dark": false,
+      "swiftuiDark": true,
+      "swiftui": "ArticleArt/art-age-aging-rate.imageset",
+      "darkVariant": "reserved"
+    }
+  ],
+  "charts": [
+    {
+      "id": "chart-line",
+      "kind": "line",
+      "seriesIds": [
+        "today-hrv-line",
+        "today-detail-hrv-line",
+        "day-hrv-line",
+        "trends-week-hrv-line",
+        "trends-week-rhr-line",
+        "sleep-vitals-hrv-line",
+        "sleep-vitals-hr-line",
+        "sleep-vitals-resp-line",
+        "sleep-vitals-spo2-line",
+        "sleep-vitals-wrist-line",
+        "vo2max-line"
+      ]
+    },
+    {
+      "id": "chart-area",
+      "kind": "area",
+      "seriesIds": [
+        "body-age-week-area",
+        "body-age-aging-rate-area"
+      ]
+    },
+    {
+      "id": "chart-bars",
+      "kind": "bars",
+      "seriesIds": [
+        "trends-week-stress-bars",
+        "insights-action-vs-stress-bars",
+        "sleep-month-duration-bars",
+        "sleep-month-quality-bars",
+        "sleep-month-regularity-bars",
+        "sleep-month-continuity-bars",
+        "sleep-month-efficiency-bars",
+        "sleep-month-hr-dip-bars"
+      ]
+    },
+    {
+      "id": "chart-hist",
+      "kind": "hist",
+      "seriesIds": [
+        "today-stress-hist",
+        "day-hrv-hist"
+      ]
+    },
+    {
+      "id": "chart-step",
+      "kind": "step",
+      "seriesIds": [
+        "sleep-day-stage-step"
+      ]
+    },
+    {
+      "id": "chart-dots",
+      "kind": "dots",
+      "seriesIds": [
+        "trends-week-stress-dots"
+      ]
+    },
+    {
+      "id": "chart-ring",
+      "kind": "ring",
+      "seriesIds": [
+        "sleep-day-ring"
+      ]
+    },
+    {
+      "id": "chart-disc",
+      "kind": "disc",
+      "seriesIds": [
+        "body-age-disc"
+      ]
+    },
+    {
+      "id": "chart-stack",
+      "kind": "stack",
+      "seriesIds": [
+        "sleep-day-recovery-stack",
+        "sleep-month-late-bedtime-stack",
+        "sheet-sleep80-stack"
+      ]
+    },
+    {
+      "id": "chart-capsule",
+      "kind": "capsule",
+      "seriesIds": [
+        "trends-week-stress-capsule"
+      ]
+    },
+    {
+      "id": "chart-spark",
+      "kind": "spark",
+      "seriesIds": [
+        "today-hrv-spark",
+        "today-rhr-spark",
+        "health-vo2-spark",
+        "health-hrv-baseline-spark",
+        "health-rhr-baseline-spark",
+        "health-weight-spark"
+      ]
+    },
+    {
+      "id": "chart-wave",
+      "kind": "wave",
+      "seriesIds": [
+        "today-detail-rhr-wave",
+        "sleep-day-hr-wave"
+      ]
+    },
+    {
+      "id": "chart-dualbars",
+      "kind": "dualbars",
+      "seriesIds": [
+        "sleep-month-recovery-dualbars"
+      ]
+    },
+    {
+      "id": "chart-mini",
+      "kind": "mini",
+      "seriesIds": [
+        "today-vital-mini-hrv",
+        "today-vital-mini-hr",
+        "today-vital-mini-resp",
+        "today-vital-mini-spo2",
+        "today-vital-mini-wrist",
+        "sleep-day-vital-mini-hrv",
+        "sleep-day-vital-mini-hr",
+        "sleep-day-vital-mini-resp",
+        "sleep-day-vital-mini-spo2",
+        "sleep-day-vital-mini-wrist"
+      ]
+    }
+  ]
+}

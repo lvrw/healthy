@@ -1,0 +1,54 @@
+<section class="screen has-tabbar" id="screen-actions" data-screen="actions" aria-label="行动页面">
+  <header class="page-head">
+    <div class="head-row"><h1><button type="button" data-subtab="actions" aria-pressed="true" style="font:inherit;font-weight:800;color:var(--ink)">行动</button> <button type="button" data-subtab="insights" aria-pressed="false" style="font:inherit;font-size:24px;font-weight:700;color:#A8AFAB">洞察</button><span class="c-green" style="font-size:16px;vertical-align:top">✦</span></h1></div>
+  </header>
+  <div class="week-strip" role="group" aria-label="本周日期">
+    <button type="button" class="day" data-mock="历史日期数据未在截图中提供"><span>一</span><b>2</b></button>
+    <button type="button" class="day" data-mock="历史日期数据未在截图中提供"><span>二</span><b>3</b></button>
+    <button type="button" class="day" data-mock="历史日期数据未在截图中提供"><span>三</span><b>4</b></button>
+    <button type="button" class="day" data-mock="历史日期数据未在截图中提供"><span>四</span><b>5</b></button>
+    <button type="button" class="day" data-mock="历史日期数据未在截图中提供"><span>五</span><b>6</b></button>
+    <button type="button" class="day is-today" aria-current="date"><span>今</span><b>7</b></button>
+    <button type="button" class="day" data-mock="未来日期暂无数据"><span>日</span><b>8</b></button>
+    <span class="sep"></span>
+    <button type="button" class="cal" data-mock="日历选择器未在截图中提供" aria-label="打开日历"><i class="icon" data-icon="calendar"></i></button>
+  </div>
+  <p class="day-date">11月7日 周六</p>
+
+  <article class="card">
+    <div class="card-head"><h2><i class="icon sm c-green" data-icon="ghost"></i> 智能建议</h2><button type="button" class="link-green" data-go="ai-chat">问问AI <i class="icon xs" data-icon="chevron-right"></i></button></div>
+    <p class="suggest" style="margin:0">早上好，昨晚睡眠质量为需注意。趁着早上多接收自然光照，注意水分补给，规划一些轻运动，都有助于睡眠。</p>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2><i class="icon sm c-purple" data-icon="bed"></i> 睡眠</h2><button type="button" class="link-green" data-go="sleep-day">查看睡眠报告 <i class="icon xs" data-icon="chevron-right"></i></button></div>
+    <div class="sleep-summary">
+      <div><p class="metric-label c-purple">时长</p><p class="metric-value">4<span class="unit">小时</span>47<span class="unit">分钟</span></p></div>
+      <div><p class="metric-label c-purple">质量</p><p class="metric-value c-orange">注意</p></div>
+      <div><p class="metric-label">平均心率</p><p class="metric-value">59<span class="unit">bpm</span></p></div><div class="ring-mini" aria-hidden="true"></div>
+    </div>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2><i class="icon sm c-red" data-icon="flame"></i> 健身</h2><button type="button" class="link-green" data-mock="健身详情未在截图中提供" aria-label="查看健身详情"><i class="icon sm" data-icon="chevron-right"></i></button></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr) auto;gap:8px">
+      <div><p class="metric-label c-pink">活动</p><p class="metric-value">88<span class="unit">千卡</span></p></div>
+      <div><p class="metric-label c-green">锻炼</p><p class="metric-value">1<span class="unit">分钟</span></p></div>
+      <div><p class="metric-label c-sky">站立</p><p class="metric-value">3<span class="unit">小时</span></p></div>
+      <div class="ring-mini dark" aria-hidden="true"></div>
+    </div>
+  </article>
+  <article class="card tight">
+    <div class="card-head" style="margin-bottom:2px"><h2><i class="icon sm c-green" data-icon="ghost"></i> 感受记录</h2><button type="button" class="link-green" data-mock="感受记录表单未在截图中提供">去记录 <i class="icon xs" data-icon="pencil"></i></button></div>
+    <p class="empty-state" style="text-align:left;padding:10px 0 2px"><span class="empty-art compact" data-art="ill-empty-feeling" data-tone="mint"></span>你现在的感受如何？</p>
+  </article>
+
+  <div class="habit-grid" aria-label="习惯卡片">
+    <article class="habit"><h3><i class="icon sm c-orange" data-icon="sun"></i> 晒太阳</h3><i class="icon chev" data-icon="chevron-right"></i><p class="habit-value">0<em>/20分钟</em></p><div class="habit-art" data-art="ill-habit-sun"></div></article>
+    <article class="habit"><h3><i class="icon sm c-sky" data-icon="lotus"></i> 呼吸正念</h3><i class="icon chev" data-icon="chevron-right"></i><p class="habit-value">0<em>分钟</em></p><div class="habit-art" data-art="ill-habit-breath"></div></article>
+    <article class="habit"><h3><i class="icon sm c-green" data-icon="steps"></i> 步数</h3><i class="icon chev" data-icon="chevron-right"></i><p class="habit-value" id="habit-steps">515<em>/6000</em></p><div class="habit-art" data-art="ill-habit-steps"></div></article>
+    <article class="habit"><h3><i class="icon sm c-sky" data-icon="noise"></i> 环境音量</h3><i class="icon chev" data-icon="chevron-right"></i><p class="habit-value">正常</p><div class="habit-art" data-art="ill-habit-noise"></div></article>
+    <article class="habit"><h3><i class="icon sm c-sky" data-icon="water"></i> 喝水</h3><button type="button" class="plus" data-action="increment" data-target="habit-water" data-step="200" data-max="2000" aria-label="增加喝水记录 200 毫升"><i class="icon xs" data-icon="plus"></i></button><p class="habit-value"><span id="habit-water">0</span><em>/2000 ml</em></p><div class="habit-art" data-art="ill-habit-water"></div></article>
+    <article class="habit"><h3><i class="icon sm c-orange" data-icon="coffee"></i> 咖啡因</h3><button type="button" class="plus is-peach" data-action="increment" data-target="habit-caffeine" data-step="50" data-max="400" aria-label="增加咖啡因记录 50 毫克"><i class="icon xs" data-icon="plus"></i></button><p class="habit-value"><span id="habit-caffeine">0</span><em>mg</em></p><div class="habit-art" data-art="ill-habit-caffeine"></div></article>
+  </div>
+  <p class="sort-note">长按卡片可拖拽排序</p>
+  <div class="sort-links"><button type="button" class="link-green" data-mock="重置排序为本地 mock，未改变真实数据">重置排序</button><button type="button" class="link-green" data-sheet="habit-sort">了解更多</button></div>
+</section>

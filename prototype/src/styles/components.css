@@ -1,0 +1,309 @@
+/* StressWatch UI 原型 · 页面组件层 */
+
+/* ---------- 今日 · 顶部插画（风格化 SVG 重绘，非截图背景） ---------- */
+.hero-art { position: relative; height: 292px; overflow: hidden; background: linear-gradient(180deg, #E7F5EC 0%, #F7F9F7 100%); }
+.hero-art svg { display: block; width: 100%; height: 100%; }
+.hero-caption { text-align: center; margin: -4px 0 12px; font-size: 13.5px; color: #828A8C; }
+.hero-caption .i-btn { vertical-align: -4px; }
+.hero-state { text-align: center; font-size: 31px; font-weight: 800; letter-spacing: -1px; margin: 2px 0 16px; }
+.hero-scale { margin: 0 74px 22px; }
+.hr-metric { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.hr-metric .metric-label { margin-bottom: 6px; }
+.hr-metric .chart { margin-top: 4px; }
+.advice { display: flex; gap: 9px; margin: 16px 0 8px; font-size: 13px; line-height: 1.7; color: #4E555A; }
+.advice .icon { width: 19px; height: 19px; margin-top: 3px; color: var(--green-deep); }
+.advice + .body-copy { margin: 0 0 10px; }
+.update-note { font-size: 11px; color: #B0B6BA; margin: 4px 0 0; }
+
+/* 图表提示气泡（选中态） */
+.chart-wrap { position: relative; }
+.chart-tooltip {
+  position: absolute; right: 10px; top: 4px; z-index: 3; padding: 8px 11px; border-radius: 12px;
+  background: rgba(255,255,255,.96); box-shadow: 0 5px 18px rgba(40,50,45,.14);
+  font-size: 11px; color: #6B7277; line-height: 1.6; pointer-events: none;
+}
+.chart-tooltip strong { color: var(--orange); font-size: 12.5px; }
+.chart-tooltip[hidden] { display: none; }
+.chart-hit { position: absolute; z-index: 4; width: 34px; height: 34px; border-radius: 50%; background: transparent; }
+.chart-hit:hover { background: rgba(121,201,142,.16); }
+.chart-hit:focus-visible { outline-offset: 1px; }
+
+/* 最近一次记录卡 */
+.record-head { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; }
+.record-title { display: flex; align-items: center; gap: 9px; font-size: 24px; font-weight: 800; letter-spacing: -.8px; margin: 0 0 10px; }
+.record-title .dot-status { width: 15px; height: 15px; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--orange); }
+.record-meta { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--ink-3); margin-top: 8px; }
+.record-meta .icon { width: 13px; height: 13px; color: var(--green-deep); }
+
+/* 关键行动 / 睡眠 / 健身 / 感受 */
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 22px 24px 10px; }
+.section-head h2 { margin: 0; font-size: 15px; font-weight: 750; }
+.section-head .link-green { font-size: 12.5px; }
+.sleep-summary { display: grid; grid-template-columns: 1fr 1fr 1.25fr auto; align-items: center; gap: 6px; }
+.sleep-summary .metric-value { font-size: 20px; }
+.sleep-summary .metric-value .unit { font-size: 11.5px; }
+.ring-mini { width: 50px; height: 50px; border-radius: 50%; background: conic-gradient(var(--purple) 0 68%, #E9E6FA 68% 100%); position: relative; }
+.ring-mini::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #fff; }
+.ring-mini::before { content: ""; position: absolute; inset: 15px; border-radius: 50%; background: var(--lav); z-index: 1; }
+.ring-mini.dark { background: conic-gradient(#134B3E 0 8%, #1E8C77 8% 33%, #57C7A6 33% 49%, #17231F 49% 100%); }
+.ring-mini.dark::after { inset: 10px; background: #0C1512; }
+.ring-mini.dark::before { display: none; }
+.vitals-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 14px 0 10px; }
+.vital-tile { background: #F7F8FA; border-radius: 10px; padding: 7px 3px 3px; text-align: center; }
+.vital-tile .chart svg { height: 34px; }
+.vital-tile .dot-status { position: relative; top: -14px; }
+.vitals-icons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; text-align: center; }
+.vitals-icons .icon { width: 21px; height: 21px; color: #6E757A; }
+.vitals-icons strong { display: block; font-family: var(--font-num); font-size: 16px; font-weight: 700; margin-top: 4px; }
+.vitals-icons small { display: block; font-size: 9.5px; color: var(--ink-3); }
+.faq-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.faq-art { height: 116px; border-radius: 16px; display: grid; place-items: center; overflow: hidden; }
+.faq-art svg { width: 100%; height: 100%; }
+.faq-art.green { background: #DFF1E4; }
+.faq-art.peach { background: #FCEDE3; }
+.faq-art.mint { background: #E3F3EA; }
+.faq-caption { font-size: 12px; line-height: 1.5; margin: 9px 0 0; color: #4B5257; }
+
+/* 行动 · 周历条 */
+.week-strip { display: flex; align-items: center; gap: 2px; padding: 4px 20px 6px; }
+.week-strip .day { flex: 1; text-align: center; border-radius: 14px; padding: 5px 0; color: #858D88; font-size: 11px; }
+.week-strip .day b { display: block; font-size: 14px; font-weight: 600; color: #39413C; margin-top: 2px; }
+.week-strip .day.is-today { background: #D8F0E1; }
+.week-strip .day.is-today b { color: var(--green-deep); }
+.week-strip .sep { width: 1px; height: 22px; background: #DCE5DE; margin: 0 3px; }
+.week-strip .cal { width: 30px; color: #6B7470; }
+.day-date { margin: 8px 24px 14px; font-size: 13px; font-weight: 650; }
+.suggest { display: flex; gap: 9px; font-size: 13px; line-height: 1.75; color: #555D60; }
+.suggest .icon { color: var(--green-deep); margin-top: 3px; }
+.habit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 20px 12px; }
+.habit {
+  position: relative; min-height: 138px; padding: 15px; border-radius: 18px; background: #fff; box-shadow: var(--shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.habit:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(38,50,44,.1); }
+.habit h3 { margin: 0; font-size: 13px; font-weight: 650; display: flex; align-items: center; gap: 7px; }
+.habit .chev { position: absolute; top: 15px; right: 14px; width: 14px; height: 14px; color: #BCC2C6; }
+.habit .habit-value { margin: 9px 0 0; font-family: var(--font-num); font-size: 21px; font-weight: 700; }
+.habit .habit-value em { font-style: normal; font-size: 12px; font-weight: 500; color: var(--ink-3); }
+.habit .plus { position: absolute; top: 13px; right: 13px; width: 25px; height: 25px; border-radius: 50%; display: grid; place-items: center; background: #E8F4FF; color: var(--sky); }
+.habit .plus:hover { background: #D5ECFB; }
+.habit .plus.is-peach { background: #FDEDE6; color: #E8A182; }
+.habit .habit-art { position: absolute; right: 14px; bottom: 12px; width: 54px; height: 54px; display: grid; place-items: center; }
+.habit .habit-art svg { width: 100%; height: 100%; }
+.habit .habit-art .ring-empty { width: 44px; height: 44px; border-radius: 50%; border: 7px solid #EEF1EF; }
+.sort-note { text-align: center; font-size: 11px; color: var(--ink-3); margin: 14px 0 6px; }
+.sort-links { display: flex; justify-content: center; gap: 18px; margin-bottom: 10px; }
+
+/* 洞察 · 关键行动 / 感受点阵 */
+.impact-rows .list-row { padding: 13px 0; }
+.impact-rows .impact { font-size: 13px; font-weight: 650; color: var(--orange); }
+.impact-rows .impact.green { color: var(--green-deep); }
+.feeling-dots { display: grid; grid-template-columns: repeat(18, 1fr); gap: 5px; margin: 16px 0 10px; }
+.feeling-dots i { aspect-ratio: 1; border: 1.5px solid #DDE2E0; border-radius: 50%; }
+.feeling-dots i.is-on { background: #D9E8DE; border-color: #C6DDCF; }
+.filter-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; background: var(--green-soft); font-size: 12px; color: #8B9590; }
+.filter-row .filter-value { color: var(--green-deep); font-weight: 650; display: inline-flex; align-items: center; gap: 5px; }
+
+/* 趋势 · 提示横幅 */
+.promo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 20px 16px; padding: 18px 0 18px 20px; border-radius: var(--radius); background: linear-gradient(100deg, #FFF9F4 0%, #FFF2E8 100%); overflow: hidden; position: relative; }
+.promo h2 { margin: 0; font-size: 16px; font-weight: 750; }
+.promo-art { width: 118px; height: 78px; flex: none; }
+.promo .close-x { position: absolute; right: 10px; top: 9px; color: #B9BEC2; width: 16px; height: 16px; }
+.promo[hidden] { display: none; }
+.stat-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-pair .metric-label { font-size: 12px; }
+.stat-pair .delta { font-size: 11.5px; margin-top: 5px; }
+.stat-pair .delta.up { color: var(--green-deep); }
+.stat-pair .delta.down { color: #E0758A; }
+.distribution { display: grid; grid-template-columns: 1fr 110px; gap: 12px; align-items: center; }
+.dist-items { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 8px; }
+.dist-items .label { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #6B7277; }
+.dist-items strong { display: block; font-family: var(--font-num); font-size: 22px; font-weight: 700; margin-top: 3px; }
+.dist-items small { font-size: 10.5px; color: var(--ink-3); }
+.dot-axis { display: flex; justify-content: space-between; font-size: 9.5px; color: #A9AFB3; padding: 0 6px; }
+.dot-rows-label { display: grid; grid-template-rows: repeat(7, 1fr); gap: 0; font-size: 9.5px; color: #A9AFB3; position: absolute; left: 0; top: 18px; height: 78px; }
+
+/* 睡眠报告 */
+.sleep-hero { text-align: center; padding: 6px 0 12px; }
+.sleep-hero .chart { max-width: 310px; margin: 0 auto; }
+.sleep-hero h1 { font-size: 25px; font-weight: 800; letter-spacing: -.6px; margin: -6px 0 18px; }
+.sleep-hero .card { text-align: left; }
+.sleep-hero-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sleep-hero-metrics .metric-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.sleep-hero-metrics .metric-value { font-size: 22px; margin: 5px 0; }
+.sleep-hero-metrics .metric-value .unit { font-size: 12px; }
+.stage-legend { display: grid; gap: 9px; margin-top: 14px; }
+.stage-legend .row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.stage-legend .row .dot-status { width: 9px; height: 9px; }
+.stage-legend .row .name { color: #5B6166; }
+.stage-legend .row .pct { margin-left: auto; font-family: var(--font-num); color: #6C7378; }
+.recovery-bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; background: #EDEBFA; margin: 16px 0 12px; }
+.recovery-bar i { display: block; height: 100%; }
+.bpm-markers { display: flex; justify-content: flex-end; gap: 18px; margin-top: 14px; }
+.bpm-marker { text-align: center; width: 46px; }
+.bpm-marker .box { height: 52px; border-radius: 9px 9px 0 0; display: grid; place-items: start center; padding-top: 8px; color: #fff; }
+.bpm-marker .box.orange { background: var(--orange); }
+.bpm-marker .box.purple { background: var(--purple); }
+.bpm-marker .box .icon { width: 17px; height: 17px; }
+.bpm-marker strong { display: block; font-size: 12px; margin-top: 6px; }
+.bpm-marker small { font-size: 10px; color: var(--ink-3); }
+.rate-line { height: 2px; background: #D6DADB; margin: 0 0 8px; }
+.calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px 5px; margin-top: 12px; }
+.calendar .wd { text-align: center; font-size: 11px; color: #A9AFB3; padding-bottom: 4px; }
+.calendar .cell { aspect-ratio: 1; border-radius: 12px; background: #F4F5F6; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; color: #B7BCC0; gap: 1px; }
+.calendar .cell small { font-size: 8.5px; }
+.calendar .cell.is-late { color: #fff; font-weight: 700; }
+.calendar .cell.face-red { background: #E9637F; }
+.calendar .cell.face-orange { background: #F6A06B; }
+.calendar .cell.face-peach { background: #F8C6A0; }
+.calendar .cell.is-empty { background: #F5F6F7; }
+.calendar .cell.is-blank { background: transparent; }
+
+/* 睡眠生命体征 / 身体年龄 / 最大摄氧量 */
+.vital-card-head { display: flex; align-items: center; justify-content: space-between; }
+.vital-card-head .name { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; color: #4E555A; }
+.vital-card-head .icon { color: #7C8388; }
+.vital-big { font-family: var(--font-num); font-size: 32px; font-weight: 700; letter-spacing: -1px; margin: 8px 0 12px; }
+.vital-big .unit { font-size: 14px; font-weight: 600; margin-left: 3px; }
+.mini-axis { display: flex; justify-content: space-between; font-size: 9.5px; color: #AFB5B9; margin-top: -2px; }
+.peach-note { font-size: 11.5px; color: #A8AEB2; margin-top: 8px; }
+.age-hero { padding: 6px 0 4px; }
+.age-hero .chart { max-width: 330px; margin: 0 auto; }
+.age-hero .card { margin-top: -34px; }
+.age-row { display: flex; align-items: center; justify-content: space-between; }
+.age-row .metric-value { font-size: 29px; }
+.age-trend-head { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 16px 0 2px; }
+.age-trend-head .metric-label { font-size: 11.5px; }
+.age-trend-head strong { display: block; font-family: var(--font-num); font-size: 24px; font-weight: 700; margin-top: 3px; }
+.age-trend-head small { font-size: 10.5px; color: var(--ink-3); }
+.vo2-head { display: flex; justify-content: space-between; margin: 8px 24px 18px; }
+.vo2-head .metric-value { font-size: 31px; }
+.vo2-head .metric-label { font-size: 11.5px; }
+.bar-compare { display: grid; gap: 9px; margin: 16px 0; }
+.bar-compare .bar { height: 20px; border-radius: 6px; display: flex; align-items: center; padding-left: 9px; color: #fff; font-size: 11px; font-weight: 700; }
+.bar-compare .bar.orange { background: var(--orange); }
+.bar-compare .bar.pink { background: var(--pink); }
+.bar-compare .bar-note { font-size: 10.5px; color: var(--ink-3); line-height: 1.4; }
+.bar-compare .bar-row { display: grid; grid-template-columns: 1fr 96px; gap: 10px; align-items: center; }
+
+/* ---------- 弹层 / 底部 sheet ---------- */
+.sheet-backdrop { position: absolute; inset: 0; z-index: 45; background: rgba(35,42,38,.36); display: grid; align-items: end; }
+.sheet-backdrop[hidden] { display: none; }
+.sheet {
+  position: relative; background: #F7F8F8; border-radius: 26px 26px 0 0; padding: 14px 18px 28px;
+  max-height: 82%; overflow-y: auto; animation: sheet-up .22s ease both;
+}
+@keyframes sheet-up { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+.sheet-grabber { width: 44px; height: 5px; border-radius: 99px; background: #D7DCDF; margin: 0 auto 14px; }
+.sheet-head { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; margin-bottom: 16px; }
+.sheet-head h2 { margin: 0; text-align: center; font-size: 16px; font-weight: 700; }
+.sheet-head .circle-btn { width: 40px; height: 40px; }
+.sheet-body { background: #fff; border-radius: 20px; padding: 20px; font-size: 13px; line-height: 1.9; color: #555C60; }
+.sheet-body h3 { margin: 0 0 12px; text-align: center; font-size: 22px; color: var(--green-deep); }
+.sheet-body .sheet-sub { text-align: center; color: #7C8388; margin: 0 0 16px; }
+.seg-legend { display: grid; grid-template-columns: 1fr 1fr 1fr; border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
+.seg-legend span { text-align: center; padding: 5px 0; color: #fff; font-size: 11px; font-weight: 650; }
+.seg-legend span small { display: block; font-size: 9px; font-weight: 500; opacity: .9; }
+.seg-legend span:nth-child(1) { background: var(--orange); }
+.seg-legend span:nth-child(2) { background: var(--lav); }
+.seg-legend span:nth-child(3) { background: var(--green); }
+.sheet-star { width: 74px; height: 74px; border-radius: 50%; background: #E9E5FA; display: grid; place-items: center; margin: 6px auto 16px; color: var(--purple); }
+.sheet-star .icon { width: 38px; height: 38px; }
+.sheet-title { text-align: center; font-size: 22px; font-weight: 750; margin: 0 0 18px; }
+.sheet-body .impact-scale { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #5F666A; margin: 14px 0 6px; }
+.sheet-body .impact-scale .gradient-bar { flex: 1; }
+
+/* ---------- 详细解读 / 知识文章 ---------- */
+.modal-head { position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: 46px 1fr 46px; align-items: center; padding: 12px 20px 10px; background: linear-gradient(180deg, rgba(238,247,240,.98) 65%, rgba(238,247,240,0)); }
+.modal-head h1 { margin: 0; text-align: center; font-size: 16.5px; font-weight: 700; }
+.modal-head .circle-btn { width: 42px; height: 42px; }
+.reader { background: #fff; min-height: 100%; padding: 18px 24px 40px; }
+.reader h1 { font-size: 25px; font-weight: 750; letter-spacing: -.5px; margin: 20px 0 22px; color: #26313F; }
+.reader h2 { font-size: 20px; font-weight: 700; margin: 30px 0 14px; padding-bottom: 10px; border-bottom: 1px solid #ECEFF1; color: #26313F; }
+.reader p { font-size: 14px; line-height: 2.05; color: #414A51; margin: 0 0 16px; }
+.reader ol { padding-left: 22px; margin: 0 0 18px; }
+.reader li { font-size: 14px; line-height: 2; color: #414A51; margin-bottom: 6px; }
+.reader-bar { position: sticky; top: 0; z-index: 25; display: grid; grid-template-columns: 26px 1fr 26px; align-items: center; gap: 14px; padding: 12px 22px; background: #fff; border-bottom: 1px solid #ECEFF1; }
+.reader-bar .ghost { color: var(--green-deep); }
+.reader-bar .ghost .icon { width: 25px; height: 25px; }
+.reader-bar .icon { width: 19px; height: 19px; color: #8A9196; }
+.reader-toc { display: flex; gap: 7px; overflow-x: auto; padding: 12px 22px 2px; scrollbar-width: none; }
+.reader-toc button { flex: none; padding: 6px 11px; border-radius: 999px; background: #F1F4F2; font-size: 11.5px; color: #5F6863; }
+.reader-toc button[aria-pressed="true"] { background: #DCEEE3; color: var(--green-deep); font-weight: 650; }
+.article-screen .section { scroll-margin-top: 60px; }
+
+/* ---------- 问问 AI 对话 ---------- */
+.chat-screen { padding: 0 0 20px; min-height: 100%; }
+.screen.chat-screen.is-active { display: flex; flex-direction: column; }
+.chat-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px 8px; }
+.chat-scroll { flex: 1; padding: 6px 22px 10px; }
+.chat-answer { font-size: 14px; line-height: 1.95; color: #444B50; }
+.chat-answer p { margin: 0 0 14px; }
+.chat-answer .quote { border-left: 3px solid #DDE2DF; padding-left: 12px; color: #8A9196; }
+.chat-actions { display: flex; gap: 10px; padding: 6px 0 18px; }
+.chat-actions button { width: 31px; height: 31px; border-radius: 50%; border: 1px solid #DFE4E1; display: grid; place-items: center; color: #8C9498; }
+.chat-actions button:hover { background: #EFF5F1; color: var(--green-deep); }
+.chat-actions button[aria-pressed="true"] { background: #DDEEE3; color: var(--green-deep); border-color: #BFE0CB; }
+.chat-actions .icon { width: 15px; height: 15px; }
+.chat-prompt { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 650; margin: 0 0 12px; }
+.chat-prompt .icon { color: var(--green-deep); }
+.suggestion { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; text-align: left; padding: 14px 16px; border-radius: 16px; background: #fff; box-shadow: var(--shadow); margin-bottom: 10px; font-size: 13px; line-height: 1.6; }
+.suggestion:hover { background: #F5FAF6; }
+.suggestion .icon { width: 14px; height: 14px; color: #A9B0B4; background: #EFF2F0; border-radius: 50%; padding: 3px; box-sizing: content-box; }
+.chat-input { display: flex; align-items: center; gap: 10px; margin: 4px 20px 0; padding: 10px 10px 10px 16px; border-radius: 999px; background: #fff; border: 1px solid #E7EBE8; }
+.chat-input input { flex: 1; min-width: 0; border: 0; outline: 0; font-size: 13px; background: transparent; }
+.chat-input input::placeholder { color: #B2B8BC; }
+.chat-input button { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; }
+.chat-input button:disabled { background: #DCE3DE; color: #9DA9A1; }
+.chat-input .icon { width: 16px; height: 16px; }
+.chat-loading { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); padding: 10px 2px; }
+.chat-loading[hidden] { display: none; }
+.chat-reply { background: #fff; border-radius: 16px; padding: 14px 16px; font-size: 13px; line-height: 1.8; color: #4E565A; box-shadow: var(--shadow); margin-bottom: 12px; }
+.chat-reply[hidden] { display: none; }
+.mock-tag { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 5px; background: #FFF2E4; color: #B87B3C; font-size: 10px; font-weight: 650; vertical-align: 2px; }
+
+/* ---------- 检查面板 ---------- */
+.inspector h2 { margin: 0 0 4px; font-size: 14px; font-weight: 750; }
+.inspector .insp-sub { font-size: 11.5px; color: #96A09A; margin: 0 0 18px; }
+.inspector h3 { margin: 20px 0 8px; font-size: 11px; letter-spacing: .1em; color: #94A099; }
+.inspector p, .inspector li { font-size: 12px; line-height: 1.75; color: #5E6862; }
+.inspector ul { padding-left: 17px; margin: 0; }
+.inspector code { display: block; font-size: 10px; color: #7C8881; word-break: break-all; background: #EDF1EE; border-radius: 6px; padding: 5px 7px; margin-bottom: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.chip { display: inline-block; padding: 3px 8px; border-radius: 6px; background: #E2EFE7; color: #36724F; font-size: 10.5px; font-weight: 650; margin: 0 4px 5px 0; }
+.chip.gray { background: #E8ECEA; color: #6E7973; }
+.insp-note { margin-top: 18px; padding: 12px; border-radius: 10px; background: #EDF3EE; font-size: 11px; color: #5D6F63; line-height: 1.7; }
+
+/* ---------- Phase 3 · DOM 口径文案与内联资源容器（以下均为新增规则，不改动上方既有规则） ---------- */
+/* 01 §1.5 / §9 R1：图表局部色只做命名消歧，色值与 charts.mjs 的 C 常量逐字一致，不与主色板合并 */
+:root {
+  --chart-line-green: #4FA976;   /* 原 C.greenDark；≈ --green-deep #4EA974，不合并 */
+  --chart-baseline-lav: #A9A4F0; /* 原 C.purpleSoft；与 --purple-soft #EDE8FC 同名不同值，不合并 */
+  --chart-ink: #2C2F33;          /* 原 C.ink；≠ --ink #292C30，不合并 */
+}
+/* 01 §9 R1 / 02 §6-8：来源角标与口径说明 ≥11.5px / 400 / --ink-2 #5C6268（6.17:1）。
+   位置：图表卡右下角（卡片自身 20px 内边距）或图例行末，距图例 ≥8px，单行不折行、行高 1.5。
+   .chart-source 为工程契约类名、note-source-* 为 R1 指定类名、.source-note 为 02 §2.3 类名，三者同值。
+   单行省略时完整文案仍在 DOM（并有 title 可读），绝不写进 SVG。
+   只读例外：截图已有 .update-note（11px #B0B6BA）/ .metric-note（11.5px --ink-3）保持原样，本段不覆盖。 */
+.chart-source, .source-note, .note-source-data, .note-source-caliber {
+  margin: 8px 0 0; font-size: 11.5px; font-weight: 400; line-height: 1.5;
+  color: #5C6268; text-align: right;
+}
+.chart-source + .chart-source, .source-note + .source-note,
+.note-source-data + .note-source-caliber, .note-source-caliber + .note-source-caliber { margin-top: 2px; }
+.note-source-data, .note-source-caliber, .source-note {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* 单位：12.5–14px / 600 / #4C5358（补齐既有指标值与生命体征大值的单位色） */
+.metric-value .unit, .vital-big .unit { color: #4C5358; }
+/* 文章配图：内联 SVG + 图注 + 底部 24px 标注带 */
+.article-figure { margin: 0 0 18px; border-radius: 14px; overflow: hidden; background: #F8FAF9; }
+.article-figure > svg { display: block; width: 100%; height: auto; }
+.article-figure figcaption { padding: 8px 12px 4px; font-size: 12.5px; line-height: 1.6; color: #5C6268; text-align: center; }
+.figure-note { box-sizing: border-box; height: 24px; display: flex; align-items: center; justify-content: center; padding: 0 8px; font-size: 11.5px; font-weight: 400; line-height: 1.3; color: #5C6268; background: #F3F5F5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.note-source-figure { margin: 0; text-align: center; }
+/* 内联 SVG 资源容器（data-origin 由构建期写入，值只有 screenshot / stylized） */
+.promo-art svg { display: block; width: 100%; height: 100%; }
+.empty-art { display: block; width: 96px; height: 70px; margin: 0 auto 10px; }
+.empty-art.compact { width: 72px; height: 53px; margin: 0 0 6px; }
+.empty-art svg { display: block; width: 100%; height: 100%; }

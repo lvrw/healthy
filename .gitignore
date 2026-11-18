@@ -1,0 +1,13 @@
+.DS_Store
+DerivedData/
+.build/
+build/
+build-*/
+*.log
+__pycache__/
+.codegraph/
+.workbuddy/
+xcuserdata/
+*.xcuserstate
+
+# configured by qoder

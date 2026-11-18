@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="相邻间期差值条与 50ms 阈值线对照；HRV 分量示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M60 82v-14"/><path d="M104 52v16"/><path d="M148 88v-20"/><path d="M192 46v22"/><path d="M236 84v-16"/><path d="M280 58v10"/>
+  </g>
+  <g>
+    <rect x="48" y="82" width="24" height="58" rx="6" fill="#79C98E"/>
+    <rect x="92" y="52" width="24" height="88" rx="6" fill="#4EA974"/>
+    <rect x="136" y="88" width="24" height="52" rx="6" fill="#79C98E"/>
+    <rect x="180" y="46" width="24" height="94" rx="6" fill="#4EA974"/>
+    <rect x="224" y="84" width="24" height="56" rx="6" fill="#79C98E"/>
+    <rect x="268" y="58" width="24" height="82" rx="6" fill="#4EA974"/>
+  </g>
+  <path d="M28 68h264" fill="none" stroke="#57BFE6" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#FFFFFF"><circle cx="104" cy="52" r="3.2"/><circle cx="192" cy="46" r="3.2"/><circle cx="280" cy="58" r="3.2"/></g>
+</svg>

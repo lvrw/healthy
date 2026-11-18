@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthy · Apple 原生风格重设计原型</title>
+<link rel="stylesheet" href="tokens.css">
+</head>
+<body>
+<div class="workbench">
+
+  <!-- ===== 顶部工具条 ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"><i data-icon="heart" data-size="15" data-color="#fff" data-sw="2.2"></i></span>
+      Healthy · 全页面重设计
+    </div>
+    <span class="hint">选择状态预览四档语义色 · 切换深浅主题</span>
+    <div class="spacer"></div>
+    <div class="seg" role="group" aria-label="状态">
+      <button data-set-state="excellent" aria-pressed="true">优秀</button>
+      <button data-set-state="normal" aria-pressed="false">正常</button>
+      <button data-set-state="elevated" aria-pressed="false">注意</button>
+      <button data-set-state="overload" aria-pressed="false">过载</button>
+    </div>
+    <div class="seg" role="group" aria-label="主题">
+      <button data-theme-btn="light" aria-pressed="true">浅色</button>
+      <button data-theme-btn="dark" aria-pressed="false">深色</button>
+    </div>
+  </header>
+
+  <!-- ===== 侧栏页面清单 ===== -->
+  <aside class="sidebar">
+    <h3>iPhone · 主要</h3>
+    <button class="nav-item active" data-target="today" data-device="ios"><i data-icon="house"></i>今日<span class="badge">4</span></button>
+    <button class="nav-item" data-target="action" data-device="ios"><i data-icon="grid"></i>行动</button>
+    <button class="nav-item" data-target="trends" data-device="ios"><i data-icon="trend"></i>趋势</button>
+    <button class="nav-item" data-target="health" data-device="ios"><i data-icon="health"></i>健康</button>
+    <h3>iPhone · 详情</h3>
+    <button class="nav-item" data-target="insights" data-device="ios"><i data-icon="sparkles"></i>洞察</button>
+    <button class="nav-item" data-target="sleep" data-device="ios"><i data-icon="bed"></i>睡眠日报</button>
+    <button class="nav-item" data-target="sleep-vitals" data-device="ios"><i data-icon="wave"></i>睡眠生命体征</button>
+    <button class="nav-item" data-target="metric" data-device="ios"><i data-icon="ecg"></i>指标详情</button>
+    <button class="nav-item" data-target="stress-detail" data-device="ios"><i data-icon="brain"></i>压力详情</button>
+    <button class="nav-item" data-target="briefing" data-device="ios"><i data-icon="doc"></i>详细解读</button>
+    <button class="nav-item" data-target="body-age" data-device="ios"><i data-icon="person"></i>身体年龄</button>
+    <h3>记录 / 工具</h3>
+    <button class="nav-item" data-target="food" data-device="ios"><i data-icon="camera"></i>饮食识别</button>
+    <button class="nav-item" data-target="food-library" data-device="ios"><i data-icon="book"></i>食物库</button>
+    <button class="nav-item" data-target="chat" data-device="ios"><i data-icon="sparkles"></i>问问 AI</button>
+    <button class="nav-item" data-target="settings" data-device="ios"><i data-icon="gear"></i>设置</button>
+    <button class="nav-item" data-target="share" data-device="ios"><i data-icon="share"></i>分享卡</button>
+    <button class="nav-item" data-target="onboarding" data-device="ios"><i data-icon="leaf"></i>引导页</button>
+    <h3>Apple Watch</h3>
+    <button class="nav-item" data-target="w-dashboard" data-device="watch"><i data-icon="watchcase"></i>仪表盘</button>
+    <button class="nav-item" data-target="w-hrv" data-device="watch"><i data-icon="wave"></i>HRV</button>
+    <button class="nav-item" data-target="w-stress" data-device="watch"><i data-icon="brain"></i>压力</button>
+    <button class="nav-item" data-target="w-water" data-device="watch"><i data-icon="drop"></i>喝水</button>
+    <button class="nav-item" data-target="w-caffeine" data-device="watch"><i data-icon="coffee"></i>咖啡因</button>
+  </aside>
+
+  <!-- ===== 舞台：设备预览 ===== -->
+  <main class="stage">
+
+    <!-- ========== iPhone ========== -->
+    <section class="device">
+      <div class="device-label">iPhone · 今日（focal point）</div>
+      <div class="iphone">
+        <div class="dynamic-island"></div>
+        <div class="screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="sb-right">
+              <svg viewBox="0 0 18 12" width="18"><path fill="currentColor" d="M1 8h2v3H1zm3.5-2h2v5h-2zM8 4h2v7H8zm3.5-3h2v10h-2z"/></svg>
+              <svg viewBox="0 0 16 12" width="16"><path fill="currentColor" d="M8 10.5 1 4a10 10 0 0 1 14 0z"/></svg>
+              <svg viewBox="0 0 26 13" width="25"><rect x="1" y="1" width="21" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3" width="16" height="7" rx="1.5" fill="currentColor"/><path d="M24 4v5a2 2 0 0 0 0-5" fill="currentColor"/></svg>
+            </span>
+          </div>
+
+          <div class="app-scroll">
+            <!-- PAGE: 今日 -->
+            <div class="page active" data-page="today">
+              <div class="large-title">
+                <h1>今日</h1>
+                <div class="subtitle">11月16日 星期一 · 数据更新于 9:38</div>
+              </div>
+
+              <!-- Hero 状态核心环 -->
+              <div style="padding:4px 20px 0">
+                <div class="status-core">
+                  <div class="glow" data-state-bg style="background:var(--state-excellent)"></div>
+                  <svg class="ring" viewBox="0 0 220 220">
+                    <circle cx="110" cy="110" r="96" fill="none" stroke="var(--bg-fill)" stroke-width="16"/>
+                    <circle data-ring-progress cx="110" cy="110" r="96" fill="none" stroke="var(--state-excellent)" stroke-width="16" stroke-linecap="round" style="stroke-dasharray:603;stroke-dashoffset:72"/>
+                  </svg>
+                  <div class="core-center">
+                    <div class="core-sub">你今日综合压力状态</div>
+                    <div class="core-word" data-state-word data-state-color style="color:var(--state-excellent)">状态优秀</div>
+                    <div class="core-score metric-num" data-state-score>88</div>
+                    <div class="core-sub">相对 28 天个人基线</div>
+                  </div>
+                </div>
+                <div class="scale-bar" style="margin-top:12px">
+                  <div class="seg" style="background:var(--state-overload)"></div>
+                  <div class="seg" style="background:var(--state-elevated)"></div>
+                  <div class="seg" style="background:var(--state-normal)"></div>
+                  <div class="seg" style="flex:2.4;background:var(--state-excellent)"></div>
+                </div>
+                <div style="display:flex;justify-content:flex-start;height:18px">
+                  <div class="scale-marker" data-state-marker data-state-color style="color:var(--state-excellent);margin-left:86%"></div>
+                </div>
+              </div>
+
+              <!-- 建议胶囊 -->
+              <div class="advice" style="margin-top:6px">
+                <span class="leaf"><i data-icon="leaf" data-size="17" data-color="var(--tint)"></i></span>
+                <p data-state-advice>状态很好，保持规律作息，去接触一点自然光吧。</p>
+              </div>
+
+              <!-- 双指标卡 -->
+              <div class="metric-duo" style="margin-top:16px">
+                <div class="metric-half" data-goto="metric" role="button" tabindex="0">
+                  <div class="mh-top"><i data-icon="wave" data-size="15" data-color="var(--hrv)"></i>HRV 曲线 <i data-icon="chevronR" data-size="10" data-color="var(--label-3)" style="margin-left:auto"></i></div>
+                  <div class="mh-val"><span class="metric-num">68</span><span class="mh-unit">ms</span></div>
+                  <div class="mh-note">↑ 高于 7 天均值 4ms</div>
+                  <svg class="spark" viewBox="0 0 140 38" preserveAspectRatio="none">
+                    <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--hrv)" stop-opacity=".25"/><stop offset="1" stop-color="var(--hrv)" stop-opacity="0"/></linearGradient></defs>
+                    <path d="M0 30 L20 24 L40 27 L60 16 L80 20 L100 9 L120 14 L140 5 L140 38 L0 38Z" fill="url(#g1)"/>
+                    <path d="M0 30 L20 24 L40 27 L60 16 L80 20 L100 9 L120 14 L140 5" fill="none" stroke="var(--hrv)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="metric-half" data-goto="stress-detail" role="button" tabindex="0">
+                  <div class="mh-top"><i data-icon="brain" data-size="15" data-color="var(--state-elevated)"></i>压力曲线 <i data-icon="chevronR" data-size="10" data-color="var(--label-3)" style="margin-left:auto"></i></div>
+                  <div class="mh-val"><span class="metric-num" data-state-stress>24</span><span class="mh-unit">分</span></div>
+                  <div class="mh-note">↓ 低于 7 天均值 6 分</div>
+                  <svg class="spark" viewBox="0 0 140 38" preserveAspectRatio="none">
+                    <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--state-elevated)" stop-opacity=".25"/><stop offset="1" stop-color="var(--state-elevated)" stop-opacity="0"/></linearGradient></defs>
+                    <path d="M0 12 L20 18 L40 14 L60 26 L80 20 L100 30 L120 24 L140 32 L140 38 L0 38Z" fill="url(#g2)"/>
+                    <path d="M0 12 L20 18 L40 14 L60 26 L80 20 L100 30 L120 24 L140 32" fill="none" stroke="var(--state-elevated)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- 指标详情分组 -->
+              <div class="group-list" style="margin-top:22px">
+                <div class="group">
+                  <div class="group-title">指标详情</div>
+                  <div class="card-box">
+                    <div class="list-row" data-goto="metric">
+                      <div class="row-icon" style="background:var(--sleep)"><i data-icon="moon" data-size="18" data-color="#fff"></i></div>
+                      <div class="row-main"><div class="row-title">睡眠</div><div class="row-sub">7小时32分 · 深睡 1小时48分</div></div>
+                      <span class="row-value">82 分</span><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span>
+                    </div>
+                    <div class="list-row" data-goto="metric">
+                      <div class="row-icon" style="background:var(--hrv)"><i data-icon="ecg" data-size="18" data-color="#fff"></i></div>
+                      <div class="row-main"><div class="row-title">心率变异性 / 静息心率</div><div class="row-sub">HRV 68ms · 静息 58 次/分</div></div>
+                      <span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span>
+                    </div>
+                    <div class="list-row" data-goto="metric">
+                      <div class="row-icon" style="background:var(--activity)"><i data-icon="figure" data-size="18" data-color="#fff"></i></div>
+                      <div class="row-main"><div class="row-title">活动</div><div class="row-sub">8,642 步 · 锻炼 34 分钟</div></div>
+                      <span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span>
+                    </div>
+                    <div class="list-row" data-goto="metric">
+                      <div class="row-icon" style="background:var(--vitals)"><i data-icon="thermometer" data-size="18" data-color="#fff"></i></div>
+                      <div class="row-main"><div class="row-title">生命体征</div><div class="row-sub">呼吸 15 次/分 · 血氧 98%</div></div>
+                      <span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span>
+                    </div>
+                  </div>
+                  <div class="group-footer">11/12 数据源可用 · 基线 14 天 · 均为展示数据，非医疗诊断</div>
+                </div>
+                <div class="group">
+                  <div class="group-title">智能解读</div>
+                  <div class="card-box">
+                    <div class="list-row" data-goto="briefing">
+                      <div class="row-icon" style="background:var(--system-purple)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div>
+                      <div class="row-main"><div class="row-title">AI 智能评分</div><div class="row-sub">查看今日身体状态的完整解读</div></div>
+                      <span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAGE: 行动 -->
+            <div class="page" data-page="action">
+              <div class="large-title"><h1>行动</h1><div class="subtitle">今天，照顾好自己的每一件小事</div></div>
+              <div class="tile-grid">
+                <div class="tile" data-goto="metric"><div class="ti-icon" style="background:var(--sleep-soft,#eee8fc);color:var(--sleep)"><i data-icon="moon" data-size="22" data-color="var(--sleep)"></i></div><div class="ti-title">睡眠</div><div class="ti-val">7.5<span style="font-size:13px">h</span></div><div class="ti-sub">02:38 – 10:12</div></div>
+                <div class="tile" data-goto="food"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--nutrition)"><i data-icon="fork" data-size="22" data-color="var(--nutrition)"></i></div><div class="ti-title">饮食</div><div class="ti-val">1,640<span style="font-size:12px">kcal</span></div><div class="ti-sub">3 餐已记录</div></div>
+                <div class="tile" data-goto="w-water" data-goto-device="watch"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--water)"><i data-icon="drop" data-size="22" data-color="var(--water)"></i></div><div class="ti-title">饮水</div><div class="ti-val">1,200<span style="font-size:12px">ml</span></div><div class="ti-sub">目标 1,500ml</div></div>
+                <div class="tile"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--caffeine)"><i data-icon="coffee" data-size="22" data-color="var(--caffeine)"></i></div><div class="ti-title">咖啡因</div><div class="ti-val">120<span style="font-size:12px">mg</span></div><div class="ti-sub">1 杯咖啡</div></div>
+                <div class="tile" data-goto="metric"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--activity)"><i data-icon="figure" data-size="22" data-color="var(--activity)"></i></div><div class="ti-title">锻炼</div><div class="ti-val">34<span style="font-size:12px">分</span></div><div class="ti-sub"></div></div>
+                <div class="tile"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--sun)"><i data-icon="sun" data-size="22" data-color="var(--sun)"></i></div><div class="ti-title">晒太阳</div><div class="ti-val">—</div><div class="ti-sub">待记录</div></div>
+                <div class="tile"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--mindful)"><i data-icon="leaf" data-size="22" data-color="var(--mindful)"></i></div><div class="ti-title">呼吸正念</div><div class="ti-val">—</div><div class="ti-sub">待记录</div></div>
+                <div class="tile" data-goto="metric"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--steps)"><i data-icon="footprint" data-size="22" data-color="var(--steps)"></i></div><div class="ti-title">步数</div><div class="ti-val">8,642</div><div class="ti-sub">目标 8,000 ✓</div></div>
+                <div class="tile"><div class="ti-icon" style="background:var(--bg-fill-2);color:var(--noise)"><i data-icon="wave" data-size="22" data-color="var(--noise)"></i></div><div class="ti-title">环境音量</div><div class="ti-val">—</div><div class="ti-sub">待记录</div></div>
+              </div>
+            </div>
+
+            <!-- PAGE: 趋势 -->
+            <div class="page" data-page="trends">
+              <div class="large-title"><h1>趋势</h1><div class="subtitle">看见变化，比单日数字更重要</div></div>
+              <div class="segmented" role="group"><button aria-pressed="true">7 天</button><button aria-pressed="false">30 天</button><button aria-pressed="false">90 天</button></div>
+              <div class="chart-card">
+                <h3>状态评分</h3><div class="chart-note">近 7 天 · 平均 74 分</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4">
+                    <line x1="8" y1="20" x2="312" y2="20"/><line x1="8" y1="60" x2="312" y2="60"/><line x1="8" y1="100" x2="312" y2="100"/><line x1="8" y1="140" x2="312" y2="140"/>
+                  </g>
+                  <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--tint-light)" stop-opacity=".28"/><stop offset="1" stop-color="var(--tint-light)" stop-opacity="0"/></linearGradient></defs>
+                  <path d="M8 110 L59 92 L110 100 L161 62 L212 74 L263 44 L312 34 L312 140 L8 140Z" fill="url(#tg)"/>
+                  <path d="M8 110 L59 92 L110 100 L161 62 L212 74 L263 44 L312 34" fill="none" stroke="var(--tint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <g fill="var(--bg-elevated)" stroke="var(--tint)" stroke-width="2"><circle cx="8" cy="110" r="3.5"/><circle cx="59" cy="92" r="3.5"/><circle cx="110" cy="100" r="3.5"/><circle cx="161" cy="62" r="3.5"/><circle cx="212" cy="74" r="3.5"/><circle cx="263" cy="44" r="3.5"/><circle cx="312" cy="34" r="4.5"/></g>
+                </svg>
+                <div class="legend"><span class="li"><span class="sw" style="background:var(--tint)"></span>每日状态分</span></div>
+              </div>
+              <div class="chart-card" style="margin-top:16px">
+                <h3>HRV 与压力</h3><div class="chart-note">双轴对照 · HRV 越高越好，压力越低越好</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4"><line x1="8" y1="30" x2="312" y2="30"/><line x1="8" y1="80" x2="312" y2="80"/><line x1="8" y1="130" x2="312" y2="130"/></g>
+                  <path d="M8 100 L59 84 L110 92 L161 60 L212 70 L263 48 L312 40" fill="none" stroke="var(--hrv)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 60 L59 72 L110 64 L161 96 L212 82 L263 108 L312 112" fill="none" stroke="var(--state-elevated)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="legend"><span class="li"><span class="sw" style="background:var(--hrv)"></span>HRV</span><span class="li"><span class="sw" style="background:var(--state-elevated)"></span>压力</span></div>
+              </div>
+              <div style="height:16px"></div>
+            </div>
+
+            <!-- PAGE: 健康 -->
+            <div class="page" data-page="health">
+              <div class="large-title"><h1>健康</h1><div class="subtitle">你的身体，一目了然</div></div>
+              <div class="card-box" style="margin:0 16px 20px;padding:20px;text-align:center">
+                <div style="font-size:13px;color:var(--label-2);font-weight:600">身体年龄</div>
+                <div class="metric-num" style="font-size:56px;letter-spacing:-2px;color:var(--tint);line-height:1.1">28<span style="font-size:18px;color:var(--label-2)"> 岁</span></div>
+                <div style="font-size:13px;color:var(--label-2);margin-top:4px">比实际年龄年轻 4 岁 · 优秀</div>
+                <div data-goto="body-age" role="button" style="margin-top:14px;color:var(--tint);font-weight:600;font-size:14px">查看详细解读 ›</div>
+              </div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group">
+                  <div class="group-title">概览</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-purple)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">健康画像</div><div class="row-sub">基于 14 天数据的综合评估</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-blue)"><i data-icon="person" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">个人档案</div><div class="row-sub">身高 · 体重 · 目标</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：洞察 ============ -->
+            <div class="page" data-page="insights">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>洞察</h2></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>洞察</h1><div class="subtitle">从数据里，读懂你的身体</div></div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group">
+                  <div class="group-title">为你生成</div>
+                  <div class="card-box">
+                    <div class="list-row" data-goto="briefing"><div class="row-icon" style="background:var(--system-purple)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">今日智能评分</div><div class="row-sub">综合 6 项指标的深度解读</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row" data-goto="stress-detail"><div class="row-icon" style="background:var(--state-elevated)"><i data-icon="brain" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">压力趋势分析</div><div class="row-sub">发现你在周三压力最高</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row" data-goto="body-age"><div class="row-icon" style="background:var(--system-orange)"><i data-icon="person" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">身体年龄解读</div><div class="row-sub">比实际年龄年轻 4 岁</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+                <div class="group">
+                  <div class="group-title">健康知识</div>
+                  <div class="card-box">
+                    <div class="list-row" data-goto="chat"><div class="row-icon" style="background:var(--system-blue)"><i data-icon="book" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">HRV 为什么重要？</div><div class="row-sub">了解心率变异性背后的含义</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row" data-goto="chat"><div class="row-icon" style="background:var(--system-green)"><i data-icon="leaf" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">如何改善睡眠质量</div><div class="row-sub">7 个有科学依据的建议</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：睡眠日报 ============ -->
+            <div class="page" data-page="sleep">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>返回</div><h2>睡眠</h2><div class="nav-actions"><i data-icon="share" data-size="18" data-color="var(--label-2)"></i></div></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>睡眠报告</h1><div class="subtitle">11月15日 晚 – 11月16日 早</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:20px">
+                <div class="hero-stat">
+                  <div class="num metric-num" style="color:var(--sleep)">7<span style="font-size:26px">h</span> 32<span style="font-size:26px">m</span></div>
+                  <div class="cap">睡眠时长 · 达到目标</div>
+                </div>
+                <div style="display:flex;justify-content:space-around;margin-top:18px;text-align:center">
+                  <div><div class="metric-num" style="font-size:22px">82</div><div class="row-sub">睡眠分</div></div>
+                  <div><div class="metric-num" style="font-size:22px">1h48m</div><div class="row-sub">深睡</div></div>
+                  <div><div class="metric-num" style="font-size:22px">2h10m</div><div class="row-sub"> REM</div></div>
+                </div>
+                <div style="font-size:12px;color:var(--label-2);margin-top:18px;font-weight:600">睡眠分期</div>
+                <div class="stage-bar">
+                  <div style="width:18%;background:#3a3aa8"></div><div style="width:34%;background:#6c6ad9"></div><div style="width:26%;background:#9a99e8"></div><div style="width:12%;background:#6c6ad9"></div><div style="width:10%;background:#3a3aa8"></div>
+                </div>
+                <div class="legend"><span class="li" style="font-size:11px"><span class="sw" style="background:#3a3aa8"></span>深睡</span><span class="li" style="font-size:11px"><span class="sw" style="background:#6c6ad9"></span>浅睡</span><span class="li" style="font-size:11px"><span class="sw" style="background:#9a99e8"></span>REM</span></div>
+              </div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group"><div class="group-title">睡眠生命体征</div>
+                  <div class="card-box">
+                    <div class="list-row" data-goto="sleep-vitals"><div class="row-icon" style="background:var(--restinghr)"><i data-icon="heart" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">静息心率</div><div class="row-sub">睡眠期间平均 54 次/分</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row" data-goto="sleep-vitals"><div class="row-icon" style="background:var(--vitals)"><i data-icon="wave" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">呼吸频率 · 血氧</div><div class="row-sub">14 次/分 · 98%</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：睡眠生命体征 ============ -->
+            <div class="page" data-page="sleep-vitals">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="sleep"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>睡眠</div><h2>生命体征</h2></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>睡眠生命体征</h1><div class="subtitle">睡眠期间的身体信号</div></div>
+              <div class="chart-card">
+                <h3>静息心率</h3><div class="chart-note">平均 54 次/分 · 比 30 天均值低 2</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4"><line x1="8" y1="30" x2="312" y2="30"/><line x1="8" y1="80" x2="312" y2="80"/><line x1="8" y1="130" x2="312" y2="130"/></g>
+                  <path d="M8 70 L50 78 L92 62 L134 90 L176 68 L218 84 L260 58 L312 72" fill="none" stroke="var(--restinghr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="chart-card" style="margin-top:16px">
+                <h3>血氧饱和度</h3><div class="chart-note">平均 98% · 稳定</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4"><line x1="8" y1="30" x2="312" y2="30"/><line x1="8" y1="80" x2="312" y2="80"/><line x1="8" y1="130" x2="312" y2="130"/></g>
+                  <path d="M8 50 L50 44 L92 52 L134 40 L176 48 L218 42 L260 46 L312 44" fill="none" stroke="var(--vitals)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div style="height:16px"></div>
+            </div>
+
+            <!-- ============ 详情页：指标详情 ============ -->
+            <div class="page" data-page="metric">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>指标详情</h2></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>心率变异性</h1><div class="subtitle">相对 28 天个人基线</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:20px;text-align:center">
+                <div class="metric-num" style="font-size:52px;letter-spacing:-1.5px;color:var(--hrv);line-height:1">68<span style="font-size:18px;color:var(--label-2)"> ms</span></div>
+                <div class="chip" style="background:var(--tint-soft);color:var(--tint);margin-top:10px">↑ 高于基线 4ms</div>
+              </div>
+              <div class="chart-card">
+                <h3>近 30 天趋势</h3><div class="chart-note">日均 HRV · ms</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4"><line x1="8" y1="25" x2="312" y2="25"/><line x1="8" y1="75" x2="312" y2="75"/><line x1="8" y1="125" x2="312" y2="125"/></g>
+                  <line x1="8" y1="70" x2="312" y2="70" stroke="var(--label-3)" stroke-width="1" stroke-dasharray="6 4"/>
+                  <path d="M8 96 L38 82 L68 90 L98 66 L128 74 L158 58 L188 70 L218 52 L248 62 L278 44 L312 50" fill="none" stroke="var(--hrv)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="group-list" style="margin-top:16px">
+                <div class="group"><div class="group-title">读数</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-main"><div class="row-title">最新测量</div></div><span class="row-value">68 ms · 9:12</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">30 天平均</div></div><span class="row-value">64 ms</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">静息心率</div></div><span class="row-value">58 次/分</span></div>
+                  </div>
+                  <div class="group-footer">HRV 相对 28 天个人基线评估。数据来自健康 App，数值缺失时沿用最近一次读数。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：压力详情 ============ -->
+            <div class="page" data-page="stress-detail">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>压力详情</h2><div class="nav-actions"><i data-icon="info" data-size="18" data-color="var(--label-2)"></i></div></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>此刻与日内</h1><div class="subtitle">相对 28 天个人基线 · 非医疗诊断</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:20px;text-align:center">
+                <div class="core-word" data-state-word data-state-color style="font-size:28px;font-weight:800;color:var(--state-excellent)">状态优秀</div>
+                <div class="metric-num" data-state-score style="font-size:48px;letter-spacing:-1.5px;margin-top:6px">88</div>
+                <div class="row-sub">综合状态分</div>
+                <div class="scale-bar" style="margin-top:18px">
+                  <div class="seg" style="background:var(--state-overload)"></div><div class="seg" style="background:var(--state-elevated)"></div><div class="seg" style="background:var(--state-normal)"></div><div class="seg" style="flex:2.4;background:var(--state-excellent)"></div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <h3>日内压力曲线</h3><div class="chart-note">今日 00:00 – 现在</div>
+                <svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="none">
+                  <g stroke="var(--separator)" stroke-width="1" stroke-dasharray="3 4"><line x1="8" y1="30" x2="312" y2="30"/><line x1="8" y1="80" x2="312" y2="80"/><line x1="8" y1="130" x2="312" y2="130"/></g>
+                  <path d="M8 110 L52 100 L96 108 L140 72 L184 84 L228 54 L272 66 L312 44" fill="none" stroke="var(--state-elevated)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="legend"><span class="li" style="font-size:11px"><span class="sw" style="background:var(--state-elevated)"></span>压力分（越低越好）</span></div>
+              </div>
+              <div class="group-list" style="margin-top:16px">
+                <div class="group"><div class="group-title">压力来源</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--hrv)"><i data-icon="wave" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">心率变异性</div></div><span class="row-value" style="color:var(--tint)">良好</span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--restinghr)"><i data-icon="heart" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">静息心率</div></div><span class="row-value" style="color:var(--tint)">平稳</span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--sleep)"><i data-icon="moon" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">睡眠恢复</div></div><span class="row-value" style="color:var(--tint)">充足</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：详细解读 ============ -->
+            <div class="page" data-page="briefing">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>智能评分</h2><div class="nav-actions"><button class="icon-btn" style="width:30px;height:30px"><i data-icon="refresh" data-size="15" data-color="var(--tint)"></i></button></div></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>今日解读</h1><div class="subtitle">由 AI 基于你的健康数据生成</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:20px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="row-icon" style="background:var(--system-purple)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div><div style="font-size:13px;color:var(--label-2);font-weight:600">数据更新于 9:38</div></div>
+                <p style="font-size:14.5px;line-height:1.7;margin:0;color:var(--label)">今天你的整体状态<b>良好</b>。HRV 高于个人基线 4ms，说明身体恢复充分；睡眠时长达到目标，深睡比例健康。上午 10 点后压力有轻微上升，建议这个时段安排短时休息或深呼吸练习。</p>
+                <div class="divider"></div>
+                <p style="font-size:14.5px;line-height:1.7;margin:0;color:var(--label)">过去 7 天，你的状态分稳步提升。保持当前的作息节奏，并在午后适量补充水分和自然光照，有助于维持良好状态。</p>
+              </div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group"><div class="group-title">评分维度</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-main"><div class="row-title">睡眠恢复</div></div><span class="row-value" style="color:var(--tint);font-weight:700">优秀 · 88</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">自主神经</div></div><span class="row-value" style="color:var(--tint);font-weight:700">良好 · 82</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">活动负荷</div></div><span class="row-value" style="color:var(--tint);font-weight:700">良好 · 79</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">生活节律</div></div><span class="row-value" style="color:var(--state-elevated);font-weight:700">注意 · 68</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 详情页：身体年龄 ============ -->
+            <div class="page" data-page="body-age">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="health"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>健康</div><h2>身体年龄</h2></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>身体年龄</h1><div class="subtitle">基于 6 项生理指标的综合估算</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:24px;text-align:center">
+                <div class="metric-num" style="font-size:72px;letter-spacing:-3px;color:var(--system-orange);line-height:1">28</div>
+                <div style="font-size:15px;color:var(--label-2);font-weight:600">岁 · 比实际年龄年轻 4 岁</div>
+                <div style="display:flex;justify-content:center;gap:6px;margin-top:16px"><span class="chip" style="background:var(--tint-soft);color:var(--tint)">优秀</span><span class="chip" style="background:var(--bg-fill-2);color:var(--label-2)">实际年龄 32</span></div>
+              </div>
+              <div class="chart-card">
+                <h3>各项指标贡献</h3><div class="chart-note">绿色为优于同龄，灰色为持平</div>
+                <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+                  <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span>心肺体能</span><span class="tint bold">−3.2 岁</span></div><div style="height:6px;background:var(--bg-fill);border-radius:3px"><div style="width:80%;height:100%;background:var(--tint);border-radius:3px"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span>睡眠质量</span><span class="tint bold">−2.1 岁</span></div><div style="height:6px;background:var(--bg-fill);border-radius:3px"><div style="width:68%;height:100%;background:var(--tint);border-radius:3px"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span>静息心率</span><span class="tint bold">−1.4 岁</span></div><div style="height:6px;background:var(--bg-fill);border-radius:3px"><div style="width:55%;height:100%;background:var(--tint);border-radius:3px"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span>身体成分</span><span class="muted">+0.3 岁</span></div><div style="height:6px;background:var(--bg-fill);border-radius:3px"><div style="width:40%;height:100%;background:var(--label-3);border-radius:3px"></div></div></div>
+                </div>
+              </div>
+              <div style="height:16px"></div>
+            </div>
+
+
+            <!-- ============ 工具页：饮食识别 ============ -->
+            <div class="page" data-page="food">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="action"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>行动</div><h2>识别食物</h2><div class="nav-actions" style="font-size:14px;color:var(--tint);font-weight:600">识别记录</div></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>识别食物</h1><div class="subtitle">拍照或描述，自动估算营养</div></div>
+              <div class="card-box" style="margin:0 16px 16px;padding:18px">
+                <div class="group-title" style="padding:0 0 10px"><i data-icon="camera" data-size="14" data-color="var(--label-2)"></i> 食物照片</div>
+                <div style="border:1.5px dashed var(--separator-opaque);border-radius:16px;padding:26px;text-align:center;color:var(--label-2)">
+                  <i data-icon="camera" data-size="34" data-color="var(--label-3)"></i>
+                  <div style="font-size:14px;font-weight:600;margin-top:10px;color:var(--label)">添加食物照片</div>
+                  <div style="font-size:12px;margin-top:6px;line-height:1.5">照片会发给 AI 视觉模型一起分析</div>
+                </div>
+              </div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group">
+                  <div class="group-title">用餐信息</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-main"><div class="row-title">餐次</div></div><span class="row-value">按时间自动判断 · 午餐</span></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">用餐时间</div></div><span class="row-value">使用当前时间</span></div>
+                  </div>
+                </div>
+                <div class="group">
+                  <div class="group-title">描述这道食物</div>
+                  <div class="card-box" style="padding:14px">
+                    <div style="font-size:14px;color:var(--label-3)">例如：一碗米饭、一份炒青菜、一块炸鸡…</div>
+                  </div>
+                </div>
+                <div class="group">
+                  <div class="group-title">合计营养（示例识别结果）</div>
+                  <div class="card-box" style="padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center">
+                    <div><div class="metric-num" style="font-size:20px">640</div><div class="row-sub">千卡</div></div>
+                    <div><div class="metric-num" style="font-size:20px">82<span style="font-size:12px">g</span></div><div class="row-sub">碳水</div></div>
+                    <div><div class="metric-num" style="font-size:20px">28<span style="font-size:12px">g</span></div><div class="row-sub">蛋白质</div></div>
+                    <div><div class="metric-num" style="font-size:20px">22<span style="font-size:12px">g</span></div><div class="row-sub">脂肪</div></div>
+                    <div><div class="metric-num" style="font-size:20px">6<span style="font-size:12px">g</span></div><div class="row-sub">纤维</div></div>
+                    <div><div class="metric-num" style="font-size:20px">420<span style="font-size:12px">ml</span></div><div class="row-sub">水</div></div>
+                  </div>
+                  <div class="group-footer">已按苹果健康「营养摄入」40 项留档，未识别项记 0。</div>
+                </div>
+              </div>
+              <button class="primary-btn" style="margin-bottom:24px">开始识别</button>
+            </div>
+
+            <!-- ============ 工具页：食物库 ============ -->
+            <div class="page" data-page="food-library">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>返回</div><h2>本地营养库</h2><div class="nav-actions"><i data-icon="plus" data-size="20" data-color="var(--tint)"></i></div></div></div>
+              <div class="search-bar"><i data-icon="search" data-size="16" data-color="var(--label-3)"></i>搜索食物</div>
+              <div class="group-list" style="margin-top:4px">
+                <div class="group"><div class="group-title">我的营养库 · 6 分组 38 食物</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-green)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">常用饮食</div><div class="row-sub">12 种食物</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-blue)"><i data-icon="person" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">我的食物</div><div class="row-sub">8 种食物</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+                <div class="group"><div class="group-title">品牌库（只读）</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-brown)"><i data-icon="coffee" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">瑞幸咖啡</div><div class="row-sub">系统维护 · 24 款</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-red)"><i data-icon="fork" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">麦当劳</div><div class="row-sub">系统维护 · 36 款</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 工具页：问问 AI ============ -->
+            <div class="page" data-page="chat" style="height:100%">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>问问 AI</h2><div class="nav-actions"><i data-icon="ellipsis" data-size="20" data-color="var(--label-2)"></i></div></div></div>
+              <div style="padding:14px 16px 0">
+                <div class="card-box" style="padding:12px 14px;display:flex;align-items:center;gap:10px">
+                  <i data-icon="doc" data-size="18" data-color="var(--system-blue)"></i>
+                  <div style="flex:1"><div style="font-size:13.5px;font-weight:600">今日数据引用</div><div class="row-sub">已引用 6 项指标</div></div>
+                  <i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i>
+                </div>
+              </div>
+              <div class="chat-thread">
+                <div style="text-align:center;padding:24px 0 8px">
+                  <div style="width:60px;height:60px;margin:0 auto 14px;border-radius:20px;background:linear-gradient(145deg,#a55be8,#5856d6);display:grid;place-items:center;color:#fff;box-shadow:0 10px 24px rgba(88,86,214,.35)"><i data-icon="sparkles" data-size="30" data-color="#fff"></i></div>
+                  <div style="font-size:20px;font-weight:800">问问 AI</div>
+                  <div style="font-size:13px;color:var(--label-2);margin-top:6px">基于你今天的健康数据回答问题</div>
+                </div>
+                <div class="bubble bot" data-goto="chat">我今天的精神状态适合做高强度运动吗？</div>
+                <div class="bubble bot" data-goto="chat">我的睡眠哪里最需要改进？</div>
+              </div>
+              <div class="chat-input"><span style="flex:1">问问今天的健康数据…</span><span class="send"><i data-icon="send" data-size="15" data-color="#fff"></i></span></div>
+            </div>
+
+            <!-- ============ 工具页：设置 ============ -->
+            <div class="page" data-page="settings">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>设置</h2></div></div>
+              <div class="large-title" style="padding-top:16px"><h1>设置</h1></div>
+              <div class="group-list" style="margin-top:0">
+                <div class="group"><div class="group-title">基础设置</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-gray)"><i data-icon="moon" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">夜间模式</div></div><span class="row-value">跟随系统</span><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-blue)"><i data-icon="person" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">基本资料</div><div class="row-sub">出生日期 · 性别</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+                <div class="group"><div class="group-title">数据与智能</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-red)"><i data-icon="heart" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">健康数据</div><div class="row-sub">已同步 118 天</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-purple)"><i data-icon="sparkles" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">AI 服务</div><div class="row-sub">千问 · 已配置</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-orange)"><i data-icon="book" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">本地营养库</div><div class="row-sub">6 分组 · 38 食物</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-teal)"><i data-icon="grid" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">数据管理</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+                <div class="group"><div class="group-title">AI 功能</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-main"><div class="row-title">食物识别</div></div><button class="switch" aria-checked="true" aria-label="食物识别"></button></div>
+                    <div class="list-row"><div class="row-main"><div class="row-title">智能评分</div></div><button class="switch" aria-checked="true" aria-label="智能评分"></button></div>
+                  </div>
+                </div>
+                <div class="group"><div class="group-title">其他</div>
+                  <div class="card-box">
+                    <div class="list-row"><div class="row-icon" style="background:var(--system-gray)"><i data-icon="question" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title">关于</div><div class="row-sub">版本 0.1.0</div></div><span class="row-chevron"><i data-icon="chevronR" data-size="12" data-color="var(--label-3)"></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ 工具页：分享卡 ============ -->
+            <div class="page" data-page="share">
+              <div class="nav-glass"><div class="nav-inline"><div class="back" data-back="today"><i data-icon="chevronL" data-size="12" data-color="var(--tint)"></i>今日</div><h2>分享</h2><div class="nav-actions" style="color:var(--tint);font-weight:600;font-size:14px">完成</div></div></div>
+              <div class="segmented" role="group"><button aria-pressed="true">今日状态</button><button aria-pressed="false">睡眠日报</button></div>
+              <div style="margin:4px 24px 20px;border-radius:26px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.18);background:linear-gradient(160deg,#eef8f1,#d9efe0);padding:26px 22px;text-align:center;color:#1c1c1e">
+                <div style="font-size:13px;font-weight:700;letter-spacing:.04em;color:#248a3d">HEALTHY · 今日状态</div>
+                <div class="metric-num" data-state-word data-state-color style="font-size:30px;font-weight:800;margin-top:18px;color:var(--state-excellent)">状态优秀</div>
+                <div class="metric-num" data-state-score style="font-size:64px;letter-spacing:-2px;line-height:1;margin-top:4px">88</div>
+                <div style="font-size:12px;color:rgba(28,28,30,.6);margin-top:8px">相对 28 天个人基线 · 非医疗诊断</div>
+                <div style="display:flex;justify-content:center;gap:28px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(28,28,30,.1)">
+                  <div><div class="metric-num" style="font-size:20px">68<span style="font-size:11px">ms</span></div><div style="font-size:11px;color:rgba(28,28,30,.6)">HRV</div></div>
+                  <div><div class="metric-num" style="font-size:20px">7.5<span style="font-size:11px">h</span></div><div style="font-size:11px;color:rgba(28,28,30,.6)">睡眠</div></div>
+                  <div><div class="metric-num" style="font-size:20px">8,642</div><div style="font-size:11px;color:rgba(28,28,30,.6)">步数</div></div>
+                </div>
+              </div>
+              <button class="primary-btn">导出分享图</button>
+              <div class="group-footer" style="text-align:center;margin:0 24px 24px">分享图在本机生成，不含设备标识；仅供记录与分享，不构成医疗建议。</div>
+            </div>
+
+            <!-- ============ 工具页：引导 ============ -->
+            <div class="page" data-page="onboarding">
+              <div class="onboard-hero">
+                <div class="orb"><i data-icon="heart" data-size="60" data-color="#fff" data-sw="1.5"></i></div>
+                <h1>今日状态</h1>
+                <p>读取 Apple Watch 的健康数据，在本地计算身体状态与压力，并用 AI 生成每天的建议。</p>
+              </div>
+              <div class="group-list" style="margin-top:24px">
+                <div class="card-box">
+                  <div class="list-row"><div class="row-icon" style="background:var(--system-green)"><i data-icon="shield" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:14px">数据只在这台设备上分析和保存</div></div></div>
+                  <div class="list-row"><div class="row-icon" style="background:var(--system-blue)"><i data-icon="network" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:14px">只把日级汇总指标发送给你选择的 AI 服务</div></div></div>
+                  <div class="list-row"><div class="row-icon" style="background:var(--system-orange)"><i data-icon="info" data-size="18" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:14px">不提供医疗诊断</div></div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;margin:24px 20px"><button style="flex:1;padding:15px;border:0;background:var(--bg-fill);border-radius:16px;font-size:16px;font-weight:700;color:var(--label)">上一步</button><button class="primary-btn" style="flex:2;margin:0">继续</button></div>
+            </div>
+
+
+          </div><!-- /app-scroll -->
+
+          <!-- 底部 TabBar + FAB（全局，今日/行动/趋势/健康页显示） -->
+          <div class="tabbar-wrap">
+            <nav class="tabbar">
+              <button class="tab active" data-tab="today"><i data-icon="house" data-size="24"></i><span>今日</span></button>
+              <button class="tab" data-tab="action"><i data-icon="grid" data-size="24"></i><span>行动</span></button>
+              <button class="tab" data-tab="trends"><i data-icon="trend" data-size="24"></i><span>趋势</span></button>
+              <button class="tab" data-tab="health"><i data-icon="health" data-size="24"></i><span>健康</span></button>
+              <button class="tab" data-tab="settings"><i data-icon="gear" data-size="24"></i><span>设置</span></button>
+            </nav>
+          </div>
+          <button class="fab" aria-label="新增记录"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <div class="fab-menu">
+            <button data-record="饮食"><span class="mi" style="background:var(--nutrition)"><i data-icon="fork" data-size="16" data-color="#fff"></i></span>记录饮食</button>
+            <button data-record="饮水"><span class="mi" style="background:var(--water)"><i data-icon="drop" data-size="16" data-color="#fff"></i></span>记录饮水</button>
+            <button data-record="咖啡因"><span class="mi" style="background:var(--caffeine)"><i data-icon="coffee" data-size="16" data-color="#fff"></i></span>记录咖啡因</button>
+            <button data-record="当前感受"><span class="mi" style="background:var(--mindful)"><i data-icon="leaf" data-size="16" data-color="#fff"></i></span>当前感受</button>
+          </div>
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Apple Watch ========== -->
+    <section class="device">
+      <div class="device-label">Apple Watch · 伴侣端（点表冠翻页）</div>
+      <div class="watch">
+        <div class="crown"></div><div class="side-btn"></div>
+        <div class="screen">
+          <div class="watch-status"><span>9:41</span><span>101%</span></div>
+          <div class="app-scroll">
+            <!-- ============ Watch: 仪表盘 ============ -->
+            <div class="page active" data-page="w-dashboard">
+              <div class="large-title" style="padding-top:6px"><h1>Healthy</h1></div>
+              <div class="status-core" style="width:160px;height:160px;margin:0 auto">
+                <svg class="ring" viewBox="0 0 220 220">
+                  <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="16"/>
+                  <circle data-ring-progress cx="110" cy="110" r="96" fill="none" stroke="var(--state-excellent)" stroke-width="16" stroke-linecap="round" style="stroke-dasharray:603;stroke-dashoffset:72"/>
+                </svg>
+                <div class="core-center">
+                  <div class="core-word" data-state-word data-state-color style="color:var(--state-excellent)">状态优秀</div>
+                  <div class="core-score" data-state-score style="color:#fff">88</div>
+                </div>
+              </div>
+              <div class="group-list" style="margin-top:6px">
+                <div class="card-box">
+                  <div class="list-row" data-watch-next><div class="row-icon" style="background:var(--hrv)"><i data-icon="wave" data-size="16" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:13px">HRV</div></div><span class="row-value" style="font-size:14px;color:var(--hrv)">68 ms</span></div>
+                  <div class="list-row" data-watch-next><div class="row-icon" style="background:var(--state-elevated)"><i data-icon="brain" data-size="16" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:13px">压力</div></div><span class="row-value" style="font-size:14px">24 · 优秀</span></div>
+                  <div class="list-row" data-watch-next><div class="row-icon" style="background:var(--water)"><i data-icon="drop" data-size="16" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:13px">喝水</div></div><span class="row-value" style="font-size:14px;color:var(--water)">1200 ml</span></div>
+                  <div class="list-row" data-watch-next><div class="row-icon" style="background:var(--caffeine)"><i data-icon="coffee" data-size="16" data-color="#fff"></i></div><div class="row-main"><div class="row-title" style="font-size:13px">咖啡因</div></div><span class="row-value" style="font-size:14px;color:var(--caffeine)">120 mg</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ Watch: HRV ============ -->
+            <div class="page" data-page="w-hrv">
+              <div class="large-title" style="padding-top:6px"><h1>HRV</h1></div>
+              <div style="text-align:center;padding:6px 0 10px">
+                <div class="metric-num" style="font-size:44px;color:var(--hrv);letter-spacing:-1.5px">68</div>
+                <div style="font-size:12px;color:var(--label-2)">ms · 高于基线 4</div>
+              </div>
+              <div style="padding:0 12px">
+                <div class="card-box" style="padding:12px">
+                  <svg class="chart-svg" viewBox="0 0 320 120" preserveAspectRatio="none" style="height:110px">
+                    <path d="M8 84 L52 70 L96 78 L140 54 L184 64 L228 42 L272 52 L312 34" fill="none" stroke="var(--hrv)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div style="font-size:11px;color:var(--label-2);text-align:center;margin-top:6px">近 7 天趋势</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ Watch: 压力 ============ -->
+            <div class="page" data-page="w-stress">
+              <div class="large-title" style="padding-top:6px"><h1>压力</h1></div>
+              <div style="text-align:center;padding:6px 0 10px">
+                <div class="core-word" data-state-word data-state-color style="font-size:26px;font-weight:800;color:var(--state-excellent)">状态优秀</div>
+                <div class="metric-num" data-state-score style="font-size:44px;color:#fff;letter-spacing:-1.5px;margin-top:2px">88</div>
+                <div style="font-size:12px;color:var(--label-2)">综合状态分</div>
+              </div>
+              <div style="padding:0 22px">
+                <div class="scale-bar">
+                  <div class="seg" style="background:var(--state-overload)"></div><div class="seg" style="background:var(--state-elevated)"></div><div class="seg" style="background:var(--state-normal)"></div><div class="seg" style="flex:2.4;background:var(--state-excellent)"></div>
+                </div>
+                <div style="height:16px;display:flex;justify-content:flex-start;margin-top:6px"><div class="scale-marker" data-state-marker data-state-color style="color:var(--state-excellent);margin-left:86%"></div></div>
+                <div class="card-box" style="padding:12px;margin-top:6px">
+                  <div style="font-size:12px;color:var(--label-2);line-height:1.5" data-state-advice>状态很好，保持规律作息，去接触一点自然光吧。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ Watch: 喝水 ============ -->
+            <div class="page" data-page="w-water">
+              <div class="large-title" style="padding-top:6px"><h1>喝水</h1></div>
+              <div class="status-core" style="width:170px;height:170px;margin:0 auto">
+                <svg class="ring" viewBox="0 0 220 220">
+                  <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="18"/>
+                  <circle cx="110" cy="110" r="96" fill="none" stroke="var(--water)" stroke-width="18" stroke-linecap="round" style="stroke-dasharray:603;stroke-dashoffset:151"/>
+                </svg>
+                <div class="core-center">
+                  <div class="metric-num" style="font-size:38px;color:#fff;letter-spacing:-1px">1200</div>
+                  <div style="font-size:11px;color:var(--label-2)">/ 1500 ml</div>
+                </div>
+              </div>
+              <div style="padding:8px 26px 0">
+                <button class="primary-btn" style="margin:0;background:var(--water);border-radius:18px" onclick="var t=document.querySelector('.toast');t.textContent='已记录 300 ml';t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1600)">+ 300 ml</button>
+              </div>
+            </div>
+
+            <!-- ============ Watch: 咖啡因 ============ -->
+            <div class="page" data-page="w-caffeine">
+              <div class="large-title" style="padding-top:6px"><h1>咖啡因</h1></div>
+              <div class="status-core" style="width:170px;height:170px;margin:0 auto">
+                <svg class="ring" viewBox="0 0 220 220">
+                  <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="18"/>
+                  <circle cx="110" cy="110" r="96" fill="none" stroke="var(--caffeine)" stroke-width="18" stroke-linecap="round" style="stroke-dasharray:603;stroke-dashoffset:422"/>
+                </svg>
+                <div class="core-center">
+                  <div class="metric-num" style="font-size:38px;color:#fff;letter-spacing:-1px">120</div>
+                  <div style="font-size:11px;color:var(--label-2)">/ 400 mg</div>
+                </div>
+              </div>
+              <div style="padding:8px 26px 0">
+                <button class="primary-btn" style="margin:0;background:var(--caffeine);border-radius:18px" onclick="var t=document.querySelector('.toast');t.textContent='已打开饮品选择';t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1600)">记录饮品</button>
+              </div>
+            </div>
+
+          </div>
+          <button data-watch-next style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);z-index:20;width:60px;height:16px;border:0;background:transparent;cursor:pointer" aria-label="下一页">
+            <div style="width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.5);margin:auto"></div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+<div class="toast"></div>
+<script src="icons.js"></script>
+<script src="app.js"></script>
+<style>
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 22px;background:rgba(28,28,30,.92);color:#fff;border-radius:14px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:all .28s cubic-bezier(.22,.61,.36,1);z-index:999;backdrop-filter:blur(20px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.tile .ti-icon{background:var(--bg-fill-2)}
+</style>
+</body>
+</html>

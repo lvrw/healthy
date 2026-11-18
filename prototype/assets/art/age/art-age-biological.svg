@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="两位同龄人剪影与健康指标对照；身体年龄示意插画，非真实测量数据。来源：风格化补齐">
+  <g fill="none" stroke="#E4E7E9" stroke-width="1" stroke-dasharray="3 4" stroke-linecap="round">
+    <path d="M160 30v110"/><path d="M112 138h96"/>
+  </g>
+  <g fill="#F79B62"><circle cx="96" cy="52" r="17"/><rect x="72" y="76" width="48" height="56" rx="16"/></g>
+  <g fill="#6C5AD9"><circle cx="224" cy="52" r="17"/><rect x="200" y="76" width="48" height="56" rx="16"/></g>
+  <g fill="#F0F1F3">
+    <rect x="58" y="136" width="34" height="12" rx="6"/><rect x="100" y="136" width="34" height="12" rx="6"/>
+    <rect x="186" y="136" width="34" height="12" rx="6"/><rect x="228" y="136" width="34" height="12" rx="6"/>
+  </g>
+  <g fill="none" stroke="#F79B62" stroke-width="4" stroke-linecap="round"><path d="M64 142h16"/><path d="M106 142h22"/></g>
+  <g fill="none" stroke="#6C5AD9" stroke-width="4" stroke-linecap="round"><path d="M192 142h10"/><path d="M234 142h22"/></g>
+  <g fill="#FFFFFF" opacity=".8"><circle cx="76" cy="52" r="3.4"/><circle cx="204" cy="52" r="3.4"/></g>
+</svg>

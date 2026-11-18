@@ -1,0 +1,76 @@
+<section class="screen has-tabbar" id="screen-trends" data-screen="trends" aria-label="趋势页面">
+  <header class="page-head"><div class="head-row"><h1>趋势</h1><button type="button" class="pill-btn" data-mock="分享为本地 mock，未调用系统分享"><i class="icon" data-icon="share"></i> 分享</button></div></header>
+  <div class="segmented" role="group" aria-label="趋势时间范围" data-segment-group="trends-range">
+    <button type="button" data-value="week" aria-pressed="true">周</button>
+    <button type="button" data-value="month" aria-pressed="false">月</button>
+    <button type="button" data-value="year" aria-pressed="false">年</button>
+  </div>
+  <div class="date-nav"><button type="button" class="circle-btn" disabled aria-label="上一周（已到边界）"><i class="icon" data-icon="chevron-left"></i></button><button type="button" class="date-value" data-mock="日期选择器未在截图中提供">11月2日 - 11月8日 <i class="icon small" data-icon="chevron-down"></i></button></div>
+
+  <div data-range-panel="week">
+    <div class="promo" id="trends-promo">
+      <h2>如何理解压力趋势？</h2>
+      <div class="promo-art" data-art="ill-promo-understand-trend"></div>
+      <button type="button" class="close-x" data-action="close-promo" aria-label="关闭提示"><i class="icon" data-icon="close"></i></button>
+    </div>
+
+    <article class="card">
+      <div class="card-head"><h2>每日压力状态趋势 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="daily-trend" aria-label="每日压力状态趋势说明"><i class="icon" data-icon="info"></i></button></h2><button type="button" class="link-green" data-mock="趋势图切换未在截图中提供">趋势图 <i class="icon xs" data-icon="sort"></i></button></div>
+      <div class="chart" data-series="trends-week-stress-bars" data-chart="bars" data-values="55,90,70,55,48,88,0" data-colors="lavender,green,green,lavender,lavender,green,faint" data-roundtop="dot" data-labels="02/一|03/二|04/三|05/四|06/五|07/六|08/日" data-max="100" data-aria="一周每日压力状态趋势：绿色代表较轻松"></div>
+      <div class="divider"></div>
+      <div class="stat-pair">
+        <div><p class="metric-label">较轻松</p><p class="metric-value">6<span class="unit">天</span></p><p class="delta up">▲ 比上周多2天</p></div>
+        <div><p class="metric-label">压力较大</p><p class="metric-value">0<span class="unit">天</span></p><p class="delta down">▼ 比上周少3天</p></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>HRV与静息心率 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="hrv-rhr" aria-label="HRV 与静息心率说明"><i class="icon" data-icon="info"></i></button></h2><button type="button" class="link-green" data-mock="每日趋势切换未在截图中提供">每日趋势 <i class="icon xs" data-icon="sort"></i></button></div>
+      <p class="metric-label">每日平均HRV</p>
+      <div class="chart" data-series="trends-week-hrv-line" data-chart="line" data-values="28,58,40,34,28,60" data-colors="gray,gray,gray,gray,gray,green" data-stroke="#C7CBD0" data-grid="none" data-labels="一|二|三|四|五|六|日" data-aria="一周每日平均 HRV 折线"></div>
+      <p class="metric-label" style="margin-top:6px">每日静息心率</p>
+      <div class="chart" data-series="trends-week-rhr-line" data-chart="line" data-values="42,30,32,48,56,30" data-colors="gray,gray,gray,gray,gray,gray" data-stroke="#C7CBD0" data-grid="none" data-labels="一|二|三|四|五|六|日" data-aria="一周每日静息心率折线"></div>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <div><p class="metric-label">平均HRV</p><p class="metric-value">35<span class="unit">ms</span></p></div>
+        <div><p class="metric-label">工作日平均HRV</p><p class="metric-value">34<span class="unit">ms</span></p></div>
+        <div><p class="metric-label">平均静息心率</p><p class="metric-value">67<span class="unit">bpm</span></p></div>
+        <div><p class="metric-label">工作日平均静息心率</p><p class="metric-value">67<span class="unit">bpm</span></p></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>压力分布 <span class="pro">PRO</span></h2><button type="button" class="link-green" data-mock="次数/时长切换未在截图中提供">次数 <i class="icon xs" data-icon="sort"></i></button></div>
+      <p class="metric-label">次数统计</p><p class="metric-value" style="margin:3px 0 16px">63<span class="unit">次</span></p>
+      <div class="distribution">
+        <div class="dist-items">
+          <div><span class="label"><i class="dot-status green"></i> 状态优秀</span><strong>36<small style="font-size:12px;font-weight:500">次</small></strong><small>58%</small></div>
+          <div><span class="label"><i class="dot-status lav"></i> 状态正常</span><strong>14<small style="font-size:12px;font-weight:500">次</small></strong><small>22%</small></div>
+          <div><span class="label"><i class="dot-status orange"></i> 注意压力</span><strong>9<small style="font-size:12px;font-weight:500">次</small></strong><small>14%</small></div>
+          <div><span class="label"><i class="dot-status pink"></i> 压力过载</span><strong>4<small style="font-size:12px;font-weight:500">次</small></strong><small>6%</small></div>
+        </div>
+        <div class="chart" data-series="trends-week-stress-capsule" data-chart="capsule" data-segments="58:green|22:lavender|14:orange|6:pink" data-aria="压力分布垂直堆叠条"></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><h2>压力时段 <span class="pro">PRO</span></h2></div>
+      <div class="chart" data-series="trends-week-stress-dots" data-chart="dots" data-seed="42" data-aria="一周 24 小时压力状态点阵"></div>
+      <div class="dot-axis"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <div><p class="metric-label">过载最多时段</p><p class="metric-value">9-12<span class="unit">时</span></p><p class="metric-note">压力过载 2 次</p></div>
+        <div><p class="metric-label">优秀最多时段</p><p class="metric-value">3-6<span class="unit">时</span></p><p class="metric-note">状态优秀 7 次</p></div>
+        <div><p class="metric-label">最低HRV</p><p class="metric-value">9<span class="unit">ms</span></p><p class="metric-note">11月6日 09:16</p></div>
+        <div><p class="metric-label">最高HRV</p><p class="metric-value">69<span class="unit">ms</span></p><p class="metric-note">11月7日 02:43</p></div>
+      </div>
+    </article>
+
+    <p class="section-label">数据详情 <span class="pro">PRO</span></p>
+    <article class="card tight"><button type="button" class="list-row" data-go="day-hrv" style="padding:6px 0"><span class="row-main"><span class="row-title">11月02日 星期一</span></span><span class="row-value muted">状态正常</span><i class="icon chev" data-icon="chevron-right"></i></button></article>
+  </div>
+
+  <div data-range-panel="other" hidden>
+    <article class="card"><div class="empty-state"><span class="empty-art" data-art="ill-empty-range" data-tone="white"></span><strong>该时间范围未提供截图</strong>53 张参考截图只包含「周」视图。此处不虚构月/年数据，请切回「周」查看已还原内容。</div></article>
+  </div>
+</section>

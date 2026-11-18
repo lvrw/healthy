@@ -1,0 +1,27 @@
+<svg viewBox="0 0 390 292" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="绿色卡通角色戴墨镜在泳池中放松；按截图风格重绘的示意插画，非原始数据截图。来源：截图复刻" preserveAspectRatio="xMidYMid slice">
+      <defs><linearGradient id="sw-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4F4EA"/><stop offset="1" stop-color="#D9F0E9"/></linearGradient></defs>
+      <rect width="390" height="292" fill="url(#sw-sky)"/>
+      <rect y="34" width="390" height="30" fill="#CDEBE3" opacity=".8"/><rect y="70" width="390" height="30" fill="#DDF3E7" opacity=".8"/>
+      <rect y="106" width="390" height="30" fill="#CBE9E6" opacity=".55"/><rect y="142" width="390" height="30" fill="#E1F3E6" opacity=".7"/>
+      <path d="M0 0h120v18c-18 12-42 20-70 14S8 20 0 14z" fill="#8FD0A5" opacity=".75"/>
+      <path d="M390 0H268v22c20 12 52 18 80 8s36-18 42-22z" fill="#8FD0A5" opacity=".75"/>
+      <path d="M0 0h60l-8 46 14 10-22 18-10-16 8-14-14-12z" fill="#A1DCB2" opacity=".8"/>
+      <path d="M390 0h-58l10 42-12 14 22 16 8-16-8-12 14-14z" fill="#A1DCB2" opacity=".8"/>
+      <ellipse cx="195" cy="250" rx="190" ry="62" fill="#F4F8F4"/>
+      <ellipse cx="205" cy="182" rx="128" ry="76" fill="#E7E2F8" opacity=".9"/>
+      <path d="M100 196a105 105 0 0 1 210 0z" fill="#F6F3FC" opacity=".75"/>
+      <path d="M120 196h170a85 85 0 0 0-170 0z" fill="#C9C1F0" opacity=".55"/>
+      <ellipse cx="196" cy="150" rx="92" ry="76" fill="#73C493"/>
+      <path d="M108 128c-14 6-18 26-10 40-14 2-22 16-16 28 6 12 24 12 34 4z" fill="#6ABB8B"/>
+      <path d="M276 158c22 6 34 26 30 44-8-8-20-10-30-6z" fill="#6ABB8B"/>
+      <ellipse cx="176" cy="176" rx="26" ry="30" fill="#8FD4A7" opacity=".55"/>
+      <path d="M131 118c22-10 44-8 58 0l-4 16c-16-8-36-8-52 2z" fill="#202A26"/>
+      <path d="M189 118c14-8 30-8 40-2l-6 18c-10-6-22-6-32 0z" fill="#202A26"/>
+      <path d="M171 122h18" stroke="#202A26" stroke-width="4"/>
+      <path d="M198 146c6 8 14 10 22 8" stroke="#2B3B31" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="188" cy="168" r="22" fill="#F4F8EF"/><circle cx="188" cy="168" r="16" fill="#DDEB9C" stroke="#9FBE6B" stroke-width="3"/>
+      <circle cx="188" cy="168" r="5" fill="#8AAF68"/>
+      <path d="M188 168l-26-18" stroke="#E8864F" stroke-width="5" stroke-linecap="round"/>
+      <rect x="240" y="126" width="18" height="18" rx="4" fill="#4B4A76" transform="rotate(12 249 135)"/>
+      <ellipse cx="360" cy="176" rx="24" ry="19" fill="#F2D3A0"/><circle cx="371" cy="166" r="8" fill="#F2D3A0"/><circle cx="373" cy="164" r="2" fill="#5B4A34"/>
+    </svg>

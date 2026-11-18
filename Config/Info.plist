@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>健康管理</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>读取 Apple Watch 与健康 App 中的睡眠、心率变异性、心率、呼吸、血氧、手腕温度、活动、步行与体能、日照、正念、心情、体重体脂、血压、血糖，以及喝水量与饮食营养（热量、碳水、蛋白质、脂肪、膳食纤维、糖、钠、咖啡因）数据，仅在你的设备上计算今日状态、身体年龄与压力评分。</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>将你在本 App 记录的喝水量、咖啡因摄入、食物识别出的膳食营养（热量、碳水、蛋白质、脂肪、膳食纤维、糖、钠）以及感受记录（心理状态）写回健康 App，使两侧数据保持一致；不会写入或修改其他健康数据。</string>
+	<key>NSCameraUsageDescription</key>
+	<string>用于拍照识别食物，照片仅在本地用于分析营养成分，不会上传到除你配置的 AI 服务之外的任何地方。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>用于从相册选择食物照片进行识别，图片仅在本地用于分析营养成分，不会上传到除你配置的 AI 服务之外的任何地方。</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+</dict>
+</plist>

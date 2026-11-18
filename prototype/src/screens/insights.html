@@ -1,0 +1,32 @@
+<section class="screen has-tabbar" id="screen-insights" data-screen="insights" aria-label="行动 · 洞察页面">
+  <header class="page-head">
+    <h1><button type="button" data-subtab="actions" aria-pressed="false" style="font:inherit;font-size:24px;font-weight:700;color:#A8AFAB">行动</button> <button type="button" data-subtab="insights" aria-pressed="true" style="font:inherit;font-weight:800;color:var(--ink)">洞察</button><span class="c-green" style="font-size:16px;vertical-align:top">✦</span></h1>
+  </header>
+  <article class="card">
+    <div class="card-head"><h2><i class="icon sm c-green" data-icon="ghost"></i> 智能建议</h2><button type="button" class="link-green" data-go="ai-chat">问问AI <i class="icon xs" data-icon="chevron-right"></i></button></div>
+    <p class="suggest" style="margin:0">过去60天里，你在"睡眠质量80分以上"方面做得不错；需要注意"高噪音"和"睡眠质量低于60分"对压力的影响。</p>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2>行动 v.s. 压力趋势 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="action-vs-stress" aria-label="行动与压力趋势说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="filter-row"><span>筛选</span><button type="button" class="filter-value" data-mock="筛选选项未在截图中提供">睡够7小时 <i class="icon xs" data-icon="sort"></i></button></div>
+    <div class="chart" data-series="insights-action-vs-stress-bars" data-chart="bars" data-height="150" data-values="55,38,72,44,66,50,78,42,60,36,70,48,82,40,58,62,45,74,52,68,38,60,50,72" data-colors="gray,gray,lavender,gray,gray,gray,gray,gray,green,gray,gray,gray,gray,gray,gray,gray,gray,orange,gray,gray,gray,gray,gray,gray" data-barwidth="5" data-max="100" data-labels="09|23|09|23|07" data-aria="过去 60 天行动与压力趋势对照柱状图"></div>
+    <div class="legend" style="justify-content:center;margin-top:2px"><span><i class="dot-status" style="background:#D6D9DC"></i> 符合筛选</span><span><i class="dot-status" style="background:#9FD8B3"></i> 不符合筛选</span></div>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2>关键行动 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="key-actions" aria-label="关键行动说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <div class="grid-2" style="margin-bottom:14px"><p class="small" style="margin:0;font-weight:650">积极行动</p><p class="tiny c-muted" style="margin:0;text-align:right">积极影响程度</p></div>
+    <button type="button" class="list-row" data-sheet="sleep-80"><i class="icon c-purple" data-icon="star"></i><span class="row-main"><span class="row-title">睡眠质量80分以上</span><span class="row-sub">9天</span></span><span class="impact green">小</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <div class="divider" style="margin:18px 0 10px"></div>
+    <div class="grid-2" style="margin-bottom:8px"><p class="small" style="margin:0;font-weight:650">消极行动</p><p class="tiny c-muted" style="margin:0;text-align:right">消极影响程度</p></div>
+    <button type="button" class="list-row" data-sheet="sleep-80"><i class="icon c-orange" data-icon="noise"></i><span class="row-main"><span class="row-title">高噪音</span><span class="row-sub">7天</span></span><span class="impact">大</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="sleep-80"><i class="icon c-orange" data-icon="bed"></i><span class="row-main"><span class="row-title">睡眠质量低于60分</span><span class="row-sub">11天</span></span><span class="impact">中</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="sleep-80"><i class="icon c-lav" data-icon="moon"></i><span class="row-main"><span class="row-title">晒太阳低于5分钟</span><span class="row-sub">11天</span></span><span class="impact">小</span><i class="icon chev" data-icon="chevron-right"></i></button>
+    <button type="button" class="list-row" data-sheet="sleep-80"><i class="icon c-orange" data-icon="clock"></i><span class="row-main"><span class="row-title">睡眠小于5小时</span><span class="row-sub">5天</span></span><span class="impact">小</span><i class="icon chev" data-icon="chevron-right"></i></button>
+  </article>
+  <article class="card">
+    <div class="card-head"><h2>感受趋势 <span class="pro">PRO</span> <button type="button" class="i-btn" data-sheet="feeling-trend" aria-label="感受趋势说明"><i class="icon" data-icon="info"></i></button></h2></div>
+    <p class="body-copy" style="margin:0">过去60天里，<br>你记录了 <strong>0天</strong> 感受</p>
+    <div class="feeling-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="empty-state" style="padding:6px 0 2px"><span class="empty-art" data-art="ill-empty-feeling" data-tone="mint"></span><strong>暂无感受记录</strong>积累足够数据后，我们会为你展示感受分析。</div>
+  </article>
+</section>

@@ -1,0 +1,543 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 71;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AE0000000000000000000010 /* HealthyWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000010 /* HealthyWatchApp.swift */; };
+		AE0000000000000000000011 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000011 /* AppEnvironment.swift */; };
+		AE0000000000000000000012 /* HealthTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000012 /* HealthTypes.swift */; };
+		AE0000000000000000000013 /* WatchHealthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000013 /* WatchHealthStore.swift */; };
+		AE0000000000000000000014 /* StressEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000014 /* StressEstimator.swift */; };
+		AE0000000000000000000015 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000015 /* DashboardView.swift */; };
+		AE0000000000000000000016 /* HRVView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000016 /* HRVView.swift */; };
+		AE0000000000000000000017 /* StressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000017 /* StressView.swift */; };
+		AE0000000000000000000018 /* WaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000018 /* WaterView.swift */; };
+		AE0000000000000000000019 /* CaffeineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000019 /* CaffeineView.swift */; };
+		AE0000000000000000000021 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD0000000000000000000021 /* Assets.xcassets */; };
+		BC0000000000000000000001 /* WaterWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000001 /* WaterWidget.swift */; };
+		BC0000000000000000000002 /* LogWaterIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000002 /* LogWaterIntent.swift */; };
+		BC0000000000000000000003 /* WaterShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000003 /* WaterShared.swift */; };
+		BC0000000000000000000004 /* WaterShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0000000000000000000003 /* WaterShared.swift */; };
+		BC0000000000000000000005 /* HealthyWatchWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BA0000000000000000000001 /* HealthyWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AC0000000000000000000001 /* HealthyWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthyWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD0000000000000000000010 /* HealthyWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthyWatchApp.swift; sourceTree = "<group>"; };
+		AD0000000000000000000011 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		AD0000000000000000000012 /* HealthTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthTypes.swift; sourceTree = "<group>"; };
+		AD0000000000000000000013 /* WatchHealthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHealthStore.swift; sourceTree = "<group>"; };
+		AD0000000000000000000014 /* StressEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StressEstimator.swift; sourceTree = "<group>"; };
+		AD0000000000000000000015 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		AD0000000000000000000016 /* HRVView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HRVView.swift; sourceTree = "<group>"; };
+		AD0000000000000000000017 /* StressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StressView.swift; sourceTree = "<group>"; };
+		AD0000000000000000000018 /* WaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterView.swift; sourceTree = "<group>"; };
+		AD0000000000000000000019 /* CaffeineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaffeineView.swift; sourceTree = "<group>"; };
+		AD0000000000000000000020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AD0000000000000000000021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetCatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BA0000000000000000000001 /* HealthyWatchWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HealthyWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0000000000000000000001 /* WaterWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterWidget.swift; sourceTree = "<group>"; };
+		BB0000000000000000000002 /* LogWaterIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogWaterIntent.swift; sourceTree = "<group>"; };
+		BB0000000000000000000003 /* WaterShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterShared.swift; sourceTree = "<group>"; };
+		BB0000000000000000000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB0000000000000000000005 /* HealthyWatchWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HealthyWatchWidget.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXContainerItemProxy section */
+		BH0000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE0000000000000000000001;
+			remoteInfo = HealthyWatchWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BF0000000000000000000004 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BC0000000000000000000005 /* HealthyWatchWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BH0000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE0000000000000000000001 /* HealthyWatchWidget */;
+			targetProxy = BH0000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AF0000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF0000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB0000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				AB0000000000000000000003 /* HealthyWatch */,
+				BD0000000000000000000001 /* HealthyWatchWidget */,
+				AB0000000000000000000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC0000000000000000000001 /* HealthyWatch.app */,
+				BA0000000000000000000001 /* HealthyWatchWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000003 /* HealthyWatch */ = {
+			isa = PBXGroup;
+			children = (
+				AB0000000000000000000004 /* App */,
+				AB0000000000000000000005 /* Health */,
+				AB0000000000000000000006 /* Views */,
+				AD0000000000000000000020 /* Info.plist */,
+				AD0000000000000000000021 /* Assets.xcassets */,
+			);
+			path = HealthyWatch;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AD0000000000000000000010 /* HealthyWatchApp.swift */,
+				AD0000000000000000000011 /* AppEnvironment.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000005 /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				AD0000000000000000000012 /* HealthTypes.swift */,
+				AD0000000000000000000013 /* WatchHealthStore.swift */,
+				AD0000000000000000000014 /* StressEstimator.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
+		AB0000000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AD0000000000000000000015 /* DashboardView.swift */,
+				AD0000000000000000000016 /* HRVView.swift */,
+				AD0000000000000000000017 /* StressView.swift */,
+				AD0000000000000000000018 /* WaterView.swift */,
+				AD0000000000000000000019 /* CaffeineView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BD0000000000000000000001 /* HealthyWatchWidget */ = {
+			isa = PBXGroup;
+			children = (
+				BB0000000000000000000001 /* WaterWidget.swift */,
+				BB0000000000000000000002 /* LogWaterIntent.swift */,
+				BB0000000000000000000003 /* WaterShared.swift */,
+				BB0000000000000000000004 /* Info.plist */,
+				BB0000000000000000000005 /* HealthyWatchWidget.entitlements */,
+			);
+			path = HealthyWatchWidget;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AF0000000000000000000001 /* HealthyWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AG0000000000000000000002 /* Build configuration list for PBXNativeTarget "HealthyWatch" */;
+			buildPhases = (
+				AF0000000000000000000002 /* Sources */,
+				AF0000000000000000000003 /* Frameworks */,
+				AF0000000000000000000004 /* Resources */,
+				BF0000000000000000000004 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BH0000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = HealthyWatch;
+			productName = HealthyWatch;
+			productReference = AC0000000000000000000001 /* HealthyWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BE0000000000000000000001 /* HealthyWatchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BG0000000000000000000003 /* Build configuration list for PBXNativeTarget "HealthyWatchWidget" */;
+			buildPhases = (
+				BF0000000000000000000001 /* Sources */,
+				BF0000000000000000000002 /* Frameworks */,
+				BF0000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HealthyWatchWidget;
+			productName = HealthyWatchWidget;
+			productReference = BA0000000000000000000001 /* HealthyWatchWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					AF0000000000000000000001 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+					BE0000000000000000000001 = {
+						CreatedOnToolsVersion = 27.2;
+					};
+				};
+			};
+			buildConfigurationList = AG0000000000000000000001 /* Build configuration list for PBXProject "HealthyWatch" */;
+			compatibilityVersion = "Xcode 16.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AB0000000000000000000001;
+			productRefGroup = AB0000000000000000000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AF0000000000000000000001 /* HealthyWatch */,
+				BE0000000000000000000001 /* HealthyWatchWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AF0000000000000000000004 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE0000000000000000000021 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF0000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AF0000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE0000000000000000000010 /* HealthyWatchApp.swift in Sources */,
+				AE0000000000000000000011 /* AppEnvironment.swift in Sources */,
+				AE0000000000000000000012 /* HealthTypes.swift in Sources */,
+				AE0000000000000000000013 /* WatchHealthStore.swift in Sources */,
+				AE0000000000000000000014 /* StressEstimator.swift in Sources */,
+				AE0000000000000000000015 /* DashboardView.swift in Sources */,
+				AE0000000000000000000016 /* HRVView.swift in Sources */,
+				AE0000000000000000000017 /* StressView.swift in Sources */,
+				AE0000000000000000000018 /* WaterView.swift in Sources */,
+				AE0000000000000000000019 /* CaffeineView.swift in Sources */,
+				BC0000000000000000000004 /* WaterShared.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF0000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC0000000000000000000001 /* WaterWidget.swift in Sources */,
+				BC0000000000000000000002 /* LogWaterIntent.swift in Sources */,
+				BC0000000000000000000003 /* WaterShared.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AG0000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AG0000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		AG0000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HealthyWatch/HealthyWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CM5UZP3C76;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HealthyWatch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rw.healthy.watch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		AG0000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HealthyWatch/HealthyWatch.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CM5UZP3C76;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HealthyWatch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rw.healthy.watch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		BG0000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = HealthyWatchWidget/HealthyWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CM5UZP3C76;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HealthyWatchWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rw.healthy.watch.waterwidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		BG0000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = HealthyWatchWidget/HealthyWatchWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CM5UZP3C76;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HealthyWatchWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.rw.healthy.watch.waterwidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AG0000000000000000000001 /* Build configuration list for PBXProject "HealthyWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AG0000000000000000000003 /* Debug */,
+				AG0000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AG0000000000000000000002 /* Build configuration list for PBXNativeTarget "HealthyWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AG0000000000000000000005 /* Debug */,
+				AG0000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BG0000000000000000000003 /* Build configuration list for PBXNativeTarget "HealthyWatchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BG0000000000000000000001 /* Debug */,
+				BG0000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AA0000000000000000000001 /* Project object */;
+}
