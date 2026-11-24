@@ -95,6 +95,8 @@ enum NutritionEngine {
     /// 膳食纤维与蛋白质按达标比例加分；任一核心指标明显偏高时施加硬上限，
     /// 避免优质营养素或低咖啡因把不健康饮食抬成高分。
     /// `share` 为全天参考值的占比：全天传 1，单餐传 MealSlot.energyShare。
+    /// 咖啡因在一天内集中摄入，单餐可用 `caffeineLimitOverride` 指定与全天相同的日上限，
+    /// 不随餐次能量占比缩放（否则早上第一杯咖啡就会撞上 50mg 的单餐阈值）。
     /// 任一核心指标都没有数据时返回 nil，由加权平均自动忽略。
     static func dietQuality(
         saturatedFat: Double?,
@@ -106,6 +108,7 @@ enum NutritionEngine {
         caffeine: Double?,
         share: Double,
         proteinTargetOverride: Double? = nil,
+        caffeineLimitOverride: Double? = nil,
         config: ScoringConfig
     ) -> Double? {
         guard saturatedFat != nil || fat != nil || carbs != nil || sugar != nil else { return nil }
@@ -116,7 +119,7 @@ enum NutritionEngine {
         let sugarLimit = config.nutritionSugarLimitG * share
         let fiberTarget = config.nutritionFiberTargetG * share
         let proteinTarget = proteinTargetOverride ?? config.nutritionProteinTargetG * share
-        let caffeineLimit = config.nutritionCaffeineLimitMg * share
+        let caffeineLimit = caffeineLimitOverride ?? config.nutritionCaffeineLimitMg * share
 
         // 及格线即基础分：不超标、无加分时刚好及格；纤维与蛋白各加 15 分达到优秀线。
         var score = config.nutritionPassingScore

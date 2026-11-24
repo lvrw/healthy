@@ -30,6 +30,8 @@ struct MetricCardTrailing: View {
     let score: Double?
     let tint: Color
     var showsDetail: Bool = false
+    /// 数据不全被跳过时的角标文案；仅在无评分时显示。
+    var skipLabel: String? = nil
 
     var body: some View {
         HStack(spacing: 6) {
@@ -38,6 +40,10 @@ struct MetricCardTrailing: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(tint)
                     .monospacedDigit()
+            } else if let skipLabel {
+                Text(skipLabel)
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.orange)
             }
             if showsDetail {
                 Image(systemName: "chevron.right")
@@ -59,6 +65,8 @@ struct ComponentCard: View {
     var footnote: String? = nil
     /// 首页整卡可点进详情页时显示右侧箭头。
     var showsDetail: Bool = false
+    /// 数据不全被跳过时的角标文案；无评分时替代分数显示。
+    var skipLabel: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -66,8 +74,10 @@ struct ComponentCard: View {
                 title: title,
                 icon: icon,
                 tint: tint,
-                trailing: (score != nil || showsDetail)
-                    ? AnyView(MetricCardTrailing(score: score, tint: tint, showsDetail: showsDetail))
+                trailing: (score != nil || skipLabel != nil || showsDetail)
+                    ? AnyView(MetricCardTrailing(
+                        score: score, tint: tint, showsDetail: showsDetail, skipLabel: skipLabel
+                    ))
                     : nil
             )
             VStack(alignment: .leading, spacing: 6) {

@@ -182,6 +182,8 @@ enum IntakeQuickActionStore {
     static let waterAmountRange: ClosedRange<Double> = 1...5_000
     static let caffeineAmountRange: ClosedRange<Double> = 1...1_000
     static let nutritionRange: ClosedRange<Double> = 0...500
+    /// 含水量单独放宽：大杯饮品（642 ml 可乐含水约 595 ml）会超过宏量营养的 500 上限。
+    static let waterIntakeRange: ClosedRange<Double> = 0...2_000
 
     static func key(for kind: String) -> String {
         "healthy.intake.quickActions.\(kind)"
@@ -288,7 +290,7 @@ enum IntakeQuickActionStore {
                 nutrition.carbsG = IntakeGoal.clamp(nutrition.carbsG, in: nutritionRange)
                 nutrition.proteinG = IntakeGoal.clamp(nutrition.proteinG, in: nutritionRange)
                 nutrition.fatG = IntakeGoal.clamp(nutrition.fatG, in: nutritionRange)
-                nutrition.waterMl = IntakeGoal.clamp(nutrition.waterMl, in: nutritionRange)
+                nutrition.waterMl = IntakeGoal.clamp(nutrition.waterMl, in: waterIntakeRange)
                 action.nutrition = nutrition
             }
             if action.id.isEmpty || seen.contains(action.id) {

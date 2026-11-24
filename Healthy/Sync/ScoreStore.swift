@@ -14,6 +14,8 @@ enum ScoreStore {
         let dayKey: String
         let date: Date
         let snapshot: DailySnapshot
+        /// 当天被用户手动标记为不全的数据源；评分时对应分量直接跳过。
+        let manualIncomplete: Set<MetricSource>
     }
 
     /// 后台纯计算的输出：只带回需要落库的字段，不跨线程传递引擎结果对象。
@@ -26,6 +28,8 @@ enum ScoreStore {
         let stressComponentsJSON: String?
         let completeness: Int
         let missing: String
+        /// 被跳过的评分项（自动不全 + 手动标记）编码后的 JSON。
+        let skippedJSON: String?
         let baselineDays: Int
         let confidenceRaw: String
     }
@@ -67,7 +71,12 @@ enum ScoreStore {
         guard !rows.isEmpty else { return }
 
         let inputs = rows.map {
-            DayInput(dayKey: $0.dayKey, date: $0.date, snapshot: $0.snapshot)
+            DayInput(
+                dayKey: $0.dayKey,
+                date: $0.date,
+                snapshot: $0.snapshot,
+                manualIncomplete: IncompleteSourceMarker.markedSources(for: $0.dayKey)
+            )
         }
         let computed = await Task.detached(priority: .utility) {
             computeAll(inputs: inputs, calendar: calendar, now: now)
@@ -116,6 +125,10 @@ enum ScoreStore {
                 score.missing = item.missing
                 rowChanged = true
             }
+            if score.skippedJSON != item.skippedJSON {
+                score.skippedJSON = item.skippedJSON
+                rowChanged = true
+            }
             if score.baselineDays != item.baselineDays {
                 score.baselineDays = item.baselineDays
                 rowChanged = true
@@ -155,10 +168,12 @@ enum ScoreStore {
                 for: input.date, today: today, history: history, now: now, calendar: calendar
             )
             let readiness = ReadinessEngine.evaluate(
-                today: today, history: history, calendar: calendar, context: dayContext
+                today: today, history: history, calendar: calendar, context: dayContext,
+                manualIncomplete: input.manualIncomplete
             )
             let stress = StressEngine.evaluate(
-                today: today, history: history, calendar: calendar, context: dayContext
+                today: today, history: history, calendar: calendar, context: dayContext,
+                manualIncomplete: input.manualIncomplete
             )
 
             result.append(
@@ -171,6 +186,7 @@ enum ScoreStore {
                     stressComponentsJSON: encode(stress.components),
                     completeness: readiness.completeness,
                     missing: readiness.missing.map(\.label).joined(separator: "、"),
+                    skippedJSON: encode(readiness.skipped),
                     baselineDays: readiness.baselineDays,
                     confidenceRaw: readiness.confidence.rawValue
                 )

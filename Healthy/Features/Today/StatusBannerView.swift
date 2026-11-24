@@ -12,7 +12,7 @@ struct StatusBannerView: View {
     var confidenceRaw: String? = nil
     /// 原型 hero 文案右侧的 ⓘ 按钮，用于打开「压力水平」说明弹层。
     var onInfo: (() -> Void)? = nil
-    /// 简介整块可点进入详情时，在问候语右侧显示箭头提示。
+    /// 简介整块可点进入详情时，在状态区最下方显示向下箭头。
     var showsChevron: Bool = false
     var style: StatusBannerStyle = .inline
 
@@ -91,6 +91,13 @@ struct StatusBannerView: View {
                 }
             }
             .padding(.top, 2)
+            // 整块可点进详情的提示放在最下方，避免箭头挤在问候语后面。
+            if showsChevron {
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(AppPalette.ink4)
+                    .accessibilityHidden(true)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 8)
@@ -109,11 +116,6 @@ struct StatusBannerView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("查看压力水平说明")
-            }
-            if showsChevron {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(AppPalette.ink4)
             }
         }
     }

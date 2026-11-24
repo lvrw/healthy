@@ -9,28 +9,38 @@ enum FoodRecognitionService {
     /// 给视觉模型的系统提示：只输出一个 JSON 对象，字段覆盖苹果健康「营养摄入」全部 40 项。
     /// 模板与单位说明都由 NutritionField 单一数据源生成，避免漏项 / 单位写错。
     static let systemPrompt = """
-    你是一个食物营养识别助手。用户会提供一张食物照片（可能没有）和/或一句文字描述。
-    请识别其中的食物，并估算每一项的营养成分。只依据可见/描述的内容，不要编造。
+    你是一个食物营养识别助手。用户会提供一张或多张食物照片（可能没有）和/或一句文字描述。
+    请识别其中所有的食物（多张图片里的食物都要列出，不要遗漏），并估算每一项的营养成分。只依据可见/描述的内容，不要编造。
     用简体中文输出一个 JSON 对象（不要 Markdown 代码块），结构严格如下：
     \(NutritionField.aiJSONTemplate)
     每一项食物都必须包含上面全部 \(NutritionField.allCases.count) 个数值字段；无法判断、
     或该食物不含某项时一律填 0，禁止省略字段、写 null 或写字符串。
     字段单位：\(NutritionField.aiUnitDescription)。数值均为该份量（portion）的含量。
+    估算原则（务必遵守，直接决定结果是否可信）：
+    - 份量按「实际吃进去的可食用重量 / 体积」估，不要按生重或净菜重低估。参考锚点：一份冒菜 / 麻辣烫（含汤与油）约 500–800g、一份炒饭 / 炒面约 350–500g、一碗米饭约 150–200g、一份普通炒菜约 250–400g、中杯咖啡约 350–450ml；可借助照片里的碗 / 盒 / 瓶作参照。
+    - 不要只累加可见食材的原生热量：餐馆菜 / 外卖的热量常主要来自烹饪油、红油、酱料、糖和汤底。这类即使照片看不清也必须按常规用量计入，例如一份红汤冒菜通常含 40–70g 油（每 10g 油约 90 kcal），不能填 0。
+    - 「不要编造」只针对不存在的食材；必然存在的油 / 调料 / 汤底要按标准用量估算并计入热量与脂肪。
+    - 对能量与主要营养素（碳水 / 蛋白质 / 脂肪 / 纤维 / 糖 / 钠）要按该类食物的典型成分给估算值，不要因为照片无法精确判断就填 0；只有确实不含或含量极微时才填 0。
+    - energyKcal 必须与三大营养素自洽：约等于 carbsG×4 + proteinG×4 + fatG×9（允许 ±20% 偏差），不要出现「脂肪 30g 却只有 200 kcal」这类矛盾；若差距明显，优先按更完整的一项修正。
     portion 只写「数字 + 实际单位」，单位按食物实际形态来：固体用 g（如 150g、300g）、饮品用 ml（如 330ml、500ml）、大瓶装可用 L；不要写「1 碗」「1 份」这类数量词，也不要把 ml 写成 g。
+    饮品（咖啡、茶、可乐、果汁、牛奶、豆浆等）必须填写 waterMl：按整杯容量估算含水量（纯水等于容量，咖啡 / 茶 / 可乐 / 果汁约为容量的 90%）；
+    含咖啡因的饮品（咖啡、茶、可乐、能量饮料）还必须填写 caffeineMg，不含咖啡因的饮品填 0。
     若没有任何可识别食物，返回 {"items":[]}。
     """
 
     /// 统一入口：根据开关决定走 AI 还是本地匹配。
+    /// - parameter images: 一张或多张食物照片（可为空）；视觉模型一起分析，本地模式忽略。
     /// - parameter custom: 用户自定义 / 分组 / 常用食物（来自本地营养库）。AI 模式下用于「本地优先校准」，
     ///   本地匹配模式下用于文字匹配。
-    static func recognize(image: Data?, description: String, custom: [FoodItem] = []) async throws -> RecognizedMeal {
+    static func recognize(images: [Data], description: String, custom: [FoodItem] = []) async throws -> RecognizedMeal {
         if FoodRecognitionSettings.isAIEnabled {
-            return try await recognizeWithAI(image: image, description: description, custom: custom)
+            return try await recognizeWithAI(images: images, description: description, custom: custom)
         }
         return recognizeLocal(text: description, custom: custom)
     }
 
     /// 本地营养库匹配：内置库 + 用户自定义食物一起按文字匹配。拍照在此模式下只作参考，不参与识别。
+    /// 命中的饮品会再由 `DrinkIntakeEstimator` 补上水量与咖啡因（库里多数饮品只登记了热量与三大营养素）。
     static func recognizeLocal(text: String, custom: [FoodItem] = []) -> RecognizedMeal {
         let items = FoodDatabase.match(text, custom: custom).map { food -> MealItem in
             let portion = FoodDatabase.parsePortion(from: food.portion)
@@ -42,13 +52,18 @@ enum FoodRecognitionService {
                 imageURL: food.imageURL
             )
         }
-        return RecognizedMeal(items: items, source: .local, rawDescription: text)
+        return RecognizedMeal(
+            items: DrinkIntakeEstimator.applying(to: items),
+            source: .local,
+            rawDescription: text
+        )
     }
 
     /// AI 识别：调用配置好的视觉模型。
+    /// - parameter images: 一张或多张食物照片；视觉模型一次分析全部（如不同角度 / 多个菜品）。
     /// - parameter custom: 本地营养库（自定义 / 分组 / 常用）。识别完成后，凡能在本地库按名称/关键词命中的食物，
     ///   其营养与份量一律以本地库为准（本地优先），保证用户维护数据的权威性。
-    static func recognizeWithAI(image: Data?, description: String, custom: [FoodItem] = []) async throws -> RecognizedMeal {
+    static func recognizeWithAI(images: [Data], description: String, custom: [FoodItem] = []) async throws -> RecognizedMeal {
         let settings = LLMSettingsStore.load()
         guard let key = KeychainStore().read(account: settings.provider.rawValue), !key.isEmpty else {
             throw FoodRecognitionError.noAPIKey
@@ -63,23 +78,24 @@ enum FoodRecognitionService {
         // 纯文本模型（如 deepseek-v4-pro）不接受多模态 content，
         // 有文字描述时降级为纯文字估算，只有照片时明确报错，避免发出必然失败的请求。
         let supportsVision = LLMClient.supportsVision(configuration)
-        let usableImage = supportsVision ? image : nil
-        if image != nil, !supportsVision, trimmedDescription.isEmpty {
+        let usableImages = supportsVision ? images : []
+        if !images.isEmpty, !supportsVision, trimmedDescription.isEmpty {
             throw FoodRecognitionError.notSupported
         }
-        let notice = (image != nil && !supportsVision)
+        let notice = (!images.isEmpty && !supportsVision)
             ? "当前模型（\(settings.model)）不支持图片输入，本次仅按文字描述估算。"
             : nil
 
+        let photoPhrase = images.count > 1 ? "这 \(images.count) 张图片" : "这张图片"
         let userText: String
-        switch (usableImage, trimmedDescription.isEmpty) {
-        case (.some, true):
-            userText = "请识别这张图片中的食物并估算营养成分。"
-        case (.some, false):
-            userText = "请根据图片和文字描述识别食物并估算营养成分。用户描述：\(trimmedDescription)"
-        case (.none, _):
+        switch (usableImages.isEmpty, trimmedDescription.isEmpty) {
+        case (false, true):
+            userText = "请识别\(photoPhrase)中的食物并估算营养成分。"
+        case (false, false):
+            userText = "请根据\(photoPhrase)和文字描述识别食物并估算营养成分。用户描述：\(trimmedDescription)"
+        case (true, _):
             userText = trimmedDescription.isEmpty
-                ? "请识别这张图片中的食物并估算营养成分。"
+                ? "请识别图片中的食物并估算营养成分。"
                 : "请根据文字描述识别食物并估算营养成分。用户描述：\(trimmedDescription)"
         }
 
@@ -87,7 +103,7 @@ enum FoodRecognitionService {
             configuration: configuration,
             system: systemPrompt,
             userText: userText,
-            images: usableImage.map { [$0] } ?? [],
+            images: usableImages,
             maxTokens: 3000
         )
         let items = try parseAIResponse(content)
@@ -99,7 +115,9 @@ enum FoodRecognitionService {
             finalNotice = finalNotice.map { $0 + " " + msg } ?? msg
         }
         return RecognizedMeal(
-            items: calibrated,
+            // 本地库校准后再补水量 / 咖啡因：库里饮品正是这两项为 0，
+            // 校准会覆盖 AI 给出的值，所以必须放在校准之后。
+            items: DrinkIntakeEstimator.applying(to: calibrated),
             source: .ai,
             rawDescription: description,
             notice: finalNotice

@@ -757,13 +757,13 @@ actor HealthKitService {
 
     /// 一条打卡涉及的 HealthKit 类型：喝水只有主样本；咖啡因饮品带完整营养成分
     /// （能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠）；
-    /// 一顿饭写回同样的 7 类膳食样本。
+    /// 一顿饭写回 7 类膳食样本 + 水 + 咖啡因（饮食里匹配到的饮品要带出含水量与咖啡因）。
     private func relatedQuantityTypes(for kind: String) -> [HKQuantityType] {
         if kind == SyncableCheckInKind.caffeine.rawValue {
             return [HealthKitTypes.dietaryCaffeine] + HealthKitTypes.mealWriteTypes
         }
         if kind == "meal" {
-            return HealthKitTypes.mealWriteTypes
+            return HealthKitTypes.mealSampleTypes
         }
         return [quantityType(for: kind)]
     }
@@ -927,21 +927,31 @@ actor HealthKitService {
 
     // MARK: - 食物识别写回
 
-    /// 膳食 7 类样本的写入权限是否都已授予（拒绝写入不影响只读同步）。
+    /// 膳食 7 类 + 水 + 咖啡因样本的写入权限是否都已授予（拒绝写入不影响只读同步）。
     func canWriteMeal() -> Bool {
         guard HKHealthStore.isHealthDataAvailable() else { return false }
-        return HealthKitTypes.mealWriteTypes.allSatisfy {
+        return HealthKitTypes.mealSampleTypes.allSatisfy {
             store.authorizationStatus(for: $0) == .sharingAuthorized
         }
     }
 
-    /// 单顿饭即时写回：同一 syncID 已存在且 7 项值一致时幂等跳过。
+    /// 单顿饭即时写回：同一 syncID 已存在且 9 项值一致时幂等跳过。
+    /// 编辑饮食记录改了营养 / 水量 / 咖啡因 / 用餐时间时，会先删旧样本再写新值，
+    /// 保证健康 App 里的数值与本机记录一致。
     @discardableResult
+    /// 一顿饭实际要写的样本类型：只有存在「单独饮用的饮品」时才写水样本。
+    /// 没有饮品时跳过水，避免为饭菜本身含水量在健康 App 里创建一条多余条目。
+    private static func mealSampleTypes(for nutrition: IntakeNutrition) -> [HKQuantityType] {
+        let types = HealthKitTypes.mealSampleTypes
+        if nutrition.waterMl > 0 { return types }
+        return types.filter { $0 != HealthKitTypes.dietaryWater }
+    }
+
     func saveMeal(_ record: MealSyncRecord) async throws -> Bool {
         guard canWriteMeal() else { throw HealthKitError.writeAuthorizationRequired }
         let written = try await allWrittenSamples(kind: record.kind, syncID: record.syncID)
         let remote = remoteMealSamples(from: written)
-        let expectedCount = HealthKitTypes.mealWriteTypes.count
+        let expectedCount = Self.mealSampleTypes(for: record.nutrition).count
         if remote.count == 1,
            let existing = remote.first,
            MealSyncReconciler.matches(existing, record),
@@ -1066,7 +1076,7 @@ actor HealthKitService {
         return plan
     }
 
-    /// 把 7 类膳食样本按 syncID 聚合为 MealSyncSample（同一组共享 syncID / 来源）。
+    /// 把 9 类样本（7 膳食 + 水 + 咖啡因）按 syncID 聚合为 MealSyncSample（同一组共享 syncID / 来源）。
     private func remoteMealSamples(from samples: [HKQuantitySample]) -> [MealSyncSample] {
         var bySyncID: [String: [HKQuantitySample]] = [:]
         for sample in samples {
@@ -1093,6 +1103,8 @@ actor HealthKitService {
                 case HealthKitTypes.dietaryFiber: nutrition.fiberG = value
                 case HealthKitTypes.dietarySugar: nutrition.sugarG = value
                 case HealthKitTypes.dietarySodium: nutrition.sodiumMg = value
+                case HealthKitTypes.dietaryWater: nutrition.waterMl = value
+                case HealthKitTypes.dietaryCaffeine: nutrition.caffeineMg = value
                 default: break
                 }
                 if sample.quantityType == HealthKitTypes.dietaryEnergy {
@@ -1115,6 +1127,8 @@ actor HealthKitService {
 
     /// 7 类膳食样本各自的取值：能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠。
     /// 饮品与一顿饭共用同一口径，避免两处写回字段不一致。
+    /// 9 类膳食样本各自的取值：能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠 / 水 / 咖啡因。
+    /// 饮品与一顿饭共用同一口径，避免两处写回字段不一致。
     private static func nutritionValue(for type: HKQuantityType, in nutrition: IntakeNutrition) -> Double {
         switch type {
         case HealthKitTypes.dietaryEnergy: return nutrition.energyKcal
@@ -1124,6 +1138,8 @@ actor HealthKitService {
         case HealthKitTypes.dietaryFiber: return nutrition.fiberG
         case HealthKitTypes.dietarySugar: return nutrition.sugarG
         case HealthKitTypes.dietarySodium: return nutrition.sodiumMg
+        case HealthKitTypes.dietaryWater: return nutrition.waterMl
+        case HealthKitTypes.dietaryCaffeine: return nutrition.caffeineMg
         default: return 0
         }
     }
@@ -1156,7 +1172,7 @@ actor HealthKitService {
                     metadata: metadata
                 )
             }
-            return HealthKitTypes.mealWriteTypes.map { type in
+            return Self.mealSampleTypes(for: record.nutrition).map { type in
                 make(type, Self.nutritionValue(for: type, in: record.nutrition))
             }
         }

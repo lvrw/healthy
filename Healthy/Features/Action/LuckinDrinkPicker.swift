@@ -6,13 +6,13 @@ import SwiftUI
 /// 不占用「设置 → 快捷按键」里可编辑的 6 个名额。
 struct LuckinQuickActionButton: View {
     let tint: Color
-    let onSelect: (LuckinDrink) -> Void
-
-    @State private var showsPicker = false
+    /// 呈现状态由打卡页持有：按钮位于 LazyVGrid 中，键盘弹出时会随网格重建，
+    /// 若状态放在按钮自身，重建后归 false 会让选择弹窗被关掉。
+    @Binding var isPresented: Bool
 
     var body: some View {
         Button {
-            showsPicker = true
+            isPresented = true
         } label: {
             VStack(spacing: 2) {
                 HStack(spacing: 4) {
@@ -32,9 +32,42 @@ struct LuckinQuickActionButton: View {
             .background(tint, in: Capsule())
         }
         .buttonStyle(.plain)
-        .sheet(isPresented: $showsPicker) {
-            LuckinDrinkPickerView(onSelect: onSelect)
+    }
+}
+
+/// 产品选择弹窗共用的搜索栏。
+/// 不用 SwiftUI `.searchable`：选择器是「打卡 sheet 里再弹一层 sheet」，
+/// 系统 UISearchController 挂在这层 NavigationStack 上时点击不弹键盘（2026-11-23 实机复现）；
+/// 普通 TextField 在 sheet 内可正常成为第一响应者，行为与补充食材弹窗的搜索框一致。
+struct DrinkSearchField: View {
+    let prompt: String
+    @Binding var text: String
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(.secondary)
+            TextField(prompt, text: $text)
+                .font(.subheadline)
+                .textFieldStyle(.plain)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+            if !text.isEmpty {
+                Button { text = "" } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("清空搜索")
+            }
         }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
 }
 
@@ -50,49 +83,52 @@ struct LuckinDrinkPickerView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    Text("数据来自瑞幸咖啡官网产品公示（2026-11-18 复核，共 \(LuckinCatalog.drinks.count) 款），为推荐点单配置下的每杯值。标「≈」的为推算值（官网未公示，参考同系列公示产品或公开测评）；选中后咖啡因、热量 / 蛋白质与杯容量随本次打卡一并写入。")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                ForEach(groups) { group in
-                    Section(group.category) {
-                        ForEach(group.drinks) { drink in
-                            Button {
-                                onSelect(drink)
-                                dismiss()
-                            } label: {
-                                HStack(spacing: 12) {
-                                    FoodRemoteIcon(imageURL: drink.imageURL, fallbackSymbol: "cup.and.saucer.fill")
-                                    VStack(alignment: .leading, spacing: 3) {
-                                        Text(drink.name)
-                                            .font(.subheadline.weight(.medium))
-                                        Text(Self.subtitle(for: drink))
+            VStack(spacing: 0) {
+                // 固定搜索栏（不随列表滚动）：sheet 内用普通 TextField，点击可正常弹键盘。
+                DrinkSearchField(prompt: "搜索瑞幸产品", text: $query)
+                List {
+                    Section {
+                        Text("数据来自瑞幸咖啡官网产品公示（2026-11-18 复核，共 \(LuckinCatalog.drinks.count) 款），为推荐点单配置下的每杯值。标「≈」的为推算值（官网未公示，参考同系列公示产品或公开测评）；选中后咖啡因、热量 / 蛋白质与杯容量随本次打卡一并写入。")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    ForEach(groups) { group in
+                        Section(group.category) {
+                            ForEach(group.drinks) { drink in
+                                Button {
+                                    onSelect(drink)
+                                    dismiss()
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        FoodRemoteIcon(imageURL: drink.imageURL, fallbackSymbol: "cup.and.saucer.fill")
+                                        VStack(alignment: .leading, spacing: 3) {
+                                            Text(drink.name)
+                                                .font(.subheadline.weight(.medium))
+                                            Text(Self.subtitle(for: drink))
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                        }
+                                        Spacer(minLength: 8)
+                                        Text(Self.caffeineLabel(for: drink))
+                                            .font(.caption.weight(.semibold))
+                                            .monospacedDigit()
+                                            .foregroundStyle(drink.caffeineMg > 0 ? Color(red: 0.663, green: 0.455, blue: 0.310) : Color.secondary)
+                                        Image(systemName: "chevron.right")
                                             .font(.caption)
-                                            .foregroundStyle(.secondary)
+                                            .foregroundStyle(.tertiary)
                                     }
-                                    Spacer(minLength: 8)
-                                    Text(Self.caffeineLabel(for: drink))
-                                        .font(.caption.weight(.semibold))
-                                        .monospacedDigit()
-                                        .foregroundStyle(drink.caffeineMg > 0 ? Color(red: 0.663, green: 0.455, blue: 0.310) : Color.secondary)
-                                    Image(systemName: "chevron.right")
-                                        .font(.caption)
-                                        .foregroundStyle(.tertiary)
+                                    .contentShape(Rectangle())
                                 }
-                                .contentShape(Rectangle())
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                 }
-            }
-            .listStyle(.insetGrouped)
-            .searchable(text: $query, prompt: "搜索瑞幸产品")
-            .overlay {
-                if groups.isEmpty {
-                    ContentUnavailableView.search(text: query)
+                .listStyle(.insetGrouped)
+                .overlay {
+                    if groups.isEmpty {
+                        ContentUnavailableView.search(text: query)
+                    }
                 }
             }
             .navigationTitle("瑞幸咖啡")
@@ -120,6 +156,11 @@ struct LuckinDrinkPickerView: View {
     private static func subtitle(for drink: LuckinDrink) -> String {
         let kcal = drink.nutrition.energyKcal
         let energy = kcal > 0 ? "\(Int(kcal.rounded())) 千卡" : "热量未公示"
-        return "\(energy) · \(Int(drink.waterMl)) ml"
+        // 列表副标题只展示杯容量（来自 portion）；waterMl 是按成分折算的含水量，
+        // 仅在打卡联动喝水时使用，不在这里展示，避免把两个口径混在一起。
+        let portion = FoodDatabase.parsePortion(from: drink.portion)
+        let volume = portion.unit.lowercased() == "ml" ? Int(portion.amount.rounded()) : 0
+        guard volume > 0 else { return energy }
+        return "\(energy) · \(volume) ml"
     }
 }

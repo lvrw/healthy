@@ -116,8 +116,9 @@ enum WaterMerge {
             datesByDay[key] = min(datesByDay[key] ?? record.date, record.date)
         }
 
-        // 食物识别：按天聚合营养。咖啡因随识别结果一起进入评分总量；
-        // 其余指标只留本地记录，健康 App 回写仍走 MealSyncReconciler 的 7 类样本。
+        /// 食物识别：按天聚合营养。咖啡因随识别结果一起进入评分总量；
+        // 其余指标只留本地记录，健康 App 回写仍走 MealSyncReconciler 的 9 类样本
+        //（7 类膳食营养 + 水 + 咖啡因）。
         let meals = try mealRecords(in: context)
         var mealEnergy: [String: Double] = [:]
         var mealCarbs: [String: Double] = [:]
@@ -127,6 +128,8 @@ enum WaterMerge {
         var mealSugar: [String: Double] = [:]
         var mealSodium: [String: Double] = [:]
         var mealCaffeine: [String: Double] = [:]
+        // 只有「单独饮用的饮品」的水并入当日饮水总量；饭菜 / 固体食物本身的水不记。
+        var mealWater: [String: Double] = [:]
         for meal in meals {
             let key = DayKey.key(for: meal.date, calendar: calendar)
             mealEnergy[key, default: 0] += meal.nutrition.energyKcal
@@ -138,6 +141,17 @@ enum WaterMerge {
             mealSodium[key, default: 0] += meal.nutrition.sodiumMg
             mealCaffeine[key, default: 0] += meal.nutrition.caffeineMg
             datesByDay[key] = min(datesByDay[key] ?? meal.date, meal.date)
+        }
+        // 按逐样食材过滤饮水：按克记的饭菜（咖啡蛋糕、茶叶蛋、水煮鱼…）即使名字里有饮品词，
+        // 或营养字段里残留了食物含水量，都不计入饮水；旧记录无分项时用 mealItemsForDisplay 兜底。
+        let mealChecksForWater = try context.fetch(
+            FetchDescriptor<ActionCheckIn>(predicate: #Predicate<ActionCheckIn> { $0.kindRaw == "meal" })
+        )
+        for check in mealChecksForWater {
+            let key = DayKey.key(for: check.createdAt, calendar: calendar)
+            for item in check.mealItemsForDisplay where DrinkIntakeEstimator.isDrink(item) {
+                mealWater[key, default: 0] += item.perPortion.waterMl
+            }
         }
 
         // 餐次 / 每餐评分 / 规律饮食：按打卡时间归类，规律判断需要近 7 天数据，
@@ -206,7 +220,7 @@ enum WaterMerge {
             row.localWaterMl = localWater
             row.localCaffeineMg = localCaffeine
 
-            let waterTotal = (row.externalWaterMl ?? 0) + (localWater ?? 0)
+            let waterTotal = (row.externalWaterMl ?? 0) + (localWater ?? 0) + (mealWater[key] ?? 0)
             row.waterTotalMl = waterTotal > 0 ? waterTotal : nil
             // dietaryCaffeineMg 是评分/AI/展示统一消费的「合并总量」：
             // 健康 App 外部量 + 本 App 咖啡因打卡 + 食物识别附带的咖啡因。
@@ -265,7 +279,10 @@ enum WaterMerge {
                 row.mealRegularityScore = nil
             }
 
+            // 饮食记录只带水量（纯水 / 无糖饮品）也算营养维度的数据源，
+            // 否则当天会出现「有饮水量却没有营养数据」的空档。
             if localWater != nil || localCaffeine != nil || newMeal.hasAny
+                || (mealWater[key] ?? 0) > 0 || (mealCaffeine[key] ?? 0) > 0
                 || row.externalWaterMl != nil || row.externalCaffeineMg != nil {
                 row.sourceFlags |= MetricSource.nutrition.rawValue
             }

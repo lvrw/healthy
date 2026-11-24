@@ -1,7 +1,15 @@
 import Foundation
 
 enum ScoreSupport {
-    static func availableSources(_ today: DailySnapshot) -> (count: Int, missing: [MetricSource]) {
+    /// 判定当天各数据源是否有可用读数。
+    /// - Parameters:
+    ///   - today: 当天快照。
+    ///   - history: 今天之前的历史快照；体能身体里的 VO2max、体重等属于稀疏读数，
+    ///     允许取近 28 天最近一次记录，与评分分量的取值窗口保持一致。
+    static func availableSources(
+        _ today: DailySnapshot,
+        history: [DailySnapshot]
+    ) -> (count: Int, missing: [MetricSource]) {
         var missing: [MetricSource] = []
         if MetricSanitizer.value(today.sleepTotalH, in: MetricRange.sleepHours) == nil
             && MetricSanitizer.value(today.sleepMidpointMinutes, in: MetricRange.sleepMidpointMinutes) == nil {
@@ -36,12 +44,11 @@ enum ScoreSupport {
         if !hasCircadian {
             missing.append(.circadian)
         }
-        let hasFitnessBody = MetricSanitizer.value(today.vo2Max, in: MetricRange.vo2Max) != nil
-            || MetricSanitizer.value(today.walkingSpeedMps, in: MetricRange.walkingSpeed) != nil
-            || MetricSanitizer.value(today.walkingSteadinessPct, in: MetricRange.walkingSteadinessPct) != nil
-            || MetricSanitizer.value(today.bodyMassKg, in: MetricRange.bodyMassKg) != nil
-            || MetricSanitizer.value(today.bodyFatPct, in: MetricRange.bodyFatPct) != nil
-            || MetricSanitizer.value(today.leanBodyMassKg, in: MetricRange.leanBodyMassKg) != nil
+        let hasFitnessBody = todayHasFitnessBody(today)
+            || history.contains { snapshot in
+                snapshot.date >= DayKey.addingDays(-28, to: DayKey.startOfDay(today.date))
+                    && todayHasFitnessBody(snapshot)
+            }
         if !hasFitnessBody {
             missing.append(.fitnessBody)
         }
@@ -50,6 +57,32 @@ enum ScoreSupport {
             missing.append(.nutrition)
         }
         return (MetricSource.allCases.count - missing.count, missing)
+    }
+
+    /// 合并「系统判定数据不全」与「用户手动标记不全」，得到当天评分的跳过集合。
+    /// - Parameters:
+    ///   - today: 当天快照。
+    ///   - history: 今天之前的历史快照，供稀疏指标做近 28 天兜底。
+    ///   - manualIncomplete: 用户手动标记为不全的数据源。
+    static func exclusions(
+        today: DailySnapshot,
+        history: [DailySnapshot],
+        manualIncomplete: Set<MetricSource>
+    ) -> ScoreExclusions {
+        ScoreExclusions(
+            autoMissing: Set(availableSources(today, history: history).missing),
+            manualMarked: manualIncomplete
+        )
+    }
+
+    /// 「体能身体」是否有可用读数：VO2max、步行速度 / 稳定性，或体重 / 体脂 / 瘦体重任一。
+    private static func todayHasFitnessBody(_ snapshot: DailySnapshot) -> Bool {
+        MetricSanitizer.value(snapshot.vo2Max, in: MetricRange.vo2Max) != nil
+            || MetricSanitizer.value(snapshot.walkingSpeedMps, in: MetricRange.walkingSpeed) != nil
+            || MetricSanitizer.value(snapshot.walkingSteadinessPct, in: MetricRange.walkingSteadinessPct) != nil
+            || MetricSanitizer.value(snapshot.bodyMassKg, in: MetricRange.bodyMassKg) != nil
+            || MetricSanitizer.value(snapshot.bodyFatPct, in: MetricRange.bodyFatPct) != nil
+            || MetricSanitizer.value(snapshot.leanBodyMassKg, in: MetricRange.leanBodyMassKg) != nil
     }
 
     static func confidence(baselineDays: Int, completeness: Int, config: ScoringConfig) -> ScoreConfidence {
@@ -280,5 +313,40 @@ enum CompletenessPresentation {
         guard total > 0 else { return 0 }
         let clamped = min(max(sourceCount, 0), total)
         return Int((Double(clamped) / Double(total) * 100).rounded())
+    }
+}
+
+/// 评分项的跳过集合：系统判定不全 + 用户手动标记。
+///
+/// 任一源被跳过后，其对应的评分分量直接返回 nil，由 `weightedAverage`
+/// 按剩余权重归一化，从而实现「跳过该项、不影响其他完整项」。
+struct ScoreExclusions: Sendable, Equatable {
+    /// 系统根据当天读数判定为不全的源。
+    let autoMissing: Set<MetricSource>
+    /// 用户手动标记为不全的源。
+    let manualMarked: Set<MetricSource>
+
+    /// 所有被跳过的源。
+    var all: Set<MetricSource> { autoMissing.union(manualMarked) }
+
+    /// 判断某源是否被跳过。
+    /// - Parameter source: 数据类别。
+    func contains(_ source: MetricSource) -> Bool { all.contains(source) }
+
+    /// 实际参与评分的数据源数量。
+    var effectiveCount: Int { MetricSource.allCases.count - all.count }
+
+    /// 带原因的跳过列表，按 MetricSource 声明顺序输出以保证结果稳定。
+    /// 手动标记优先于系统判定：用户明确标记时展示「已标记」而非「数据不全」。
+    var skipped: [SourceSkip] {
+        MetricSource.allCases.compactMap { source in
+            if manualMarked.contains(source) {
+                return SourceSkip(source: source, reason: .manual)
+            }
+            if autoMissing.contains(source) {
+                return SourceSkip(source: source, reason: .incomplete)
+            }
+            return nil
+        }
     }
 }

@@ -21,8 +21,15 @@ final class ActionCheckIn {
     var mealScore: Double?
     /// 这一餐的逐样食物明细（`[MealItem]` 的 JSON 编码）。
     /// 有值时记录编辑页按「每样食物」逐项编辑，改数量会等比缩放该样营养；
-    /// 旧记录为 nil，仍按聚合营养编辑，不做改造。
+    /// 旧记录为 nil，展示 / 编辑时按 `mealItemsForDisplay` 生成一个占位项，统一走食材清单口径。
     var mealItemsJSON: String?
+    /// 识别时拍的食物照片（JPEG 压缩后存入）。旧记录的单张照片，详情页展示时作为兜底。
+    var photoData: Data?
+    /// 识别时的多张食物照片（JPEG 压缩后逐张存入）。多图识别保存时写入；nil / 空数组表示无多图，
+    /// 展示时回退到旧的单张 `photoData`。
+    /// 注意：必须是可选类型。新增「非可选」属性会让 SwiftData 轻量迁移失败，导致旧库覆盖安装后
+    /// ModelContainer 初始化抛错、App 点开即闪退（2026-11-20 真机崩溃已复现）。可选列迁移时自动填 nil。
+    var photoDataList: [Data]?
 
     init(
         dayKey: String,
@@ -36,7 +43,9 @@ final class ActionCheckIn {
         recognitionSource: String? = nil,
         mealSlotRaw: String? = nil,
         mealScore: Double? = nil,
-        mealItemsJSON: String? = nil
+        mealItemsJSON: String? = nil,
+        photoData: Data? = nil,
+        photoDataList: [Data]? = nil
     ) {
         self.dayKey = dayKey
         self.kindRaw = kindRaw
@@ -49,6 +58,15 @@ final class ActionCheckIn {
         self.mealSlotRaw = mealSlotRaw
         self.mealScore = mealScore
         self.mealItemsJSON = mealItemsJSON
+        self.photoData = photoData
+        self.photoDataList = photoDataList
+    }
+
+    /// 详情页展示用的照片列表：优先多图，空则回退旧的单张照片，都没有返回空数组。
+    var displayPhotos: [Data] {
+        if let photoDataList, !photoDataList.isEmpty { return photoDataList }
+        if let photoData { return [photoData] }
+        return []
     }
 
     /// 该条饮食记录的餐次：优先用保存时的选择，旧记录按 createdAt 推断。
@@ -67,10 +85,24 @@ final class ActionCheckIn {
     }
 
     /// 这一餐的逐样食物明细；旧记录（无分项数据）返回空数组。
-    /// 解析失败也返回空数组，让编辑页自动退回聚合营养编辑。
+    /// 解析失败也返回空数组，调用方用 `mealItemsForDisplay` 兜底。
     var mealItems: [MealItem] {
         guard let json = mealItemsJSON, let data = json.data(using: .utf8) else { return [] }
         return (try? JSONDecoder().decode([MealItem].self, from: data)) ?? []
+    }
+
+    /// 详情页 / 食材清单编辑页统一使用的食物明细：新记录用逐样数据；
+    /// 旧记录（无分项数据）按「核心名称 + 整餐营养」合成一个占位项，单位按营养里是否有水 / 咖啡因推断。
+    /// 这样无论新旧记录，详情都按「食材清单」展示，编辑也都能逐项补充 / 修正。
+    var mealItemsForDisplay: [MealItem] {
+        let stored = mealItems
+        if !stored.isEmpty { return stored }
+        let n = nutrition
+        let split = MealNoteParts.splitTitleAndRemark(note)
+        let name = split.title.isEmpty ? "饮食" : split.title
+        // 只有水 / 咖啡因、没有固体营养时按毫升，否则按克；数量固定 100，营养即整餐值。
+        let unit = (n.energyKcal == 0 && n.carbsG == 0 && n.proteinG == 0 && n.fatG == 0 && n.waterMl > 0) ? "ml" : "g"
+        return [MealItem(name: name, portionAmount: 100, portionUnit: unit, perPortion: n)]
     }
 
     /// 写入逐样食物明细（nil / 空数组表示清空分项数据）。

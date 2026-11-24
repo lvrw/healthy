@@ -282,4 +282,52 @@ struct FoodPortionTests {
         #expect(meal.total.proteinG == 4 + 48)
         #expect(meal.total.carbsG == 40)
     }
+
+    // MARK: - MealNoteParts.splitTitleAndRemark（饮食记录标题 / 备注拆分）
+
+    @Test func splitNoteSeparatesDescriptionFromFoodList() {
+        // 有备注：第一个「；」前是用户描述，之后是食物清单（核心标题）。
+        let split = MealNoteParts.splitTitleAndRemark("今天吃得清淡；米饭 150g、青菜 100g")
+        #expect(split.title == "米饭 150g、青菜 100g")
+        #expect(split.remark == "今天吃得清淡")
+    }
+
+    @Test func splitNoteWithNoDescriptionKeepsWholeTitle() {
+        // 无备注：整段都是核心名称，备注为 nil。
+        let split = MealNoteParts.splitTitleAndRemark("米饭 150g、青菜 100g")
+        #expect(split.title == "米饭 150g、青菜 100g")
+        #expect(split.remark == nil)
+    }
+
+    @Test func splitNoteWithEmptyOrNilReturnsEmpty() {
+        // 空串 / nil：返回空标题，不产生备注。
+        let empty = MealNoteParts.splitTitleAndRemark("")
+        #expect(empty.title.isEmpty)
+        #expect(empty.remark == nil)
+        let none = MealNoteParts.splitTitleAndRemark(nil)
+        #expect(none.title.isEmpty)
+        #expect(none.remark == nil)
+    }
+
+    @Test func splitNoteTrimsWhitespaceAndHandlesEmptySegments() {
+        // 空格裁剪；备注为空时降级为 nil；标题为空的异常数据退回用备注作标题。
+        let blankRemark = MealNoteParts.splitTitleAndRemark("   ；  米饭 150g  ")
+        #expect(blankRemark.title == "米饭 150g")
+        #expect(blankRemark.remark == nil)
+        let emptyTitle = MealNoteParts.splitTitleAndRemark("仅有描述；   ")
+        #expect(emptyTitle.title == "仅有描述")
+        #expect(emptyTitle.remark == nil)
+    }
+
+    @Test func composedNoteRoundTripsThroughSplit() {
+        // compose 产出经 split 还原：食物清单完整保留为标题、无备注。
+        let items = [
+            MealItem(name: "米饭", portionAmount: 150, portionUnit: "g", perPortion: .zero),
+            MealItem(name: "鸡胸肉", portionAmount: 200, portionUnit: "g", perPortion: .zero)
+        ]
+        let note = MealNoteParts.compose(items)
+        let split = MealNoteParts.splitTitleAndRemark(note)
+        #expect(split.title == "米饭 150g、鸡胸肉 200g")
+        #expect(split.remark == nil)
+    }
 }

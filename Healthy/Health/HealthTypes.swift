@@ -78,8 +78,8 @@ enum HealthKitTypes {
 
     /// 需要申请写入权限的类型：喝水、咖啡因、饮品附带的碳蛋脂，
     /// 以及食物识别写回的能量 / 膳食纤维 / 糖 / 钠。
-    /// 一杯美式 / 拿铁会一次写入 4 类样本；一顿饭会一次写入 7 类膳食样本，
-    /// 缺任何一类写权限整批保存都会失败。
+    /// 一杯美式 / 拿铁会一次写入 4 类样本；一顿饭会一次写入 9 类样本
+    ///（7 类膳食 + 水 + 咖啡因），缺任何一类写权限整批保存都会失败。
     static var writeTypes: Set<HKSampleType> {
         [
             dietaryWater, dietaryCaffeine,
@@ -95,12 +95,20 @@ enum HealthKitTypes {
         [dietaryEnergy, dietaryCarbs, dietaryProtein, dietaryFat, dietaryFiber, dietarySugar, dietarySodium]
     }
 
-    /// 膳食类型对应的读取 / 写回单位（千卡 / 克 / 毫克）。
+    /// 一顿饭写回健康 App 的完整样本类型：7 类膳食营养 + 水 + 咖啡因。
+    /// 饮食记录里匹配到的咖啡 / 饮料要把含水量与咖啡因一起带出去，
+    /// 编辑或删除该条饮食记录时也按同一组类型重写 / 清理。
+    static var mealSampleTypes: [HKQuantityType] {
+        mealWriteTypes + [dietaryWater, dietaryCaffeine]
+    }
+
+    /// 膳食类型对应的读取 / 写回单位（千卡 / 毫升 / 克 / 毫克）。
     static func unit(for type: HKQuantityType) -> HKUnit {
         switch type {
         case dietaryEnergy: return .kilocalorie()
         case dietaryCarbs, dietaryProtein, dietaryFat, dietaryFiber, dietarySugar: return HealthKitTypes.gram
-        case dietarySodium: return HealthKitTypes.milligram
+        case dietarySodium, dietaryCaffeine: return HealthKitTypes.milligram
+        case dietaryWater: return HealthKitTypes.milliliter
         default: return HealthKitTypes.gram
         }
     }

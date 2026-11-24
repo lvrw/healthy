@@ -13,6 +13,8 @@ struct MetricGroupCard: View {
     var score: Double? = nil
     /// 首页卡片可点进详情页时显示右侧箭头，静态复用（如预览）时保持原样。
     var showsDetail: Bool = false
+    /// 数据不全被跳过时的角标文案；无评分时替代分数显示。
+    var skipLabel: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -20,8 +22,10 @@ struct MetricGroupCard: View {
                 title: title,
                 icon: icon,
                 tint: tint,
-                trailing: (score != nil || showsDetail)
-                    ? AnyView(MetricCardTrailing(score: score, tint: tint, showsDetail: showsDetail))
+                trailing: (score != nil || skipLabel != nil || showsDetail)
+                    ? AnyView(MetricCardTrailing(
+                        score: score, tint: tint, showsDetail: showsDetail, skipLabel: skipLabel
+                    ))
                     : nil
             )
             VStack(alignment: .leading, spacing: 6) {

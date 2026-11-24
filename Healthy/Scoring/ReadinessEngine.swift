@@ -6,36 +6,54 @@ enum ReadinessEngine {
         history: [DailySnapshot],
         config: ScoringConfig = ScoringConfig(),
         calendar: Calendar = .current,
-        context: DayProgressContext = .complete
+        context: DayProgressContext = .complete,
+        manualIncomplete: Set<MetricSource> = []
     ) -> ReadinessResult {
+        // 系统判定不全 + 用户手动标记，合并为当天的跳过集合。
+        let exclusions = ScoreSupport.exclusions(
+            today: today, history: history, manualIncomplete: manualIncomplete
+        )
         let baseline = Baseline.compute(history: history, today: today, config: config, calendar: calendar)
-        let sleep = sleepComponent(today, config: config)
-        let autonomic = autonomicComponent(today, baseline: baseline, config: config)
-        let load = loadComponent(history: history, today: today, config: config, calendar: calendar)
-        let vitals = vitalsComponent(today, baseline: baseline, config: config)
-        let circadian = circadianComponent(
-            history: history, today: today, config: config,
-            calendar: calendar, context: context
-        )
-        let fitnessBody = fitnessBodyComponent(
-            today: today,
-            history: history,
-            baseline: baseline,
-            config: config,
-            calendar: calendar
-        )
-        // 身体成分分仅用于「更多指标」分组卡的角标展示，不并入总分权重，
-        // 保持原有综合评分口径不变。
-        let bodyComposition = bodyCompositionComponent(today)
+        // 被跳过的数据源对应分量直接置 nil，不再用历史数据兜底；
+        // weightedAverage 只纳入非 nil 项并按剩余权重归一化，因此不影响其他完整项。
+        let sleep = exclusions.contains(.sleep) ? nil : sleepComponent(today, config: config)
+        let autonomic = autonomicComponent(today, baseline: baseline, config: config, exclusions: exclusions)
+        let load = exclusions.contains(.activity)
+            ? nil
+            : loadComponent(history: history, today: today, config: config, calendar: calendar)
+        let vitals = exclusions.contains(.vitals)
+            ? nil
+            : vitalsComponent(today, baseline: baseline, config: config)
+        let circadian = exclusions.contains(.circadian)
+            ? nil
+            : circadianComponent(
+                history: history, today: today, config: config,
+                calendar: calendar, context: context
+            )
+        let fitnessBody = exclusions.contains(.fitnessBody)
+            ? nil
+            : fitnessBodyComponent(
+                today: today, history: history, baseline: baseline,
+                config: config, calendar: calendar
+            )
+        // 身体成分分仅用于「更多指标」分组卡的角标展示，不并入总分权重；
+        // 体能身体被跳过时同样不展示该角标。
+        let bodyComposition = exclusions.contains(.fitnessBody) ? nil : bodyCompositionComponent(today)
         // 饮食评分（全 App 统一口径）：饮食质量 70% + 规律饮食 30%。
-        // 取代原先「饮水+饮食」与「规律饮食」两个独立分量，避免同一天出现两个饮食分数；
-        // 缺项时归一化、全缺时返回 nil，加权平均自动跳过。
-        let diet = NutritionEngine.combinedScore(
-            NutritionValues.from(today),
-            regularity: today.mealRegularityScore,
-            config: config,
-            progress: context.activity
-        )
+        // 取代原先「饮水+饮食」与「规律饮食」两个独立分量，避免同一天出现两个饮食分数。
+        // 手动标记饮食不全时整项跳过；系统判定的 nutrition 缺失只代表营养素读数不全，
+        // combinedScore 仍可用独立记录的规律饮食分评分（既有口径），故此处只认手动标记。
+        let diet: Double?
+        if manualIncomplete.contains(.nutrition) {
+            diet = nil
+        } else {
+            diet = NutritionEngine.combinedScore(
+                NutritionValues.from(today),
+                regularity: today.mealRegularityScore,
+                config: config,
+                progress: context.activity
+            )
+        }
 
         let weighted = ScoreSupport.weightedAverage([
             (config.readinessSleepWeight, sleep),
@@ -46,10 +64,10 @@ enum ReadinessEngine {
             (config.readinessFitnessBodyWeight, fitnessBody),
             (config.readinessNutritionWeight + config.readinessMealRegularityWeight, diet),
         ])
-        let sources = ScoreSupport.availableSources(today)
+        // 完成度按实际参与评分的源数计算（手动标记同样扣除）。
         let confidence = ScoreSupport.confidence(
             baselineDays: baseline.baselineDays,
-            completeness: sources.count,
+            completeness: exclusions.effectiveCount,
             config: config
         )
 
@@ -64,13 +82,14 @@ enum ReadinessEngine {
                 fitnessBody: fitnessBody,
                 nutrition: diet,
                 // 规律饮食分仍单独留档供明细解释，但不再作为独立权重参与综合评分。
-                mealRegularity: today.mealRegularityScore,
+                mealRegularity: manualIncomplete.contains(.nutrition) ? nil : today.mealRegularityScore,
                 bodyComposition: bodyComposition
             ),
-            completeness: sources.count,
-            missing: sources.missing,
+            completeness: exclusions.effectiveCount,
+            missing: MetricSource.allCases.filter { exclusions.autoMissing.contains($0) },
             confidence: confidence,
-            baselineDays: baseline.baselineDays
+            baselineDays: baseline.baselineDays,
+            skipped: exclusions.skipped
         )
     }
 
@@ -98,10 +117,16 @@ enum ReadinessEngine {
     private static func autonomicComponent(
         _ today: DailySnapshot,
         baseline: BaselineResult,
-        config: ScoringConfig
+        config: ScoringConfig,
+        exclusions: ScoreExclusions
     ) -> Double? {
-        let hrv = MetricSanitizer.value(today.hrvSDNN, in: MetricRange.hrv)
-        let restingHR = MetricSanitizer.value(today.restingHR, in: MetricRange.restingHR)
+        // HRV 与静息心率各自独立屏蔽：只标记其中一项时，另一项仍可参与评分。
+        let hrv = exclusions.contains(.hrv)
+            ? nil
+            : MetricSanitizer.value(today.hrvSDNN, in: MetricRange.hrv)
+        let restingHR = exclusions.contains(.restingHR)
+            ? nil
+            : MetricSanitizer.value(today.restingHR, in: MetricRange.restingHR)
         let zHRV = hrv.flatMap { baseline.zHRV($0) }.map { ScoreSupport.clampZ($0, config.zClamp) }
         let zRestingHR = restingHR
             .flatMap { baseline.zScore($0, stats: baseline.restingHR) }

@@ -9,6 +9,9 @@ struct ActionDetailView: View {
     var entries: [ActionCardSheet] = []
     /// 饮食设置页的维持热量估算值；其他行动用不到，传 nil。
     var estimatedMaintenanceKcal: Double? = nil
+    /// 睡眠行动详情专用的近 60 天指标（由宿主按需传入）：非 nil 且 action == .sleep7h 时
+    /// 在页面最顶上展示「睡眠报告」入口；洞察页等不传的调用方保持原样。
+    var sleepMetrics: [DailyMetrics]? = nil
 
     /// 逐日日历中被点击的日期，用于在日历内展开当日数值框；nil 表示未选中。
     @State private var selectedDay: CalendarDay?
@@ -173,6 +176,10 @@ struct ActionDetailView: View {
                         }
                 }
                 headerCard
+                // 睡眠行动详情最顶上给「睡眠报告」入口，与今日页睡眠详情页保持同一位置约定。
+                if action == .sleep7h, let sleepMetrics {
+                    sleepReportLink(metrics: sleepMetrics)
+                }
                 if let caffeineOverLimit {
                     overLimitBanner(caffeineOverLimit)
                 }
@@ -244,9 +251,26 @@ struct ActionDetailView: View {
         .appCard()
     }
 
+    /// 睡眠行动详情顶部的「睡眠报告」入口：push 到 SleepReportView（天 / 周 / 月），
+    /// 卡片样式与今日页睡眠详情页的报告入口一致，主色跟随行动标签色。
+    private func sleepReportLink(metrics: [DailyMetrics]) -> some View {
+        NavigationLink {
+            SleepReportView(metrics: metrics)
+        } label: {
+            HStack {
+                Label("查看完整睡眠报告", systemImage: "moon.zzz.fill")
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+            }
+            .font(.subheadline.weight(.medium))
+            .foregroundStyle(actionTint)
+        }
+        .appCard()
+    }
+
     /// 头部副标题：饮水 / 咖啡因展示所选日期的「当日值 / 目标」，其余行动仍是整体分析天数。
-    private var headerSubtitle: String {
-        guard supportsDaySwitch else { return "共分析 \(summary.daysAnalyzed) 天" }
+    private var headerSubtitle: String {        guard supportsDaySwitch else { return "共分析 \(summary.daysAnalyzed) 天" }
         let key = DayKey.key(for: selectedDate)
         let point = pointByKey[key]
         let dateText = isSelectedToday ? "今日" : selectedDate.formatted(.dateTime.month().day())

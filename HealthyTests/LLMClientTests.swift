@@ -138,6 +138,35 @@ struct LLMClientTests {
         #expect((json?["response_format"] as? [String: Any])?["type"] as? String == "json_object")
     }
 
+    @Test func visionRequestBodyIncludesEveryImage() throws {
+        // 多图识别：三张照片必须全部进入 user content（1 段文字 + 3 段 image_url），
+        // 顺序为 text 在前、图片依次在后，否则视觉模型会漏看。
+        let body = try LLMClient.visionRequestBody(
+            configuration: .init(
+                baseURL: "https://api.deepseek.com/",
+                model: "deepseek-flash",
+                apiKey: "k",
+                provider: .deepSeek
+            ),
+            system: "系统提示",
+            userText: "请识别这 3 张图片",
+            images: [
+                Data([0xFF, 0xD8, 0x01]),
+                Data([0xFF, 0xD8, 0x02]),
+                Data([0xFF, 0xD8, 0x03]),
+            ],
+            maxTokens: 1200
+        )
+        let json = try JSONSerialization.jsonObject(with: body) as? [String: Any]
+        let messages = json?["messages"] as? [[String: Any]]
+        let userContent = messages?.last?["content"] as? [[String: Any]]
+        #expect(userContent?.count == 4)
+        #expect(userContent?.first?["type"] as? String == "text")
+        let imageParts = (userContent ?? []).dropFirst()
+        #expect(imageParts.allSatisfy { $0["type"] as? String == "image_url" })
+        #expect(Set(imageParts.compactMap { ($0["image_url"] as? [String: Any])?["url"] as? String }).count == 3)
+    }
+
     @Test func visionRequestBodyOmitsImagesWhenNoneProvided() throws {
         let body = try LLMClient.visionRequestBody(
             configuration: .init(

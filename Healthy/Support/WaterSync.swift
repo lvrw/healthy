@@ -232,14 +232,16 @@ enum WaterSyncReconciler {
 // MARK: - 食物识别写回类型
 
 /// 一顿饭写回 HealthKit 的本地权威记录（本 App 的 ActionCheckIn 是唯一来源）。
-/// 与 WaterSyncRecord 不同：一顿饭没有「单一数量」，而是 7 类膳食样本，
+/// 与 WaterSyncRecord 不同：一顿饭没有「单一数量」，而是 9 类样本
+///（能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠 + 水 + 咖啡因），
 /// 全部共用 syncID / origin 标记，删除时按 syncID 一并清理。
 struct MealSyncRecord: Sendable, Equatable, Identifiable {
-    /// 本地打卡 ID，同时用作 7 类样本的 syncID 后缀。
+    /// 本地打卡 ID，同时用作 9 类样本的 syncID 后缀。
     var syncID: String
-    /// 用餐发生时间（作为 7 类样本的 startDate）。
+    /// 用餐发生时间（作为 9 类样本的 startDate）。
     var date: Date
-    /// 完整 7 项营养（能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠）。
+    /// 完整营养（能量 / 碳水 / 蛋白 / 脂肪 / 纤维 / 糖 / 钠 / 水 / 咖啡因）。
+    /// 水与咖啡因取自记录里的饮品含水量与咖啡因，会一并写回健康 App。
     var nutrition: IntakeNutrition
     /// 识别来源：ai / local，仅作记录与 UI 展示。
     var source: String = "local"
@@ -250,15 +252,15 @@ struct MealSyncRecord: Sendable, Equatable, Identifiable {
     var id: String { syncID }
 }
 
-/// HealthKit 里一条「本 App 写回」的膳食样本（一组 7 类样本聚合后的视图）。
+/// HealthKit 里一条「本 App 写回」的膳食样本（一组 9 类样本聚合后的视图）。
 struct MealSyncSample: Sendable, Equatable, Identifiable {
     /// 由 syncID 聚合出的本地打卡 ID。
     var syncID: String
-    /// 该 syncID 下全部 7 类样本的 uuid，删除时据此一并清理。
+    /// 该 syncID 下全部 9 类样本的 uuid，删除时据此一并清理。
     var uuids: [String]
     /// 样本开始时间（取能量样本的时间）。
     var date: Date
-    /// 7 类样本的聚合营养值。
+    /// 9 类样本的聚合营养值。
     var nutrition: IntakeNutrition
     /// HKMetadataKeySyncVersion，重写时递增。
     var syncVersion: Int
@@ -291,6 +293,10 @@ enum MealSyncReconciler {
     private static let energyToleranceKcal = 1.0
     private static let gramTolerance = 0.5
     private static let sodiumToleranceMg = 5.0
+    /// 水量按毫升比较，5ml 以内视为一致（饮品容量本身是估算值）。
+    private static let waterToleranceMl = 5.0
+    /// 咖啡因按毫克比较，1mg 以内视为一致。
+    private static let caffeineToleranceMg = 1.0
     private static let dateToleranceSeconds: TimeInterval = 1.0
 
     /// 生成本地膳食打卡与 HealthKit 回写之间的对账计划。规则与 WaterSyncReconciler 一致：
@@ -348,7 +354,9 @@ enum MealSyncReconciler {
         return plan
     }
 
-    /// 膳食样本与本地打卡是否等价（7 项营养与时间都在容差内）。
+    /// 膳食样本与本地打卡是否等价（7 项营养 + 水 + 咖啡因与时间都在容差内）。
+    /// 水 / 咖啡因必须一起比较：只改一杯饮料的容量或咖啡因含量时，
+    /// 也要判定为「不一致」并触发健康 App 侧重写。
     static func matches(_ sample: MealSyncSample, _ record: MealSyncRecord) -> Bool {
         abs(sample.nutrition.energyKcal - record.nutrition.energyKcal) <= energyToleranceKcal
             && abs(sample.nutrition.carbsG - record.nutrition.carbsG) <= gramTolerance
@@ -357,6 +365,8 @@ enum MealSyncReconciler {
             && abs(sample.nutrition.fiberG - record.nutrition.fiberG) <= gramTolerance
             && abs(sample.nutrition.sugarG - record.nutrition.sugarG) <= gramTolerance
             && abs(sample.nutrition.sodiumMg - record.nutrition.sodiumMg) <= sodiumToleranceMg
+            && abs(sample.nutrition.waterMl - record.nutrition.waterMl) <= waterToleranceMl
+            && abs(sample.nutrition.caffeineMg - record.nutrition.caffeineMg) <= caffeineToleranceMg
             && abs(sample.date.timeIntervalSince(record.date)) <= dateToleranceSeconds
     }
 

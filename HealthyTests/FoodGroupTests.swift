@@ -48,7 +48,7 @@ struct FoodGroupTests {
         #expect(groups.contains { $0.id == "group.luckin.coffee" && $0.name == "瑞幸咖啡" })
 
         let allFoods = try ctx.fetch(FetchDescriptor<CustomFood>())
-        #expect(allFoods.count == 167) // 2026-11-18 官网核对补录浓缩咖啡 / 鲜萃咖啡
+        #expect(allFoods.count == 192) // 麦当劳 139 + 瑞幸 53
         #expect(allFoods.filter { $0.groupID == "group.mcd.breakfast" }.count == 18)
         #expect(allFoods.filter { $0.groupID == "group.luckin.coffee" }.count == LuckinCatalog.drinks.count)
         // 营养库与咖啡因快捷入口共用同一份瑞幸目录，份量文本不能各写一份。
@@ -78,7 +78,7 @@ struct FoodGroupTests {
         let groups2 = try ctx.fetch(FetchDescriptor<FoodGroup>())
         #expect(groups2.count == 9)
         let foods2 = try ctx.fetch(FetchDescriptor<CustomFood>())
-        #expect(foods2.count == 167)
+        #expect(foods2.count == 192)
 
         // 老用户数据版本升级：重建瑞幸预置条目，但保留用户自行新增的条目。
         let userFood = CustomFood(name: "我的特调", keywords: ["特调"], portion: "1 杯 / 300ml",
@@ -91,10 +91,11 @@ struct FoodGroupTests {
         FoodSeed.ensureBuiltinGroups(in: ctx)
         let foods3 = try ctx.fetch(FetchDescriptor<CustomFood>())
         let luckinFoods = foods3.filter { $0.groupID == "group.luckin.coffee" }
-        #expect(luckinFoods.count == 29) // 28 条预置 + 1 条用户自定义
-        #expect(luckinFoods.contains { $0.id == "lk.applec" && $0.nutrition.energyKcal == 131 })
+        #expect(luckinFoods.count == 54) // 53 条预置 + 1 条用户自定义
+        #expect(luckinFoods.contains { $0.id == "lk.applec" && $0.nutrition.energyKcal == 133 })
         #expect(luckinFoods.contains { $0.id == userFood.id })
-        #expect(foods3.count == 168)
+        #expect(luckinFoods.contains { $0.id == "lk.lactobacillus" && $0.nutrition.energyKcal == 108 })
+        #expect(foods3.count == 193)
     }
 
     // MARK: - AI 识别本地优先校准

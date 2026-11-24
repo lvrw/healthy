@@ -97,35 +97,35 @@ struct CoffeeBeanFillView: View {
         }
     }
 
-    /// 一次性生成 35 颗豆子；filled 只决定配色，不参与动画插值。
+    /// 整层豆子只用一次绘制：豆形路径按单个格子构造一次，再平移复用 35 次。
+    /// 原先每颗豆子都是独立的 Shape 视图（两层共 140 个），滚动与动画时
+    /// 需要逐个合成，页面明显卡顿；现在每层只有一个 Canvas。
     private func beans(
         filled: Bool,
         bounds: CGRect,
         cellWidth: CGFloat,
         cellHeight: CGFloat
     ) -> some View {
-        ForEach(0..<(columns * rows), id: \.self) { index in
-            let row = index / columns
-            let column = index % columns
-            let center = CGPoint(
-                x: (CGFloat(column) + 0.5) * cellWidth,
-                y: (CGFloat(row) + 0.5) * cellHeight
-            )
-            bean(filled: filled, tint: tint)
-                .frame(width: cellWidth * 0.86, height: cellHeight * 0.84)
-                .position(center)
-        }
-    }
+        let beanSize = CGSize(width: cellWidth * 0.86, height: cellHeight * 0.84)
+        let beanRect = CGRect(origin: .zero, size: beanSize)
+        // 豆身与沟纹路径只构造一次，全部豆子共用同一份几何。
+        let bodyPath = CoffeeBeanShape().path(in: beanRect)
+        let creasePath = CoffeeBeanCreaseShape().path(in: beanRect)
+        let bodyColor: Color = filled ? tint : emptyColor
+        let creaseColor: Color = filled ? Color.white.opacity(0.35) : emptyCrease
 
-    private func bean(filled: Bool, tint: Color) -> some View {
-        ZStack {
-            CoffeeBeanShape()
-                .fill(filled ? tint : emptyColor)
-            CoffeeBeanCreaseShape()
-                .stroke(
-                    filled ? Color.white.opacity(0.35) : emptyCrease,
-                    lineWidth: 1.4
+        return Canvas { context, _ in
+            for index in 0..<(columns * rows) {
+                let row = index / columns
+                let column = index % columns
+                var beanContext = context
+                beanContext.translateBy(
+                    x: (CGFloat(column) + 0.5) * cellWidth - beanSize.width / 2,
+                    y: (CGFloat(row) + 0.5) * cellHeight - beanSize.height / 2
                 )
+                beanContext.fill(bodyPath, with: .color(bodyColor))
+                beanContext.stroke(creasePath, with: .color(creaseColor), lineWidth: 1.4)
+            }
         }
     }
 }

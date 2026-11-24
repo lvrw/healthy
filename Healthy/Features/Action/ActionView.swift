@@ -36,6 +36,8 @@ struct ActionView: View {
     @State private var selectedDate: Date = DayKey.startOfDay(.now)
     /// 日历选择器 sheet 的显隐。
     @State private var showsDatePicker = false
+    /// 数据不全标记面板的显隐；标记目标为当前选中日期（可为历史日期）。
+    @State private var showsIncompletePicker = false
     /// 感受记录 sheet 的显隐（记录日期跟随选中日期）。
     @State private var showsMoodSheet = false
     /// 3 列格子的顺序（锻炼 + 晒太阳 / 呼吸正念 / 步数 / 环境音量），长按拖动后写回偏好。
@@ -135,6 +137,36 @@ struct ActionView: View {
     }
 
     private var sourceCount: Int { dayScore?.completeness ?? 0 }
+
+    /// 选中日期被跳过的评分项；历史日期配置后同样从该日评分记录读取。
+    private var skippedSources: [SourceSkip] {
+        guard let json = dayScore?.skippedJSON?.data(using: .utf8) else { return [] }
+        return (try? JSONDecoder().decode([SourceSkip].self, from: json)) ?? []
+    }
+
+    /// 系统根据选中日期原始快照判定为不全的数据源；仅供标记面板提示。
+    private var incompleteSourcesDetected: Set<MetricSource> {
+        guard let snapshot = dayMetrics?.snapshot else { return [] }
+        let history = metrics
+            .filter { $0.date < snapshot.date }
+            .map(\.snapshot)
+        return Set(ScoreSupport.availableSources(snapshot, history: history).missing)
+    }
+
+    /// 标记面板标题用的日期标签，便于确认正在配置的是哪一天。
+    private var selectedDateLabel: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "zh_CN")
+        formatter.dateFormat = "M月d日"
+        return formatter.string(from: selectedDate)
+    }
+
+    /// 手动标记变更后重算全部日期评分；ScoreStore 会合并短时间内的重复请求。
+    private func recomputeScores() {
+        Task { @MainActor in
+            try? await ScoreStore.recomputeAll(in: context)
+        }
+    }
 
     /// 只合并选中日期的打卡与指标总量，给饮水 / 咖啡因卡片用。
     /// 语义：先累加当日打卡，再用指标里的合并总量（waterTotalMl / dietaryCaffeineMg
@@ -384,6 +416,8 @@ struct ActionView: View {
                     ActionDetailHost(action: action)
                 case .diet:
                     DietDetailHost()
+                case .fitness:
+                    FitnessDetailHost()
                 }
             }
             .sheet(isPresented: $showsDatePicker) {
@@ -391,6 +425,15 @@ struct ActionView: View {
             }
             .sheet(isPresented: $showsMoodSheet) {
                 MoodRecordSheet(date: selectedDate)
+            }
+            .sheet(isPresented: $showsIncompletePicker) {
+                IncompleteSourcePickerView(
+                    dayKey: key,
+                    autoMissing: incompleteSourcesDetected,
+                    dateLabel: selectedDateLabel,
+                    onChanged: recomputeScores
+                )
+                .presentationDragIndicator(.visible)
             }
             .task {
                 // 进入页面先按记录页口径实时读一次，避免快照落后于健康 App。
@@ -767,8 +810,33 @@ struct ActionView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
                     HStack(spacing: 18) {
-                        overviewStat("数据完整度", "\(completenessPercent)%")
+                        // 完整度可点按配置：选中日期可为历史日期，标记只影响该日评分。
+                        VStack(alignment: .leading, spacing: 2) {
+                            Button {
+                                showsIncompletePicker = true
+                            } label: {
+                                HStack(spacing: 3) {
+                                    Text("\(completenessPercent)%")
+                                        .font(.subheadline.weight(.semibold))
+                                        .foregroundStyle(.primary)
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption2)
+                                        .foregroundStyle(.tertiary)
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(isFuture || dayMetrics == nil)
+                            Text("数据完整度 · 可配置")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
                         overviewStat("压力", stress.map { "\(Int($0.rounded()))" } ?? "—")
+                    }
+                    if !skippedSources.isEmpty {
+                        Text("已跳过：" + skippedSources.map(\.displayText).joined(separator: "、"))
+                            .font(.caption2)
+                            .foregroundStyle(.orange)
+                            .lineLimit(2)
                     }
                 }
                 Spacer(minLength: 0)
@@ -819,7 +887,7 @@ struct ActionView: View {
         return ActionVitalsCard(
             title: "睡眠",
             icon: "bed.double.fill",
-            iconColor: Color(red: 0.761, green: 0.808, blue: 0.780),
+            iconColor: Color(red: 0.482, green: 0.420, blue: 1.0),
             linkTitle: "看睡眠报告",
             metrics: [
                 .init(label: "时长", labelColor: Color(red: 0.482, green: 0.482, blue: 0.969),
@@ -886,7 +954,7 @@ struct ActionView: View {
                 ]
             )
         ) {
-            detailRoute = .insight(.steps8000)
+            detailRoute = .fitness
         }
     }
 
@@ -1338,10 +1406,12 @@ private struct ActionDetailHost: View {
         Group {
             if let days {
                 // 记录 / 设置入口由行动类型决定，挂在详情页顶部；纯自动行动没有入口。
+                // 睡眠详情额外带上近 60 天指标，供页面顶部的「睡眠报告」入口使用。
                 ActionDetailView(
                     action: action,
                     days: days,
-                    entries: ActionCardSheet.entries(for: action)
+                    entries: ActionCardSheet.entries(for: action),
+                    sleepMetrics: action == .sleep7h ? metrics : nil
                 )
             } else {
                 // 计算只有几十毫秒，用与详情页相同的底色兜住这一帧，避免白闪。
@@ -1417,16 +1487,45 @@ private struct ActionDetailHost: View {
     }
 }
 
-/// 行动页卡片的详情路由：饮食走营养指标详情，其余走既有行动分析详情。
+/// 行动页卡片的详情路由：饮食走营养指标详情，健身走健身环详情，其余走既有行动分析详情。
 private enum ActionDetailRoute: Hashable, Identifiable {
     case insight(InsightAction)
     case diet
+    case fitness
 
     var id: String {
         switch self {
         case .insight(let action): return action.rawValue
         case .diet: return "diet"
+        case .fitness: return "fitness"
         }
+    }
+}
+
+/// 健身详情宿主：点进健身卡片后才查询近 60 天指标；
+/// 页面按健康 App 健身页口径展示活动 / 锻炼 / 站立三个环，日期条可切历史。
+private struct FitnessDetailHost: View {
+    @Query(ActionQuery.recentMetricsDescending) private var metrics: [DailyMetrics]
+    @State private var selectedDate = DayKey.startOfDay(.now)
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ActionDayStrip(
+                selectedDate: $selectedDate,
+                tint: Color(red: 1.0, green: 0.231, blue: 0.361)
+            )
+            .padding(.horizontal, 16)
+            .padding(.top, 6)
+            .padding(.bottom, 2)
+            FitnessRingDetailView(metrics: selectedMetrics, date: selectedDate)
+        }
+        .background(AppScreenBackground(tone: .mint))
+    }
+
+    /// 选中日期对应的指标行；该日尚未同步健身数据时为 nil。
+    private var selectedMetrics: DailyMetrics? {
+        let key = DayKey.key(for: selectedDate)
+        return metrics.first { $0.dayKey == key }
     }
 }
 

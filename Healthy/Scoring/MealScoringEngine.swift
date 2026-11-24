@@ -149,7 +149,9 @@ enum MealScoringEngine {
         let share = slot.energyShare
         let proteinTarget = config.nutritionProteinTargetG * share
         let waterTarget = config.nutritionWaterTargetMl * share
-        let caffeineLimit = config.nutritionCaffeineLimitMg * share
+        // 咖啡因在一天内集中摄入（早上一杯咖啡就上百 mg），不能按单餐能量占比缩放到 50mg。
+        // 单餐与全天共用同一个日上限，只有单餐摄入本身就超过全天建议量时才扣分。
+        let caffeineLimit = config.nutritionCaffeineLimitMg
 
         var notes: [String] = []
 
@@ -162,6 +164,7 @@ enum MealScoringEngine {
             protein: nutrition.proteinG,
             caffeine: nutrition.caffeineMg,
             share: share,
+            caffeineLimitOverride: caffeineLimit,
             config: config
         ) ?? config.nutritionPassingScore
 
@@ -183,7 +186,7 @@ enum MealScoringEngine {
             notes.append("糖偏多（建议不超过 \(Int(sugarLimit)) g）")
         }
         if nutrition.caffeineMg > caffeineLimit {
-            notes.append("咖啡因偏多（建议不超过 \(Int(caffeineLimit)) mg）")
+            notes.append("咖啡因偏多（建议全天不超过 \(Int(caffeineLimit)) mg）")
         }
         // 优质营养素提示：体现「增加蛋白质 / 纤维摄入」的目标。
         if nutrition.proteinG >= proteinTarget {

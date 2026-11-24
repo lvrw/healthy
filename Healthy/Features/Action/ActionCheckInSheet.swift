@@ -46,6 +46,10 @@ struct ActionCheckInSheet: View {
     @State private var actionsLoaded = false
     /// 待选容量的咖啡因饮品：有基准容量（水 ml）的项点击后先弹容量选择，再按比例打卡。
     @State private var volumeAction: IntakeQuickAction?
+    /// 瑞幸 / 麦咖啡产品选择弹窗：状态必须挂在打卡页本身，不能挂在 LazyVGrid 的按钮里。
+    /// 弹窗内点搜索框会弹键盘、触发网格重建；若按钮被重建，它自身的 @State 归 false 会直接关掉弹窗。
+    @State private var showsLuckinPicker = false
+    @State private var showsMccafePicker = false
 
     private var key: String { DayKey.key(for: selectedDate) }
     private var isWater: Bool { kind == .water }
@@ -148,6 +152,19 @@ struct ActionCheckInSheet: View {
         }
         .sheet(isPresented: $showsDatePicker) {
             datePickerSheet
+        }
+        // 产品选择弹窗挂在本页（稳定的视图层级），不挂在会被键盘重建的网格按钮上。
+        .sheet(isPresented: $showsLuckinPicker) {
+            LuckinDrinkPickerView { drink in
+                add(LuckinCatalog.quickAction(for: drink))
+                triggerHaptic()
+            }
+        }
+        .sheet(isPresented: $showsMccafePicker) {
+            MccafeDrinkPickerView { food in
+                add(MccafeCaffeine.quickAction(for: food))
+                triggerHaptic()
+            }
         }
         .sheet(isPresented: $showsRecords) {
             IntakeRecordListView(
@@ -386,14 +403,8 @@ struct ActionCheckInSheet: View {
             }
             // 固定的瑞幸 / 麦咖啡产品入口：展开按分类分组的选择列表，不占用可编辑快捷项名额。
             if !isWater {
-                LuckinQuickActionButton(tint: tint) { drink in
-                    add(LuckinCatalog.quickAction(for: drink))
-                    triggerHaptic()
-                }
-                MccafeQuickActionButton(tint: tint) { food in
-                    add(MccafeCaffeine.quickAction(for: food))
-                    triggerHaptic()
-                }
+                LuckinQuickActionButton(tint: tint, isPresented: $showsLuckinPicker)
+                MccafeQuickActionButton(tint: tint, isPresented: $showsMccafePicker)
             }
         }
     }

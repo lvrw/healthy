@@ -5,6 +5,8 @@ struct SleepCardView: View {
     let componentScore: Double?
     /// 首页整卡可点进详情页时显示右侧箭头。
     var showsDetail: Bool = false
+    /// 睡眠数据不全被跳过时的角标文案。
+    var skipLabel: String? = nil
 
     private var intervals: [SleepStageInterval] {
         SleepStageCodec.decode(metrics.sleepStagesJSON)
@@ -55,11 +57,12 @@ struct SleepCardView: View {
                 title: "睡眠",
                 icon: "moon.zzz.fill",
                 tint: .indigo,
-                trailing: (componentScore != nil || showsDetail)
+                trailing: (componentScore != nil || skipLabel != nil || showsDetail)
                     ? AnyView(MetricCardTrailing(
                         score: componentScore,
                         tint: .indigo,
-                        showsDetail: showsDetail
+                        showsDetail: showsDetail,
+                        skipLabel: skipLabel
                     ))
                     : nil
             )

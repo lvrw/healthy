@@ -76,32 +76,62 @@ struct FoodRemoteIcon: View {
     }
 }
 
-/// 分组封面图：优先用分组里第一张产品图，加载中 / 无图时显示品牌渐变与特征图标。
+/// 分组封面：有产品图时满铺图片并压一层底部渐变，保证左上角系统角标可读；
+/// 无图时用品牌色淡渐变 + 图标胶囊 + 柔光 / 圆环装饰，避免整块纯色封面显得粗糙。
 struct GroupCoverImage: View {
     let imageURL: String?
-    /// 无图时叠在渐变上的品牌特征图标。
+    let tint: Color
+    /// 无图时使用的品牌特征图标。
     var symbol: String?
-    var gradient: LinearGradient = LinearGradient(
-        colors: [AppPalette.greenDeep, AppPalette.greenDeep.opacity(0.4)],
-        startPoint: .topLeading, endPoint: .bottomTrailing
-    )
 
     @State private var image: UIImage?
 
     var body: some View {
         ZStack {
-            gradient
             if let image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-                    .overlay(.black.opacity(0.15))
-            } else if let symbol {
-                Image(systemName: symbol)
-                    .font(.system(size: 34, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.4))
+            } else {
+                LinearGradient(
+                    colors: [tint.opacity(0.24), tint.opacity(0.05)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                RadialGradient(
+                    colors: [Color.white.opacity(0.5), .clear],
+                    center: UnitPoint(x: 0.84, y: 0.12),
+                    startRadius: 2,
+                    endRadius: 96
+                )
+                if let symbol {
+                    // 右侧大号淡色符号做底纹，与左上角图标形成主次层次。
+                    Image(systemName: symbol)
+                        .font(.system(size: 52, weight: .regular))
+                        .foregroundStyle(tint.opacity(0.13))
+                        .offset(x: 60, y: 26)
+                    HStack {
+                        Image(systemName: symbol)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(tint)
+                            .frame(width: 34, height: 34)
+                            .background(
+                                Color(.systemBackground).opacity(0.72),
+                                in: RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            )
+                        Spacer()
+                    }
+                    .padding(.leading, 12)
+                    .padding(.top, 12)
+                    .frame(maxHeight: .infinity, alignment: .top)
+                }
+                Circle()
+                    .strokeBorder(tint.opacity(0.12), lineWidth: 9)
+                    .frame(width: 104, height: 104)
+                    .offset(x: 72, y: 46)
             }
         }
+        .frame(maxWidth: .infinity)
         .clipped()
         .task(id: imageURL) {
             image = nil
@@ -116,21 +146,21 @@ struct GroupCard: View {
     let group: FoodGroup
     let count: Int
     let coverImageURL: String?
-    let gradient: LinearGradient
+    let tint: Color
     let symbol: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // 封面区
             ZStack(alignment: .topTrailing) {
-                GroupCoverImage(imageURL: coverImageURL, symbol: symbol, gradient: gradient)
+                GroupCoverImage(imageURL: coverImageURL, tint: tint, symbol: symbol)
                     .frame(height: 92)
                 if group.isBuiltin {
                     Label("系统", systemImage: "lock.fill")
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 6).padding(.vertical, 2)
-                        .background(.ultraThinMaterial, in: Capsule())
+                        .background(tint.opacity(0.85), in: Capsule())
                         .padding(10)
                 }
             }
@@ -225,24 +255,20 @@ struct FoodLibraryView: View {
         }
     }
 
-    /// 给定分组，返回品牌渐变色系。
-    private func brandGradient(for group: FoodGroup) -> LinearGradient {
+    /// 给定分组，返回品牌主色（封面渐变 / 图标 / 角标共用）。
+    private func brandTint(for group: FoodGroup) -> Color {
         let name = group.name
         if name.contains("麦当劳") {
-            return LinearGradient(colors: [Color(red: 0.98, green: 0.2, blue: 0.1), Color(red: 0.99, green: 0.85, blue: 0.1)],
-                                  startPoint: .topLeading, endPoint: .bottomTrailing)
-        } else if name.contains("瑞幸") {
-            return LinearGradient(colors: [Color(red: 0.35, green: 0.2, blue: 0.12), Color(red: 0.85, green: 0.45, blue: 0.12)],
-                                  startPoint: .topLeading, endPoint: .bottomTrailing)
-        } else if name == "常用饮食" {
-            return LinearGradient(colors: [Color.orange, Color.orange.opacity(0.4)],
-                                  startPoint: .topLeading, endPoint: .bottomTrailing)
-        } else if name == "我的食物" {
-            return LinearGradient(colors: [Color.gray.opacity(0.7), Color.gray.opacity(0.35)],
-                                  startPoint: .topLeading, endPoint: .bottomTrailing)
+            return Color(red: 0.93, green: 0.22, blue: 0.14)
         }
-        return LinearGradient(colors: [AppPalette.greenDeep, AppPalette.greenDeep.opacity(0.4)],
-                              startPoint: .topLeading, endPoint: .bottomTrailing)
+        if name.contains("瑞幸") || name.contains("咖啡") {
+            return Color(red: 0.52, green: 0.33, blue: 0.20)
+        }
+        switch name {
+        case "常用饮食": return AppPalette.orange
+        case "我的食物": return AppPalette.lav
+        default: return AppPalette.greenDeep
+        }
     }
 
     /// 无产品图时的品牌特征图标。
@@ -317,7 +343,7 @@ struct FoodLibraryView: View {
                             GroupCard(group: group,
                                       count: count(of: group),
                                       coverImageURL: coverImage(for: group),
-                                      gradient: brandGradient(for: group),
+                                      tint: brandTint(for: group),
                                       symbol: brandSymbol(for: group))
                         }
                         .buttonStyle(.plain)

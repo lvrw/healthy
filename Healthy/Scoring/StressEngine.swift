@@ -6,21 +6,38 @@ enum StressEngine {
         history: [DailySnapshot],
         config: ScoringConfig = ScoringConfig(),
         calendar: Calendar = .current,
-        context: DayProgressContext = .complete
+        context: DayProgressContext = .complete,
+        manualIncomplete: Set<MetricSource> = []
     ) -> StressResult {
+        // 系统判定不全 + 用户手动标记，合并为当天的跳过集合。
+        let exclusions = ScoreSupport.exclusions(
+            today: today, history: history, manualIncomplete: manualIncomplete
+        )
         let baseline = Baseline.compute(history: history, today: today, config: config, calendar: calendar)
-        let hrv = hrvComponent(today, baseline: baseline, config: config)
-        let restingHR = restingHRComponent(today, baseline: baseline, config: config)
-        let sleep = sleepComponent(today, history: history, config: config, calendar: calendar)
-        let vitals = vitalsComponent(today, baseline: baseline, config: config)
-        let circadian = circadianComponent(
-            history: history, today: today, config: config,
-            calendar: calendar, context: context
-        )
-        let mood = moodComponent(
-            history: history, today: today, config: config,
-            calendar: calendar, context: context
-        )
+        // 被跳过的数据源对应分量直接置 nil，不再用历史数据兜底。
+        // 心情分量用的心情/正念读数在可用源判定中归入生活节律，故一并跳过。
+        let hrv = exclusions.contains(.hrv) ? nil : hrvComponent(today, baseline: baseline, config: config)
+        let restingHR = exclusions.contains(.restingHR)
+            ? nil
+            : restingHRComponent(today, baseline: baseline, config: config)
+        let sleep = exclusions.contains(.sleep)
+            ? nil
+            : sleepComponent(today, history: history, config: config, calendar: calendar)
+        let vitals = exclusions.contains(.vitals)
+            ? nil
+            : vitalsComponent(today, baseline: baseline, config: config)
+        let circadian = exclusions.contains(.circadian)
+            ? nil
+            : circadianComponent(
+                history: history, today: today, config: config,
+                calendar: calendar, context: context
+            )
+        let mood = exclusions.contains(.circadian)
+            ? nil
+            : moodComponent(
+                history: history, today: today, config: config,
+                calendar: calendar, context: context
+            )
 
         let weighted = ScoreSupport.weightedAverage([
             (config.stressHRVWeight, hrv),
@@ -30,13 +47,16 @@ enum StressEngine {
             (config.stressCircadianWeight, circadian),
             (config.stressMoodWeight, mood),
         ])
-        // 饮食质量联动：饮食评分下降则压力升高，饮食改善则压力降低；
-        // 完全没有饮食数据时调整为 0，历史日期 / 未记录饮食用户的压力分口径不变。
-        let dietAdjustment = dietComponent(today, config: config, context: context)
-        let sources = ScoreSupport.availableSources(today)
+        // 饮食质量联动：饮食评分下降则压力升高，饮食改善则压力降低。
+        // 手动标记饮食不全时联动归零；系统判定营养素缺失但仍有规律饮食记录时，
+        // 沿用 combinedScore 的既有口径，不因完整度标记而丢弃可用评分。
+        let dietAdjustment = manualIncomplete.contains(.nutrition)
+            ? 0
+            : dietComponent(today, config: config, context: context)
+        // 完成度按实际参与评分的源数计算（手动标记同样扣除）。
         let confidence = ScoreSupport.confidence(
             baselineDays: baseline.baselineDays,
-            completeness: sources.count,
+            completeness: exclusions.effectiveCount,
             config: config
         )
         let score = confidence == .insufficient
@@ -54,10 +74,11 @@ enum StressEngine {
                 circadian: circadian,
                 mood: mood
             ),
-            completeness: sources.count,
-            missing: sources.missing,
+            completeness: exclusions.effectiveCount,
+            missing: MetricSource.allCases.filter { exclusions.autoMissing.contains($0) },
             confidence: confidence,
-            baselineDays: baseline.baselineDays
+            baselineDays: baseline.baselineDays,
+            skipped: exclusions.skipped
         )
     }
 

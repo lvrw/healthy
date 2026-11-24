@@ -6,13 +6,13 @@ import SwiftUI
 /// 该入口不写入 UserDefaults，不占用「设置 → 快捷按键」里可编辑的 6 个名额。
 struct MccafeQuickActionButton: View {
     let tint: Color
-    let onSelect: (CustomFood) -> Void
-
-    @State private var showsPicker = false
+    /// 呈现状态由打卡页持有：按钮位于 LazyVGrid 中，键盘弹出时会随网格重建，
+    /// 若状态放在按钮自身，重建后归 false 会让选择弹窗被关掉。
+    @Binding var isPresented: Bool
 
     var body: some View {
         Button {
-            showsPicker = true
+            isPresented = true
         } label: {
             VStack(spacing: 2) {
                 HStack(spacing: 4) {
@@ -32,45 +32,33 @@ struct MccafeQuickActionButton: View {
             .background(tint, in: Capsule())
         }
         .buttonStyle(.plain)
-        .sheet(isPresented: $showsPicker) {
-            MccafeDrinkPickerView(onSelect: onSelect)
-        }
     }
 }
 
-/// 麦咖啡的咖啡因估算：官方营养计算器只公示热量与宏量营养，不公示咖啡因，
-/// 因此按「品类 + 杯型」给出可解释的估算值，供咖啡因打卡使用。
+/// 麦咖啡快捷入口：从营养库「麦当劳麦咖啡」分组构造咖啡因打卡项。
+/// 咖啡因数值统一走 `MccafeCaffeineEstimate`（与饮食识别记录共用口径），
 /// 牛奶 / 燕麦奶等无咖啡饮品返回 0，选择列表里标记为「无咖啡因」，
 /// 选中后按 0mg 打卡（记录营养与含水量，不产生咖啡因剂量）。
 enum MccafeCaffeine {
     /// 营养库中「麦当劳麦咖啡」分组 ID（见 FoodSeed）。
     static let groupID = "group.mcd.mccafe"
 
+    /// 按品类 + 杯型估算咖啡因（毫克）。
     static func estimatedMg(for name: String) -> Double {
-        let size = cupSize(of: name)
-        if name.contains("阿芙佳朵") { return name.contains("抹茶") ? 15 : 45 }
-        // 滴滤黑咖（2025-02 上架，无杯型名）：按中杯美式档估算。
-        if name.contains("鲜萃") { return 110 }
-        // 单份浓缩 espresso：低于中杯奶咖档，单独给可解释的估算值。
-        if name.contains("浓缩咖啡") { return 65 }
-        if name.contains("抹茶") { return size == .large ? 60 : 45 }
-        if name.contains("黑巧") { return size == .large ? 30 : 25 }
-        if name.contains("雪冰") { return size == .large ? 12 : 10 }
-        guard containsCoffee(name) else { return 0 }
-        switch size {
-        case .small: return 75
-        case .medium, .unspecified: return 110
-        case .large: return 150
-        }
+        MccafeCaffeineEstimate.estimatedMg(for: name)
     }
 
     /// 营养库里的一条麦咖啡产品 → 咖啡因快捷项（点击时构造，不落 UserDefaults）。
     static func quickAction(for food: CustomFood) -> IntakeQuickAction {
         var nutrition = food.nutrition
         nutrition.caffeineMg = estimatedMg(for: food.name)
-        let portion = FoodDatabase.parsePortion(from: food.portion)
-        if portion.unit.lowercased() == "ml" {
-            nutrition.waterMl = portion.amount
+        // waterMl 已在营养库按成分折算（牛奶 / 奶泡里的固形物不算水）。
+        // 只有老数据仍为 0 时才按杯容量 90% 兜底；旧版直接写整杯容量会让奶咖虚增饮水。
+        if nutrition.waterMl <= 0 {
+            let portion = FoodDatabase.parsePortion(from: food.portion)
+            if portion.unit.lowercased() == "ml" {
+                nutrition.waterMl = (portion.amount * 0.9).rounded()
+            }
         }
         return IntakeQuickAction(
             id: "mccafe-\(food.id)",
@@ -80,18 +68,6 @@ enum MccafeCaffeine {
         )
     }
 
-    private enum CupSize { case small, medium, large, unspecified }
-
-    private static func cupSize(of name: String) -> CupSize {
-        if name.contains("（小）") { return .small }
-        if name.contains("（中）") { return .medium }
-        if name.contains("（大）") { return .large }
-        return .unspecified
-    }
-
-    private static func containsCoffee(_ name: String) -> Bool {
-        ["美式", "奶铁", "拿铁", "玛奇朵", "卡布奇诺", "摩卡", "浓缩"].contains { name.contains($0) }
-    }
 }
 
 /// 麦咖啡产品选择列表：直接读取营养库「麦当劳麦咖啡」分组，按冰 / 热 / 其他分组并支持搜索。
@@ -131,34 +107,37 @@ struct MccafeDrinkPickerView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    Text("读取营养库「麦当劳麦咖啡」分组的全部 \(pickerFoods.count) 款产品（2026-11-18 与官网 McCafé 列表核对）。官网只公示热量与宏量营养，咖啡因按品类与杯型估算：美式 / 奶铁小杯约 75mg、中杯约 110mg、大杯约 150mg，浓缩咖啡约 65mg、鲜萃咖啡约 110mg，抹茶 / 黑巧 / 雪冰更低；牛奶类无咖啡因。")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                ForEach(sections) { section in
-                    Section(section.title) {
-                        ForEach(section.foods) { food in
-                            let caffeine = MccafeCaffeine.estimatedMg(for: food.name)
-                            Button {
-                                onSelect(food)
-                                dismiss()
-                            } label: {
-                                row(food, caffeine: caffeine)
+            VStack(spacing: 0) {
+                // 固定搜索栏（不随列表滚动）：sheet 内用普通 TextField，点击可正常弹键盘。
+                DrinkSearchField(prompt: "搜索麦咖啡产品", text: $query)
+                List {
+                    Section {
+                        Text("读取营养库「麦当劳麦咖啡」分组的全部 \(pickerFoods.count) 款产品（2026-11-18 与官网 McCafé 列表核对）。官网只公示热量与宏量营养，咖啡因按品类与杯型估算：美式 / 奶铁小杯约 75mg、中杯约 110mg、大杯约 150mg，浓缩咖啡约 65mg、鲜萃咖啡约 110mg，抹茶 / 黑巧 / 雪冰更低；牛奶类无咖啡因。")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    ForEach(sections) { section in
+                        Section(section.title) {
+                            ForEach(section.foods) { food in
+                                let caffeine = MccafeCaffeine.estimatedMg(for: food.name)
+                                Button {
+                                    onSelect(food)
+                                    dismiss()
+                                } label: {
+                                    row(food, caffeine: caffeine)
+                                }
+                                .buttonStyle(.plain)
+                                // 无咖啡因饮品（牛奶 / 燕麦奶等，估 0mg）也允许选择：
+                                // 打卡记录 0mg 咖啡因 + 产品营养 + 联动含水量，见打卡页 add(_:)。
                             }
-                            .buttonStyle(.plain)
-                            // 无咖啡因饮品（牛奶 / 燕麦奶等，估 0mg）也允许选择：
-                            // 打卡记录 0mg 咖啡因 + 产品营养 + 联动含水量，见打卡页 add(_:)。
                         }
                     }
                 }
-            }
-            .listStyle(.insetGrouped)
-            .searchable(text: $query, prompt: "搜索麦咖啡产品")
-            .overlay {
-                if sections.isEmpty {
-                    ContentUnavailableView.search(text: query)
+                .listStyle(.insetGrouped)
+                .overlay {
+                    if sections.isEmpty {
+                        ContentUnavailableView.search(text: query)
+                    }
                 }
             }
             .navigationTitle("麦咖啡")

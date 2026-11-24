@@ -134,7 +134,7 @@ struct ActionCardSheetPage: View {
         case .caffeineSettings:
             IntakeGoalSettingsView(kind: .caffeine)
         case .dietRecords:
-            FoodRecognitionView.MealRecordsListView()
+            FoodRecognitionView.MealRecordsListView(date: date)
         case .dietSettings:
             ActionGoalSettingsView(focus: .diet, estimatedMaintenanceKcal: estimatedMaintenanceKcal)
         case .stepsSettings:

@@ -183,6 +183,20 @@ struct MealNoteParts: Equatable, Sendable {
         }
         return parts.isEmpty ? nil : parts.joined(separator: "、")
     }
+
+    /// 把保存的备注拆成「核心记录名称（标题）」与「用户备注（弱化展示）」两段。
+    /// `buildNote` 写入格式为「用户描述；食物清单」，编辑页 `composedNoteKeepingDescription` 沿用同一约定：
+    /// 第一个「；」之前是用户描述（备注），之后是食物清单（核心名称）；没有「；」时整段即核心名称。
+    /// 拆分后标题为空（异常数据）时退回用备注作标题，保证列表不出现空白行。
+    static func splitTitleAndRemark(_ note: String?) -> (title: String, remark: String?) {
+        guard let note, !note.isEmpty else { return ("", nil) }
+        let segments = note.split(separator: "；", maxSplits: 1, omittingEmptySubsequences: false)
+        guard segments.count == 2 else { return (note, nil) }
+        let remark = String(segments[0]).trimmingCharacters(in: .whitespacesAndNewlines)
+        let title = String(segments[1]).trimmingCharacters(in: .whitespacesAndNewlines)
+        if title.isEmpty { return (remark, nil) }
+        return (title, remark.isEmpty ? nil : remark)
+    }
 }
 
 /// 一次识别的完整结果（可能含多种食物）。

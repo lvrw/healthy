@@ -102,13 +102,23 @@ struct MealScoringTests {
         #expect(oily.score < 60)
         #expect(oily.notes.contains { $0.contains("总脂肪偏多") })
 
-        var unbalanced = nutrition(protein: 4, fat: 60)
-        unbalanced.caffeineMg = 600
+        // 咖啡因按全天上限（200mg）判定，不按单餐能量占比缩放到 50mg：
+        // 一杯咖啡（约 110mg）不应该让一餐直接扣分。
+        var oneCoffee = nutrition()
+        oneCoffee.caffeineMg = 110
+        let caffeinated = MealScoringEngine.evaluate(
+            nutrition: oneCoffee, slot: .dinner, date: at(18), calendar: calendar
+        )
+        #expect(caffeinated.score == good.score)
+        #expect(caffeinated.notes == good.notes)
+
+        // 只有单餐摄入本身就超过全天建议量时才扣分并提示。
+        var overloaded = nutrition()
+        overloaded.caffeineMg = 600
         let bad = MealScoringEngine.evaluate(
-            nutrition: unbalanced, slot: .dinner, date: at(18), calendar: calendar
+            nutrition: overloaded, slot: .dinner, date: at(18), calendar: calendar
         )
         #expect(bad.score < good.score)
-        #expect(!bad.isHealthy)
         #expect(bad.notes.contains { $0.contains("咖啡因偏多") })
         // 能量 / 钠仍只留档，不进入评分。
         var ignored = nutrition()

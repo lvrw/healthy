@@ -249,12 +249,14 @@ struct IntakeQuickActionEditor: View {
 
     var body: some View {
         TextField("按钮名称", text: $action.title)
-        TextField(isWater ? "数量（\(unit)）" : "咖啡因（mg）", value: $action.amount, format: .number)
-            .keyboardType(.decimalPad)
-        if !isWater {
+        if isWater {
+            TextField("数量（\(unit)）", value: $action.amount, format: .number)
+                .keyboardType(.decimalPad)
+        } else {
             Text("营养成分（每杯）")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            nutrientRow("咖啡因", unit: "mg", value: $action.amount)
             nutrientRow("热量", unit: "kcal", value: nutrition.energyKcal)
             nutrientRow("碳水", unit: "g", value: nutrition.carbsG)
             nutrientRow("蛋白质", unit: "g", value: nutrition.proteinG)

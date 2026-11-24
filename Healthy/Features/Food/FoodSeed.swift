@@ -8,6 +8,14 @@ import SwiftData
 /// 能量、三大营养素、脂肪细分、膳食纤维 / 糖 / 胆固醇、水、咖啡因、酒精摄入量、
 /// 全部矿物质与维生素。官网 / 模型未公示或无法判断的指标一律留 0，不臆造数值。
 /// 当前仅「评分 / 身体年龄」使用碳水、蛋白质、脂肪、水、咖啡因 5 项，其余指标只做留档与展示。
+///
+/// 饮品含水量口径（2026-11-20 修正）：`waterMl` 记这杯实际含的水，不等于杯容量。
+/// 旧数据里除「纯悦」外全部留 0（喝可乐 / 拿铁不增加饮水），本次按成分配比补齐；
+/// 拿铁等奶基饮品不再按整杯容量计水，避免把牛奶里的脂肪、蛋白、乳糖当成水。
+/// 含水率与分类系数见 LuckinCatalog 文件头（两库共用同一套口径，同名称 / 同品牌取同值）：
+/// 纯水 1.00、黑咖 / 纯茶 0.99、含糖碳酸 0.93、无糖碳酸 0.99、果汁 0.88、豆浆 0.90、
+/// 纯牛奶 0.875、燕麦奶 0.88、拿铁 / 奶铁 0.88、燕麦奶咖 0.88、卡布奇诺 0.84（奶泡占体积）、
+/// 玛奇朵 0.87、抹茶 / 黑巧牛奶 0.86-0.87、冰沙 / 雪冰 0.84、阿芙佳朵（冰淇淋）0.60。
 /// 幂等：分组仅缺失时补齐；麦当劳与瑞幸菜单变动频繁，各自用数据版本号控制，
 /// 版本升级时按 ID 重建已有分组内的预置条目（前缀 mcd. / lk.），用户自行新增的条目不受影响。
 enum FoodSeed {
@@ -15,10 +23,10 @@ enum FoodSeed {
     private static let luckinGroupID = "group.luckin.coffee"
     /// 瑞幸预置数据版本；官网菜单变化时 +1，让已安装过的 App 也能同步到新数据。
     private static let luckinVersionKey = "builtinLuckinSeedVersion"
-    private static let luckinVersion = 5 // 2026-11-18：全量补碳蛋脂推算值 + 6 款补推算热量
+    private static let luckinVersion = 8 // 2026-11-23：补入乳酸菌美式（已下架新品，热量取官方新闻稿）
     /// 麦当劳预置数据版本；官网菜单变化时 +1，让已安装过的 App 也能同步到新数据。
     private static let mcdVersionKey = "builtinMcdSeedVersion"
-    private static let mcdVersion = 2 // 2026-11-18：官网 McCafé 列表核对补录浓缩咖啡 / 鲜萃咖啡
+    private static let mcdVersion = 3 // 2026-11-20：饮品补/改含水量（可乐等碳酸饮料、奶咖、牛奶等）
 
     static func ensureBuiltinGroups(in context: ModelContext) {
         let defaults = UserDefaults.standard
@@ -79,8 +87,19 @@ enum FoodSeed {
         let keywords: [String]
         let portion: String
         let nutrition: IntakeNutrition
-        /// 官网产品图片 URL，由 FoodSeed.image(for:) 根据名字模糊匹配得到。
-        var imageURL: String? { FoodSeed.image(for: name) }
+        /// 官网产品图片 URL：显式传入优先（瑞幸统一由 LuckinCatalog 提供），
+        /// 否则由 FoodSeed.image(for:) 根据名字模糊匹配（麦当劳等）。
+        let imageURL: String?
+
+        init(id: String, name: String, keywords: [String], portion: String,
+             nutrition: IntakeNutrition, imageURL: String? = nil) {
+            self.id = id
+            self.name = name
+            self.keywords = keywords
+            self.portion = portion
+            self.nutrition = nutrition
+            self.imageURL = imageURL ?? FoodSeed.image(for: name)
+        }
     }
 
     /// 官网菜单图片名 → URL 映射。FoodSeed 里的产品名常带尺寸后缀
@@ -280,8 +299,8 @@ enum FoodSeed {
             ItemSeed(id: "mcd.107.38", name: "脆薯饼", keywords: ["脆薯饼", "薯饼"], portion: "1 个 / 54g", nutrition: IntakeNutrition(energyKcal: 146, carbsG: 14, proteinG: 1, fatG: 9, sodiumMg: 311)),
             ItemSeed(id: "mcd.108.39", name: "脆香油条", keywords: ["脆香油条", "油条"], portion: "1 个 / 49g", nutrition: IntakeNutrition(energyKcal: 202, carbsG: 19, proteinG: 5, fatG: 12, sodiumMg: 230)),
             ItemSeed(id: "mcd.220.221", name: "德式图林根香肠", keywords: ["德式图林根香肠", "图林根香肠", "德式香肠"], portion: "1 个 / 40g", nutrition: IntakeNutrition(energyKcal: 87, carbsG: 2, proteinG: 5, fatG: 6, sodiumMg: 293)),
-            ItemSeed(id: "mcd.250.257", name: "优品豆浆（小）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（小） / 218ml", nutrition: IntakeNutrition(energyKcal: 151, carbsG: 25, proteinG: 6, fatG: 3, sodiumMg: 32)),
-            ItemSeed(id: "mcd.250.258", name: "优品豆浆（大）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（大） / 291ml", nutrition: IntakeNutrition(energyKcal: 202, carbsG: 33, proteinG: 8, fatG: 4, sodiumMg: 43)),
+            ItemSeed(id: "mcd.250.257", name: "优品豆浆（小）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（小） / 218ml", nutrition: IntakeNutrition(energyKcal: 151, carbsG: 25, proteinG: 6, fatG: 3, sodiumMg: 32, waterMl: 195)),
+            ItemSeed(id: "mcd.250.258", name: "优品豆浆（大）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（大） / 291ml", nutrition: IntakeNutrition(energyKcal: 202, carbsG: 33, proteinG: 8, fatG: 4, sodiumMg: 43, waterMl: 260)),
         ], isBuiltin: true),
         GroupSeed(id: "group.mcd.burger", name: "麦当劳汉堡和卷", sortOrder: 1, items: [
             ItemSeed(id: "mcd.49.28", name: "巨无霸", keywords: ["巨无霸"], portion: "1 个 / 220g", nutrition: IntakeNutrition(energyKcal: 513, carbsG: 42, proteinG: 27, fatG: 26, sodiumMg: 961)),
@@ -324,86 +343,86 @@ enum FoodSeed {
             ItemSeed(id: "mcd.37.37", name: "菠萝派", keywords: ["菠萝派"], portion: "1 个 / 84g", nutrition: IntakeNutrition(energyKcal: 221, carbsG: 27, proteinG: 2, fatG: 11, sodiumMg: 147)),
         ], isBuiltin: true),
         GroupSeed(id: "group.mcd.beverage", name: "麦当劳饮品", sortOrder: 4, items: [
-            ItemSeed(id: "mcd.51.72", name: "可口可乐（小）", keywords: ["可口可乐", "可乐"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 107, carbsG: 26, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.51.73", name: "可口可乐（中）", keywords: ["可口可乐", "可乐"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 36, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.51.74", name: "可口可乐（大）", keywords: ["可口可乐", "可乐"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 224, carbsG: 55, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.53.82", name: "无糖可口可乐（小）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 25)),
-            ItemSeed(id: "mcd.53.83", name: "无糖可口可乐（中）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 1, proteinG: 0, fatG: 0, sodiumMg: 35)),
-            ItemSeed(id: "mcd.53.84", name: "无糖可口可乐（大）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 1, proteinG: 0, fatG: 0, sodiumMg: 53)),
-            ItemSeed(id: "mcd.102.78", name: "阳光柠檬红茶（小）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（小） / 249ml", nutrition: IntakeNutrition(energyKcal: 85, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 12)),
-            ItemSeed(id: "mcd.102.79", name: "阳光柠檬红茶（中）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（中） / 244ml", nutrition: IntakeNutrition(energyKcal: 117, carbsG: 29, proteinG: 0, fatG: 0, sodiumMg: 17)),
-            ItemSeed(id: "mcd.102.80", name: "阳光柠檬红茶（大）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（大） / 523ml", nutrition: IntakeNutrition(energyKcal: 178, carbsG: 43, proteinG: 0, fatG: 0, sodiumMg: 25)),
-            ItemSeed(id: "mcd.52.85", name: "雪碧（小）", keywords: ["雪碧"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 76, carbsG: 19, proteinG: 0, fatG: 0, sodiumMg: 21)),
-            ItemSeed(id: "mcd.52.86", name: "雪碧（中）", keywords: ["雪碧"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 105, carbsG: 26, proteinG: 0, fatG: 0, sodiumMg: 29)),
-            ItemSeed(id: "mcd.52.87", name: "雪碧（大）", keywords: ["雪碧"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 160, carbsG: 39, proteinG: 0, fatG: 0, sodiumMg: 45)),
-            ItemSeed(id: "mcd.344.427", name: "怡泉+C（中）", keywords: ["怡泉+C", "怡泉"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 110, carbsG: 27, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.344.428", name: "怡泉+C（大）", keywords: ["怡泉+C", "怡泉"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 168, carbsG: 41, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.66.160", name: "阳光橙麦炫酷", keywords: ["阳光橙麦炫酷", "麦炫酷", "阳光橙"], portion: "1 杯 / 486ml", nutrition: IntakeNutrition(energyKcal: 228, carbsG: 50, proteinG: 1, fatG: 2, sodiumMg: 77)),
-            ItemSeed(id: "mcd.248.243", name: "美汁源黄金橙橙（中）", keywords: ["黄金橙橙", "美汁源", "橙汁"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 165, carbsG: 41, proteinG: 0, fatG: 0, sodiumMg: 53)),
-            ItemSeed(id: "mcd.111.88", name: "100%苹果汁", keywords: ["100%苹果汁", "苹果汁"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 88, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.62.90", name: "优品豆浆（小）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（小） / 218ml", nutrition: IntakeNutrition(energyKcal: 151, carbsG: 25, proteinG: 6, fatG: 3, sodiumMg: 32)),
-            ItemSeed(id: "mcd.62.91", name: "优品豆浆（大）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（大） / 291ml", nutrition: IntakeNutrition(energyKcal: 202, carbsG: 33, proteinG: 8, fatG: 4, sodiumMg: 43)),
-            ItemSeed(id: "mcd.61.178", name: "纯牛奶（盒装）", keywords: ["纯牛奶", "牛奶"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 129, carbsG: 10, proteinG: 7, fatG: 7, sodiumMg: 73)),
-            ItemSeed(id: "mcd.57.93", name: "锡兰红茶", keywords: ["锡兰红茶", "红茶"], portion: "1 杯 / 274ml", nutrition: IntakeNutrition(energyKcal: 2, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 0)),
+            ItemSeed(id: "mcd.51.72", name: "可口可乐（小）", keywords: ["可口可乐", "可乐"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 107, carbsG: 26, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 305)),
+            ItemSeed(id: "mcd.51.73", name: "可口可乐（中）", keywords: ["可口可乐", "可乐"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 36, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 410)),
+            ItemSeed(id: "mcd.51.74", name: "可口可乐（大）", keywords: ["可口可乐", "可乐"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 224, carbsG: 55, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 595)),
+            ItemSeed(id: "mcd.53.82", name: "无糖可口可乐（小）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 25, waterMl: 320)),
+            ItemSeed(id: "mcd.53.83", name: "无糖可口可乐（中）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 1, proteinG: 0, fatG: 0, sodiumMg: 35, waterMl: 440)),
+            ItemSeed(id: "mcd.53.84", name: "无糖可口可乐（大）", keywords: ["无糖可口可乐", "无糖可乐", "零度可乐"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 1, proteinG: 0, fatG: 0, sodiumMg: 53, waterMl: 635)),
+            ItemSeed(id: "mcd.102.78", name: "阳光柠檬红茶（小）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（小） / 249ml", nutrition: IntakeNutrition(energyKcal: 85, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 12, waterMl: 235)),
+            ItemSeed(id: "mcd.102.79", name: "阳光柠檬红茶（中）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（中） / 244ml", nutrition: IntakeNutrition(energyKcal: 117, carbsG: 29, proteinG: 0, fatG: 0, sodiumMg: 17, waterMl: 230)),
+            ItemSeed(id: "mcd.102.80", name: "阳光柠檬红茶（大）", keywords: ["阳光柠檬红茶", "柠檬红茶"], portion: "1 杯（大） / 523ml", nutrition: IntakeNutrition(energyKcal: 178, carbsG: 43, proteinG: 0, fatG: 0, sodiumMg: 25, waterMl: 495)),
+            ItemSeed(id: "mcd.52.85", name: "雪碧（小）", keywords: ["雪碧"], portion: "1 杯（小） / 326ml", nutrition: IntakeNutrition(energyKcal: 76, carbsG: 19, proteinG: 0, fatG: 0, sodiumMg: 21, waterMl: 305)),
+            ItemSeed(id: "mcd.52.86", name: "雪碧（中）", keywords: ["雪碧"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 105, carbsG: 26, proteinG: 0, fatG: 0, sodiumMg: 29, waterMl: 410)),
+            ItemSeed(id: "mcd.52.87", name: "雪碧（大）", keywords: ["雪碧"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 160, carbsG: 39, proteinG: 0, fatG: 0, sodiumMg: 45, waterMl: 595)),
+            ItemSeed(id: "mcd.344.427", name: "怡泉+C（中）", keywords: ["怡泉+C", "怡泉"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 110, carbsG: 27, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 410)),
+            ItemSeed(id: "mcd.344.428", name: "怡泉+C（大）", keywords: ["怡泉+C", "怡泉"], portion: "1 杯（大） / 642ml", nutrition: IntakeNutrition(energyKcal: 168, carbsG: 41, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 595)),
+            ItemSeed(id: "mcd.66.160", name: "阳光橙麦炫酷", keywords: ["阳光橙麦炫酷", "麦炫酷", "阳光橙"], portion: "1 杯 / 486ml", nutrition: IntakeNutrition(energyKcal: 228, carbsG: 50, proteinG: 1, fatG: 2, sodiumMg: 77, waterMl: 450)),
+            ItemSeed(id: "mcd.248.243", name: "美汁源黄金橙橙（中）", keywords: ["黄金橙橙", "美汁源", "橙汁"], portion: "1 杯（中） / 443ml", nutrition: IntakeNutrition(energyKcal: 165, carbsG: 41, proteinG: 0, fatG: 0, sodiumMg: 53, waterMl: 400)),
+            ItemSeed(id: "mcd.111.88", name: "100%苹果汁", keywords: ["100%苹果汁", "苹果汁"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 88, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 175)),
+            ItemSeed(id: "mcd.62.90", name: "优品豆浆（小）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（小） / 218ml", nutrition: IntakeNutrition(energyKcal: 151, carbsG: 25, proteinG: 6, fatG: 3, sodiumMg: 32, waterMl: 195)),
+            ItemSeed(id: "mcd.62.91", name: "优品豆浆（大）", keywords: ["优品豆浆", "豆浆", "豆奶"], portion: "1 杯（大） / 291ml", nutrition: IntakeNutrition(energyKcal: 202, carbsG: 33, proteinG: 8, fatG: 4, sodiumMg: 43, waterMl: 260)),
+            ItemSeed(id: "mcd.61.178", name: "纯牛奶（盒装）", keywords: ["纯牛奶", "牛奶"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 129, carbsG: 10, proteinG: 7, fatG: 7, sodiumMg: 73, waterMl: 175)),
+            ItemSeed(id: "mcd.57.93", name: "锡兰红茶", keywords: ["锡兰红茶", "红茶"], portion: "1 杯 / 274ml", nutrition: IntakeNutrition(energyKcal: 2, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 270)),
             ItemSeed(id: "mcd.63.81", name: "纯悦", keywords: ["纯悦", "矿泉水", "水"], portion: "1 瓶 / 550ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 550)),
         ], isBuiltin: true),
         GroupSeed(id: "group.mcd.mccafe", name: "麦当劳麦咖啡", sortOrder: 5, items: [
-            ItemSeed(id: "mcd.287.329", name: "冰奶铁（小）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 86, carbsG: 8, proteinG: 5, fatG: 4, sodiumMg: 44)),
-            ItemSeed(id: "mcd.287.330", name: "冰奶铁（中）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（中） / 340ml", nutrition: IntakeNutrition(energyKcal: 148, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 77)),
-            ItemSeed(id: "mcd.287.331", name: "冰奶铁（大）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（大） / 380ml", nutrition: IntakeNutrition(energyKcal: 162, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 85)),
-            ItemSeed(id: "mcd.288.332", name: "热奶铁（小）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 134, carbsG: 12, proteinG: 8, fatG: 6, sodiumMg: 72)),
-            ItemSeed(id: "mcd.288.333", name: "热奶铁（中）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（中） / 300ml", nutrition: IntakeNutrition(energyKcal: 186, carbsG: 17, proteinG: 11, fatG: 8, sodiumMg: 99)),
-            ItemSeed(id: "mcd.288.334", name: "热奶铁（大）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（大） / 415ml", nutrition: IntakeNutrition(energyKcal: 249, carbsG: 22, proteinG: 14, fatG: 11, sodiumMg: 134)),
-            ItemSeed(id: "mcd.289.335", name: "冰燕麦奶铁（小）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 77, carbsG: 10, proteinG: 2, fatG: 3, sodiumMg: 50)),
-            ItemSeed(id: "mcd.289.336", name: "冰燕麦奶铁（中）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（中） / 340ml", nutrition: IntakeNutrition(energyKcal: 132, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 87)),
-            ItemSeed(id: "mcd.289.337", name: "冰燕麦奶铁（大）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（大） / 380ml", nutrition: IntakeNutrition(energyKcal: 145, carbsG: 19, proteinG: 4, fatG: 5, sodiumMg: 96)),
-            ItemSeed(id: "mcd.290.338", name: "热燕麦奶铁（小）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 120, carbsG: 16, proteinG: 3, fatG: 5, sodiumMg: 81)),
-            ItemSeed(id: "mcd.290.339", name: "热燕麦奶铁（中）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（中） / 300ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 22, proteinG: 4, fatG: 6, sodiumMg: 112)),
-            ItemSeed(id: "mcd.290.340", name: "热燕麦奶铁（大）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（大） / 415ml", nutrition: IntakeNutrition(energyKcal: 222, carbsG: 29, proteinG: 5, fatG: 8, sodiumMg: 152)),
-            ItemSeed(id: "mcd.293.353", name: "冰美式（小）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（小） / 240ml", nutrition: IntakeNutrition(energyKcal: 10, carbsG: 1, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.293.354", name: "冰美式（中）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 13, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.293.355", name: "冰美式（大）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（大） / 450ml", nutrition: IntakeNutrition(energyKcal: 14, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.294.356", name: "热美式（小）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（小） / 240ml", nutrition: IntakeNutrition(energyKcal: 10, carbsG: 1, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.294.357", name: "热美式（中）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 13, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.294.358", name: "热美式（大）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（大） / 450ml", nutrition: IntakeNutrition(energyKcal: 14, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.295.406", name: "冰焦糖玛奇朵（中）", keywords: ["冰焦糖玛奇朵", "焦糖玛奇朵", "玛奇朵"], portion: "1 杯（中） / 315ml", nutrition: IntakeNutrition(energyKcal: 148, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 77)),
-            ItemSeed(id: "mcd.298.408", name: "热焦糖玛奇朵（中）", keywords: ["热焦糖玛奇朵", "焦糖玛奇朵", "玛奇朵"], portion: "1 杯（中） / 270ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 88)),
-            ItemSeed(id: "mcd.299.359", name: "卡布奇诺（中）", keywords: ["卡布奇诺"], portion: "1 杯（中） / 270ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 88)),
-            ItemSeed(id: "mcd.299.360", name: "卡布奇诺（大）", keywords: ["卡布奇诺"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 223, carbsG: 20, proteinG: 13, fatG: 10, sodiumMg: 120)),
-            ItemSeed(id: "mcd.303.367", name: "冰浓浓燕麦黑巧（中）", keywords: ["冰浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（中） / 285ml", nutrition: IntakeNutrition(energyKcal: 120, carbsG: 16, proteinG: 2, fatG: 5, sodiumMg: 87)),
-            ItemSeed(id: "mcd.303.368", name: "冰浓浓燕麦黑巧（大）", keywords: ["冰浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（大） / 306ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95)),
-            ItemSeed(id: "mcd.314.372", name: "热浓浓燕麦黑巧（中）", keywords: ["热浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 157, carbsG: 21, proteinG: 3, fatG: 6, sodiumMg: 114)),
-            ItemSeed(id: "mcd.314.373", name: "热浓浓燕麦黑巧（大）", keywords: ["热浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 213, carbsG: 28, proteinG: 4, fatG: 8, sodiumMg: 156)),
-            ItemSeed(id: "mcd.306.378", name: "冰浓浓抹茶牛奶（中）", keywords: ["冰浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（中） / 311ml", nutrition: IntakeNutrition(energyKcal: 196, carbsG: 25, proteinG: 8, fatG: 6, sodiumMg: 80)),
-            ItemSeed(id: "mcd.306.379", name: "冰浓浓抹茶牛奶（大）", keywords: ["冰浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（大） / 344ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 33, proteinG: 9, fatG: 7, sodiumMg: 89)),
-            ItemSeed(id: "mcd.307.380", name: "热浓浓抹茶牛奶（中）", keywords: ["热浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（中） / 301ml", nutrition: IntakeNutrition(energyKcal: 238, carbsG: 29, proteinG: 11, fatG: 8, sodiumMg: 104)),
-            ItemSeed(id: "mcd.307.381", name: "热浓浓抹茶牛奶（大）", keywords: ["热浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（大） / 414ml", nutrition: IntakeNutrition(energyKcal: 333, carbsG: 41, proteinG: 14, fatG: 12, sodiumMg: 142)),
-            ItemSeed(id: "mcd.304.369", name: "冰燕麦奶（小）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95)),
-            ItemSeed(id: "mcd.304.370", name: "冰燕麦奶（中）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（中） / 350ml", nutrition: IntakeNutrition(energyKcal: 199, carbsG: 26, proteinG: 4, fatG: 8, sodiumMg: 145)),
-            ItemSeed(id: "mcd.304.371", name: "冰燕麦奶（大）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（大） / 420ml", nutrition: IntakeNutrition(energyKcal: 239, carbsG: 32, proteinG: 5, fatG: 9, sodiumMg: 174)),
-            ItemSeed(id: "mcd.305.374", name: "热燕麦奶（小）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95)),
-            ItemSeed(id: "mcd.305.375", name: "热燕麦奶（中）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 157, carbsG: 21, proteinG: 3, fatG: 6, sodiumMg: 114)),
-            ItemSeed(id: "mcd.305.376", name: "热燕麦奶（大）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 213, carbsG: 28, proteinG: 4, fatG: 8, sodiumMg: 156)),
-            ItemSeed(id: "mcd.308.382", name: "冰浓浓黑巧（中）", keywords: ["冰浓浓黑巧", "黑巧"], portion: "1 杯（中） / 285ml", nutrition: IntakeNutrition(energyKcal: 135, carbsG: 12, proteinG: 8, fatG: 6, sodiumMg: 77)),
-            ItemSeed(id: "mcd.308.383", name: "冰浓浓黑巧（大）", keywords: ["冰浓浓黑巧", "黑巧"], portion: "1 杯（大） / 305ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84)),
-            ItemSeed(id: "mcd.309.384", name: "热浓浓黑巧（中）", keywords: ["热浓浓黑巧", "黑巧"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 176, carbsG: 15, proteinG: 10, fatG: 8, sodiumMg: 101)),
-            ItemSeed(id: "mcd.309.385", name: "热浓浓黑巧（大）", keywords: ["热浓浓黑巧", "黑巧"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 21, proteinG: 13, fatG: 11, sodiumMg: 137)),
-            ItemSeed(id: "mcd.277.388", name: "冰牛奶（小）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84)),
-            ItemSeed(id: "mcd.277.323", name: "冰牛奶（中）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（中） / 350ml", nutrition: IntakeNutrition(energyKcal: 224, carbsG: 19, proteinG: 13, fatG: 11, sodiumMg: 128)),
-            ItemSeed(id: "mcd.277.324", name: "冰牛奶（大）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（大） / 420ml", nutrition: IntakeNutrition(energyKcal: 269, carbsG: 23, proteinG: 15, fatG: 13, sodiumMg: 154)),
-            ItemSeed(id: "mcd.276.389", name: "热牛奶（小）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84)),
-            ItemSeed(id: "mcd.276.321", name: "热牛奶（中）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 176, carbsG: 15, proteinG: 10, fatG: 8, sodiumMg: 101)),
-            ItemSeed(id: "mcd.276.322", name: "热牛奶（大）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 21, proteinG: 13, fatG: 11, sodiumMg: 137)),
-            ItemSeed(id: "mcd.271.391", name: "浓浓抹茶雪冰（中）", keywords: ["浓浓抹茶雪冰", "抹茶雪冰"], portion: "1 杯（中） / 276ml", nutrition: IntakeNutrition(energyKcal: 289, carbsG: 39, proteinG: 7, fatG: 11, sodiumMg: 181)),
-            ItemSeed(id: "mcd.271.392", name: "浓浓抹茶雪冰（大）", keywords: ["浓浓抹茶雪冰", "抹茶雪冰"], portion: "1 杯（大） / 319ml", nutrition: IntakeNutrition(energyKcal: 339, carbsG: 48, proteinG: 8, fatG: 12, sodiumMg: 194)),
-            ItemSeed(id: "mcd.269.315", name: "浓浓黑巧雪冰（中）", keywords: ["浓浓黑巧雪冰", "黑巧雪冰"], portion: "1 杯（中） / 290ml", nutrition: IntakeNutrition(energyKcal: 359, carbsG: 51, proteinG: 8, fatG: 12, sodiumMg: 224)),
-            ItemSeed(id: "mcd.269.316", name: "浓浓黑巧雪冰（大）", keywords: ["浓浓黑巧雪冰", "黑巧雪冰"], portion: "1 杯（大） / 340ml", nutrition: IntakeNutrition(energyKcal: 444, carbsG: 65, proteinG: 11, fatG: 14, sodiumMg: 258)),
-            ItemSeed(id: "mcd.312.398", name: "抹茶阿芙佳朵", keywords: ["抹茶阿芙佳朵", "阿芙佳朵"], portion: "1 杯 / 92ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 23, proteinG: 3, fatG: 4, sodiumMg: 50)),
-            ItemSeed(id: "mcd.313.399", name: "咖啡阿芙佳朵", keywords: ["咖啡阿芙佳朵", "阿芙佳朵"], portion: "1 杯 / 116ml", nutrition: IntakeNutrition(energyKcal: 139, carbsG: 21, proteinG: 4, fatG: 4, sodiumMg: 49)),
+            ItemSeed(id: "mcd.287.329", name: "冰奶铁（小）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 86, carbsG: 8, proteinG: 5, fatG: 4, sodiumMg: 44, waterMl: 190)),
+            ItemSeed(id: "mcd.287.330", name: "冰奶铁（中）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（中） / 340ml", nutrition: IntakeNutrition(energyKcal: 148, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 77, waterMl: 300)),
+            ItemSeed(id: "mcd.287.331", name: "冰奶铁（大）", keywords: ["冰奶铁", "奶铁", "拿铁"], portion: "1 杯（大） / 380ml", nutrition: IntakeNutrition(energyKcal: 162, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 85, waterMl: 335)),
+            ItemSeed(id: "mcd.288.332", name: "热奶铁（小）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 134, carbsG: 12, proteinG: 8, fatG: 6, sodiumMg: 72, waterMl: 190)),
+            ItemSeed(id: "mcd.288.333", name: "热奶铁（中）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（中） / 300ml", nutrition: IntakeNutrition(energyKcal: 186, carbsG: 17, proteinG: 11, fatG: 8, sodiumMg: 99, waterMl: 265)),
+            ItemSeed(id: "mcd.288.334", name: "热奶铁（大）", keywords: ["热奶铁", "奶铁", "拿铁"], portion: "1 杯（大） / 415ml", nutrition: IntakeNutrition(energyKcal: 249, carbsG: 22, proteinG: 14, fatG: 11, sodiumMg: 134, waterMl: 365)),
+            ItemSeed(id: "mcd.289.335", name: "冰燕麦奶铁（小）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 77, carbsG: 10, proteinG: 2, fatG: 3, sodiumMg: 50, waterMl: 190)),
+            ItemSeed(id: "mcd.289.336", name: "冰燕麦奶铁（中）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（中） / 340ml", nutrition: IntakeNutrition(energyKcal: 132, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 87, waterMl: 300)),
+            ItemSeed(id: "mcd.289.337", name: "冰燕麦奶铁（大）", keywords: ["冰燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（大） / 380ml", nutrition: IntakeNutrition(energyKcal: 145, carbsG: 19, proteinG: 4, fatG: 5, sodiumMg: 96, waterMl: 335)),
+            ItemSeed(id: "mcd.290.338", name: "热燕麦奶铁（小）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（小） / 215ml", nutrition: IntakeNutrition(energyKcal: 120, carbsG: 16, proteinG: 3, fatG: 5, sodiumMg: 81, waterMl: 190)),
+            ItemSeed(id: "mcd.290.339", name: "热燕麦奶铁（中）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（中） / 300ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 22, proteinG: 4, fatG: 6, sodiumMg: 112, waterMl: 265)),
+            ItemSeed(id: "mcd.290.340", name: "热燕麦奶铁（大）", keywords: ["热燕麦奶铁", "燕麦奶铁", "燕麦拿铁"], portion: "1 杯（大） / 415ml", nutrition: IntakeNutrition(energyKcal: 222, carbsG: 29, proteinG: 5, fatG: 8, sodiumMg: 152, waterMl: 365)),
+            ItemSeed(id: "mcd.293.353", name: "冰美式（小）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（小） / 240ml", nutrition: IntakeNutrition(energyKcal: 10, carbsG: 1, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 235)),
+            ItemSeed(id: "mcd.293.354", name: "冰美式（中）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 13, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 325)),
+            ItemSeed(id: "mcd.293.355", name: "冰美式（大）", keywords: ["冰美式", "美式", "黑咖啡"], portion: "1 杯（大） / 450ml", nutrition: IntakeNutrition(energyKcal: 14, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 445)),
+            ItemSeed(id: "mcd.294.356", name: "热美式（小）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（小） / 240ml", nutrition: IntakeNutrition(energyKcal: 10, carbsG: 1, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 235)),
+            ItemSeed(id: "mcd.294.357", name: "热美式（中）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 13, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 325)),
+            ItemSeed(id: "mcd.294.358", name: "热美式（大）", keywords: ["热美式", "美式", "黑咖啡"], portion: "1 杯（大） / 450ml", nutrition: IntakeNutrition(energyKcal: 14, carbsG: 2, proteinG: 1, fatG: 0, sodiumMg: 0, waterMl: 445)),
+            ItemSeed(id: "mcd.295.406", name: "冰焦糖玛奇朵（中）", keywords: ["冰焦糖玛奇朵", "焦糖玛奇朵", "玛奇朵"], portion: "1 杯（中） / 315ml", nutrition: IntakeNutrition(energyKcal: 148, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 77, waterMl: 275)),
+            ItemSeed(id: "mcd.298.408", name: "热焦糖玛奇朵（中）", keywords: ["热焦糖玛奇朵", "焦糖玛奇朵", "玛奇朵"], portion: "1 杯（中） / 270ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 88, waterMl: 235)),
+            ItemSeed(id: "mcd.299.359", name: "卡布奇诺（中）", keywords: ["卡布奇诺"], portion: "1 杯（中） / 270ml", nutrition: IntakeNutrition(energyKcal: 167, carbsG: 15, proteinG: 9, fatG: 7, sodiumMg: 88, waterMl: 225)),
+            ItemSeed(id: "mcd.299.360", name: "卡布奇诺（大）", keywords: ["卡布奇诺"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 223, carbsG: 20, proteinG: 13, fatG: 10, sodiumMg: 120, waterMl: 315)),
+            ItemSeed(id: "mcd.303.367", name: "冰浓浓燕麦黑巧（中）", keywords: ["冰浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（中） / 285ml", nutrition: IntakeNutrition(energyKcal: 120, carbsG: 16, proteinG: 2, fatG: 5, sodiumMg: 87, waterMl: 245)),
+            ItemSeed(id: "mcd.303.368", name: "冰浓浓燕麦黑巧（大）", keywords: ["冰浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（大） / 306ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95, waterMl: 265)),
+            ItemSeed(id: "mcd.314.372", name: "热浓浓燕麦黑巧（中）", keywords: ["热浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 157, carbsG: 21, proteinG: 3, fatG: 6, sodiumMg: 114, waterMl: 235)),
+            ItemSeed(id: "mcd.314.373", name: "热浓浓燕麦黑巧（大）", keywords: ["热浓浓燕麦黑巧", "燕麦黑巧"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 213, carbsG: 28, proteinG: 4, fatG: 8, sodiumMg: 156, waterMl: 320)),
+            ItemSeed(id: "mcd.306.378", name: "冰浓浓抹茶牛奶（中）", keywords: ["冰浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（中） / 311ml", nutrition: IntakeNutrition(energyKcal: 196, carbsG: 25, proteinG: 8, fatG: 6, sodiumMg: 80, waterMl: 270)),
+            ItemSeed(id: "mcd.306.379", name: "冰浓浓抹茶牛奶（大）", keywords: ["冰浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（大） / 344ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 33, proteinG: 9, fatG: 7, sodiumMg: 89, waterMl: 300)),
+            ItemSeed(id: "mcd.307.380", name: "热浓浓抹茶牛奶（中）", keywords: ["热浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（中） / 301ml", nutrition: IntakeNutrition(energyKcal: 238, carbsG: 29, proteinG: 11, fatG: 8, sodiumMg: 104, waterMl: 260)),
+            ItemSeed(id: "mcd.307.381", name: "热浓浓抹茶牛奶（大）", keywords: ["热浓浓抹茶牛奶", "抹茶牛奶"], portion: "1 杯（大） / 414ml", nutrition: IntakeNutrition(energyKcal: 333, carbsG: 41, proteinG: 14, fatG: 12, sodiumMg: 142, waterMl: 360)),
+            ItemSeed(id: "mcd.304.369", name: "冰燕麦奶（小）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95, waterMl: 200)),
+            ItemSeed(id: "mcd.304.370", name: "冰燕麦奶（中）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（中） / 350ml", nutrition: IntakeNutrition(energyKcal: 199, carbsG: 26, proteinG: 4, fatG: 8, sodiumMg: 145, waterMl: 310)),
+            ItemSeed(id: "mcd.304.371", name: "冰燕麦奶（大）", keywords: ["冰燕麦奶", "燕麦奶"], portion: "1 杯（大） / 420ml", nutrition: IntakeNutrition(energyKcal: 239, carbsG: 32, proteinG: 5, fatG: 9, sodiumMg: 174, waterMl: 370)),
+            ItemSeed(id: "mcd.305.374", name: "热燕麦奶（小）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 131, carbsG: 17, proteinG: 3, fatG: 5, sodiumMg: 95, waterMl: 200)),
+            ItemSeed(id: "mcd.305.375", name: "热燕麦奶（中）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 157, carbsG: 21, proteinG: 3, fatG: 6, sodiumMg: 114, waterMl: 240)),
+            ItemSeed(id: "mcd.305.376", name: "热燕麦奶（大）", keywords: ["热燕麦奶", "燕麦奶"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 213, carbsG: 28, proteinG: 4, fatG: 8, sodiumMg: 156, waterMl: 330)),
+            ItemSeed(id: "mcd.308.382", name: "冰浓浓黑巧（中）", keywords: ["冰浓浓黑巧", "黑巧"], portion: "1 杯（中） / 285ml", nutrition: IntakeNutrition(energyKcal: 135, carbsG: 12, proteinG: 8, fatG: 6, sodiumMg: 77, waterMl: 245)),
+            ItemSeed(id: "mcd.308.383", name: "冰浓浓黑巧（大）", keywords: ["冰浓浓黑巧", "黑巧"], portion: "1 杯（大） / 305ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84, waterMl: 260)),
+            ItemSeed(id: "mcd.309.384", name: "热浓浓黑巧（中）", keywords: ["热浓浓黑巧", "黑巧"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 176, carbsG: 15, proteinG: 10, fatG: 8, sodiumMg: 101, waterMl: 235)),
+            ItemSeed(id: "mcd.309.385", name: "热浓浓黑巧（大）", keywords: ["热浓浓黑巧", "黑巧"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 21, proteinG: 13, fatG: 11, sodiumMg: 137, waterMl: 320)),
+            ItemSeed(id: "mcd.277.388", name: "冰牛奶（小）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84, waterMl: 200)),
+            ItemSeed(id: "mcd.277.323", name: "冰牛奶（中）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（中） / 350ml", nutrition: IntakeNutrition(energyKcal: 224, carbsG: 19, proteinG: 13, fatG: 11, sodiumMg: 128, waterMl: 305)),
+            ItemSeed(id: "mcd.277.324", name: "冰牛奶（大）", keywords: ["冰牛奶", "牛奶"], portion: "1 杯（大） / 420ml", nutrition: IntakeNutrition(energyKcal: 269, carbsG: 23, proteinG: 15, fatG: 13, sodiumMg: 154, waterMl: 370)),
+            ItemSeed(id: "mcd.276.389", name: "热牛奶（小）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（小） / 230ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 13, proteinG: 8, fatG: 7, sodiumMg: 84, waterMl: 200)),
+            ItemSeed(id: "mcd.276.321", name: "热牛奶（中）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（中） / 275ml", nutrition: IntakeNutrition(energyKcal: 176, carbsG: 15, proteinG: 10, fatG: 8, sodiumMg: 101, waterMl: 240)),
+            ItemSeed(id: "mcd.276.322", name: "热牛奶（大）", keywords: ["热牛奶", "牛奶"], portion: "1 杯（大） / 375ml", nutrition: IntakeNutrition(energyKcal: 240, carbsG: 21, proteinG: 13, fatG: 11, sodiumMg: 137, waterMl: 330)),
+            ItemSeed(id: "mcd.271.391", name: "浓浓抹茶雪冰（中）", keywords: ["浓浓抹茶雪冰", "抹茶雪冰"], portion: "1 杯（中） / 276ml", nutrition: IntakeNutrition(energyKcal: 289, carbsG: 39, proteinG: 7, fatG: 11, sodiumMg: 181, waterMl: 230)),
+            ItemSeed(id: "mcd.271.392", name: "浓浓抹茶雪冰（大）", keywords: ["浓浓抹茶雪冰", "抹茶雪冰"], portion: "1 杯（大） / 319ml", nutrition: IntakeNutrition(energyKcal: 339, carbsG: 48, proteinG: 8, fatG: 12, sodiumMg: 194, waterMl: 270)),
+            ItemSeed(id: "mcd.269.315", name: "浓浓黑巧雪冰（中）", keywords: ["浓浓黑巧雪冰", "黑巧雪冰"], portion: "1 杯（中） / 290ml", nutrition: IntakeNutrition(energyKcal: 359, carbsG: 51, proteinG: 8, fatG: 12, sodiumMg: 224, waterMl: 245)),
+            ItemSeed(id: "mcd.269.316", name: "浓浓黑巧雪冰（大）", keywords: ["浓浓黑巧雪冰", "黑巧雪冰"], portion: "1 杯（大） / 340ml", nutrition: IntakeNutrition(energyKcal: 444, carbsG: 65, proteinG: 11, fatG: 14, sodiumMg: 258, waterMl: 285)),
+            ItemSeed(id: "mcd.312.398", name: "抹茶阿芙佳朵", keywords: ["抹茶阿芙佳朵", "阿芙佳朵"], portion: "1 杯 / 92ml", nutrition: IntakeNutrition(energyKcal: 147, carbsG: 23, proteinG: 3, fatG: 4, sodiumMg: 50, waterMl: 55)),
+            ItemSeed(id: "mcd.313.399", name: "咖啡阿芙佳朵", keywords: ["咖啡阿芙佳朵", "阿芙佳朵"], portion: "1 杯 / 116ml", nutrition: IntakeNutrition(energyKcal: 139, carbsG: 21, proteinG: 4, fatG: 4, sodiumMg: 49, waterMl: 70)),
             // 2026-11-18 官网 McCafé 列表核对补录的两款；官网详情页未公示营养表，数值按公开口径推算：
             // 浓缩咖啡 = 单份 espresso（约 5kcal / 40ml）；鲜萃咖啡 = 滴滤黑咖（参考麦当劳美式 5kcal / 中杯 330ml）。
-            ItemSeed(id: "mcd.287.900", name: "浓缩咖啡", keywords: ["浓缩咖啡", "浓缩", "espresso"], portion: "1 杯 / 40ml", nutrition: IntakeNutrition(energyKcal: 5, carbsG: 1, proteinG: 0.3, fatG: 0, sodiumMg: 5)),
-            ItemSeed(id: "mcd.287.901", name: "鲜萃咖啡", keywords: ["鲜萃咖啡", "鲜萃", "滴滤", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 5, carbsG: 1, proteinG: 0.5, fatG: 0, sodiumMg: 10)),
+            ItemSeed(id: "mcd.287.900", name: "浓缩咖啡", keywords: ["浓缩咖啡", "浓缩", "espresso"], portion: "1 杯 / 40ml", nutrition: IntakeNutrition(energyKcal: 5, carbsG: 1, proteinG: 0.3, fatG: 0, sodiumMg: 5, waterMl: 39)),
+            ItemSeed(id: "mcd.287.901", name: "鲜萃咖啡", keywords: ["鲜萃咖啡", "鲜萃", "滴滤", "黑咖啡"], portion: "1 杯（中） / 330ml", nutrition: IntakeNutrition(energyKcal: 5, carbsG: 1, proteinG: 0.5, fatG: 0, sodiumMg: 10, waterMl: 325)),
         ], isBuiltin: true),
         GroupSeed(id: "group.mcd.meal500", name: "麦当劳500大卡套餐", sortOrder: 6, items: [
             ItemSeed(id: "mcd.335.417", name: "苹板支撑Pro", keywords: ["苹板支撑Pro", "苹板"], portion: "1 份 / 773g", nutrition: IntakeNutrition(energyKcal: 476, carbsG: 50, proteinG: 25, fatG: 18, sodiumMg: 1077)),
@@ -416,9 +435,9 @@ enum FoodSeed {
             ItemSeed(id: "mcd.153.180", name: "薯条（迷你）", keywords: ["薯条"], portion: "1 份（迷你） / 40g", nutrition: IntakeNutrition(energyKcal: 106, carbsG: 14, proteinG: 2, fatG: 4, sodiumMg: 61)),
             ItemSeed(id: "mcd.122.64", name: "玉米杯（小）", keywords: ["玉米杯", "玉米"], portion: "1 份（小） / 72g", nutrition: IntakeNutrition(energyKcal: 53, carbsG: 7, proteinG: 2, fatG: 1, sodiumMg: 1)),
             ItemSeed(id: "mcd.155.181", name: "苹果片", keywords: ["苹果片"], portion: "1 份 / 66g", nutrition: IntakeNutrition(energyKcal: 32, carbsG: 7, proteinG: 0, fatG: 0, sodiumMg: 0)),
-            ItemSeed(id: "mcd.125.67", name: "纯牛奶（盒装）", keywords: ["纯牛奶", "牛奶"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 129, carbsG: 10, proteinG: 7, fatG: 7, sodiumMg: 73)),
+            ItemSeed(id: "mcd.125.67", name: "纯牛奶（盒装）", keywords: ["纯牛奶", "牛奶"], portion: "1 盒 / 200ml", nutrition: IntakeNutrition(energyKcal: 129, carbsG: 10, proteinG: 7, fatG: 7, sodiumMg: 73, waterMl: 175)),
             ItemSeed(id: "mcd.129.71", name: "纯悦", keywords: ["纯悦", "矿泉水", "水"], portion: "1 瓶 / 550ml", nutrition: IntakeNutrition(energyKcal: 0, carbsG: 0, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 550)),
-            ItemSeed(id: "mcd.141.168", name: "美汁源100%苹果汁（小）", keywords: ["美汁源100%苹果汁", "苹果汁", "美汁源"], portion: "1 杯（小） / 200ml", nutrition: IntakeNutrition(energyKcal: 88, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 0)),
+            ItemSeed(id: "mcd.141.168", name: "美汁源100%苹果汁（小）", keywords: ["美汁源100%苹果汁", "苹果汁", "美汁源"], portion: "1 杯（小） / 200ml", nutrition: IntakeNutrition(energyKcal: 88, carbsG: 21, proteinG: 0, fatG: 0, sodiumMg: 0, waterMl: 175)),
         ], isBuiltin: true),
         // 瑞幸咖啡：产品数据统一由 Support/LuckinCatalog 提供，
         // 营养库预置分组与咖啡因打卡的「瑞幸咖啡」快捷入口共用同一份，避免两处硬编码。
@@ -427,12 +446,13 @@ enum FoodSeed {
         GroupSeed(
             id: "group.luckin.coffee", name: "瑞幸咖啡", sortOrder: 8,
             items: LuckinCatalog.drinks.map { drink in
-                // 官网公示的咖啡因与杯容量补齐到营养字段里，预置数据同样覆盖全部苹果健康指标。
+                // 官网公示的咖啡因与按成分折算的含水量补齐到营养字段，预置数据同样覆盖全部健康指标。
+                // 注意：waterMl 是含水量而非杯容量（容量在 portion 文本里，parsePortion 仍能取到）。
                 var nutrition = drink.nutrition
                 nutrition.caffeineMg = drink.caffeineMg
                 nutrition.waterMl = drink.waterMl
                 return ItemSeed(id: drink.id, name: drink.name, keywords: drink.keywords,
-                                portion: drink.portion, nutrition: nutrition)
+                                portion: drink.portion, nutrition: nutrition, imageURL: drink.imageURL)
             },
             isBuiltin: true
         ),

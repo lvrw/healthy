@@ -28,9 +28,29 @@ struct TodayView: View {
     @State private var showSettings = false
     /// 首页刷新按钮：一次拉取健康数据、重算此刻状态与日内压力。
     @State private var isRefreshingAll = false
+    /// 手动标记「当天数据不全」的面板。
+    @State private var showIncompletePicker = false
 
     private var todayScore: DailyScore? { scores.first }
     private var todayMetrics: DailyMetrics? { metrics.first }
+
+    /// 系统根据今天的原始快照判定为不全的数据源；仅供标记面板提示，不参与评分。
+    private var incompleteSourcesDetected: Set<MetricSource> {
+        guard let metrics = todayMetrics else { return [] }
+        return Set(
+            ScoreSupport.availableSources(
+                metrics.snapshot,
+                history: self.metrics.dropFirst().map(\.snapshot)
+            ).missing
+        )
+    }
+
+    /// 手动标记变更后重算评分；ScoreStore 内部会合并短时间内的重复请求。
+    private func recomputeScores() {
+        Task { @MainActor in
+            try? await ScoreStore.recomputeAll(in: context)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -73,6 +93,14 @@ struct TodayView: View {
                 // SettingsView 自带 NavigationStack，用 sheet 呈现避免导航栈嵌套。
                 SettingsView()
                     .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $showIncompletePicker) {
+                IncompleteSourcePickerView(
+                    dayKey: todayScore?.dayKey ?? DayKey.key(for: .now),
+                    autoMissing: incompleteSourcesDetected,
+                    onChanged: recomputeScores
+                )
+                .presentationDragIndicator(.visible)
             }
             .task {
                 await loadBriefingIfNeeded()
@@ -580,6 +608,7 @@ struct TodayView: View {
     private var componentCards: some View {
         if let metrics = todayMetrics, let score = todayScore {
             let readiness = decodeReadiness(score)
+            let skipped = decodeSkipped(score)
             let sleepGroup = MetricGroup(
                 title: "睡眠",
                 icon: "moon.zzz.fill",
@@ -613,7 +642,10 @@ struct TodayView: View {
                     SleepCardView(
                         metrics: metrics,
                         componentScore: readiness?.sleep,
-                        showsDetail: true
+                        showsDetail: true,
+                        skipLabel: skipLabel(
+                            for: [.sleep], skipped: skipped, hasScore: readiness?.sleep != nil
+                        )
                     )
                 }
                 metricCardLink(group: autonomicGroup, score: readiness?.autonomic) {
@@ -624,7 +656,12 @@ struct TodayView: View {
                         score: readiness?.autonomic,
                         rows: autonomicGroup.rows,
                         footnote: autonomicGroup.footnote,
-                        showsDetail: true
+                        showsDetail: true,
+                        skipLabel: skipLabel(
+                            for: [.hrv, .restingHR],
+                            skipped: skipped,
+                            hasScore: readiness?.autonomic != nil
+                        )
                     )
                 }
                 metricCardLink(group: activityGroup, score: readiness?.load) {
@@ -635,7 +672,10 @@ struct TodayView: View {
                         score: readiness?.load,
                         rows: activityGroup.rows,
                         footnote: activityGroup.footnote,
-                        showsDetail: true
+                        showsDetail: true,
+                        skipLabel: skipLabel(
+                            for: [.activity], skipped: skipped, hasScore: readiness?.load != nil
+                        )
                     )
                 }
                 metricCardLink(group: vitalsGroup, score: readiness?.vitals) {
@@ -646,7 +686,10 @@ struct TodayView: View {
                         score: readiness?.vitals,
                         rows: vitalsGroup.rows,
                         footnote: vitalsGroup.footnote,
-                        showsDetail: true
+                        showsDetail: true,
+                        skipLabel: skipLabel(
+                            for: [.vitals], skipped: skipped, hasScore: readiness?.vitals != nil
+                        )
                     )
                 }
             }
@@ -673,17 +716,40 @@ struct TodayView: View {
     @ViewBuilder
     private var completenessFootnote: some View {
         if let score = todayScore {
+            let skipped = decodeSkipped(score)
             VStack(alignment: .leading, spacing: 4) {
                 Text(dataCoverageText(score))
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                // 明确标识被跳过的评分项及其原因（数据不全 / 手动标记）。
+                if !skipped.isEmpty {
+                    Text("已跳过：" + skipped.map(\.displayText).joined(separator: "、"))
+                        .font(.caption2)
+                        .foregroundStyle(.orange)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 if score.confidenceRaw == ScoreConfidence.insufficient.rawValue {
                     Text("正在积累个人基线：已有 \(score.baselineDays) 天，还需约 \(max(0, 7 - score.baselineDays)) 天才能稳定评分。")
                         .font(.caption2)
                         .foregroundStyle(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                Button {
+                    showIncompletePicker = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "checkmark.circle.badge.questionmark")
+                        Text("标记数据不全")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 2)
             }
             .padding(.horizontal, 4)
         }
@@ -710,20 +776,24 @@ struct TodayView: View {
                 .appCard(padding: 14)
         } else {
             let readiness = todayScore.flatMap(decodeReadiness)
+            let skipped = todayScore.map(decodeSkipped) ?? []
             VStack(spacing: 12) {
                 ForEach(groups, id: \.title) { group in
-                    metricCardLink(
-                        group: group,
-                        score: groupScore(title: group.title, components: readiness)
-                    ) {
+                    let score = groupScore(title: group.title, components: readiness)
+                    metricCardLink(group: group, score: score) {
                         MetricGroupCard(
                             title: group.title,
                             icon: group.icon,
                             tint: group.tint,
                             rows: group.rows,
                             footnote: group.footnote,
-                            score: groupScore(title: group.title, components: readiness),
-                            showsDetail: true
+                            score: score,
+                            showsDetail: true,
+                            skipLabel: skipLabel(
+                                for: groupSources(for: group.title),
+                                skipped: skipped,
+                                hasScore: score != nil
+                            )
                         )
                     }
                 }
@@ -950,6 +1020,32 @@ struct TodayView: View {
     private func decodeReadiness(_ score: DailyScore) -> ReadinessComponents? {
         guard let json = score.readinessComponentsJSON?.data(using: .utf8) else { return nil }
         return try? JSONDecoder().decode(ReadinessComponents.self, from: json)
+    }
+
+    /// 解码当天被跳过的评分项；旧数据 skippedJSON 为 nil 时按空数组处理。
+    private func decodeSkipped(_ score: DailyScore) -> [SourceSkip] {
+        guard let json = score.skippedJSON?.data(using: .utf8) else { return [] }
+        return (try? JSONDecoder().decode([SourceSkip].self, from: json)) ?? []
+    }
+
+    /// 卡片角标：评分缺失且相关数据源被跳过时显示「已跳过」，明确标识该项未参与评分。
+    private func skipLabel(
+        for sources: Set<MetricSource>,
+        skipped: [SourceSkip],
+        hasScore: Bool
+    ) -> String? {
+        guard !hasScore else { return nil }
+        return skipped.contains { sources.contains($0.source) } ? "已跳过" : nil
+    }
+
+    /// 更多指标分组卡对应的数据源；用于映射跳过状态到卡片角标。
+    private func groupSources(for title: String) -> Set<MetricSource> {
+        switch title {
+        case "心肺体能", "身体成分": return [.fitnessBody]
+        case "生活节律": return [.circadian]
+        case "饮食与饮水": return [.nutrition]
+        default: return []
+        }
     }
 
     private func autonomicRows(_ metrics: DailyMetrics) -> [InfoRow] {

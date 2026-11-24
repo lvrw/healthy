@@ -167,6 +167,30 @@ enum StressLevel: String, Sendable, Codable, CaseIterable {
     }
 }
 
+/// 评分项被跳过的原因。
+enum ScoreSkipReason: String, Sendable, Codable, Equatable {
+    /// 系统根据当天原始读数判断该项数据不全。
+    case incomplete
+    /// 用户手动把该项标记为不全。
+    case manual
+}
+
+/// 被跳过的评分项及其原因。用于评分结果中明确标识「不全 / 已跳过」。
+struct SourceSkip: Sendable, Codable, Equatable {
+    /// 被跳过的数据类别。
+    var source: MetricSource
+    /// 跳过原因。
+    var reason: ScoreSkipReason
+
+    /// 供 UI 展示的短文案。系统判定用「数据不全」，手动标记额外强调「已跳过」。
+    var displayText: String {
+        switch reason {
+        case .incomplete: return "\(source.label)数据不全"
+        case .manual: return "\(source.label)已标记不全，已跳过"
+        }
+    }
+}
+
 struct ReadinessResult: Sendable, Equatable {
     var score: Double?
     var components: ReadinessComponents
@@ -174,6 +198,8 @@ struct ReadinessResult: Sendable, Equatable {
     var missing: [MetricSource]
     var confidence: ScoreConfidence
     var baselineDays: Int
+    /// 被跳过的评分项（系统判定不全 + 用户手动标记），带原因。
+    var skipped: [SourceSkip] = []
 }
 
 struct StressResult: Sendable, Equatable {
@@ -184,4 +210,6 @@ struct StressResult: Sendable, Equatable {
     var missing: [MetricSource]
     var confidence: ScoreConfidence
     var baselineDays: Int
+    /// 被跳过的评分项（系统判定不全 + 用户手动标记），带原因。
+    var skipped: [SourceSkip] = []
 }

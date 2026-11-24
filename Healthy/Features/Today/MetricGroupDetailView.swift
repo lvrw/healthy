@@ -104,6 +104,11 @@ struct MetricGroupDetailView: View {
         ScrollView {
             VStack(spacing: 16) {
                 headerCard
+                // 睡眠报告入口固定在详情页最顶上（头部卡之后第一张），
+                // 原先排在趋势卡之后，打开页面根本看不到，被当成「没有了」。
+                if group.title == "睡眠" {
+                    sleepReportCard
+                }
                 if !recordEntries.isEmpty {
                     ActionEntryBar(
                         entries: recordEntries,
@@ -121,10 +126,6 @@ struct MetricGroupDetailView: View {
                 // 饮食详情额外展示「摄入与体重」近 7 天对照，跟随所选日期重新取值。
                 if let dietWeightRelation {
                     dietWeightRelationCard(relation: dietWeightRelation)
-                }
-                // 睡眠卡原本自带的「睡眠报告」入口移到详情页，避免外层整卡导航里嵌套 NavigationLink。
-                if group.title == "睡眠" {
-                    sleepReportCard
                 }
                 sourceCard
             }
@@ -397,6 +398,7 @@ struct MetricGroupDetailView: View {
     }
 
     /// 睡眠分组专用：原首页卡内的「睡眠报告」入口，改在详情页 push，避免导航链接嵌套。
+    /// 位置固定在页面最顶上（头部卡之后第一张）。
     private var sleepReportCard: some View {
         NavigationLink {
             SleepReportView(metrics: metrics)

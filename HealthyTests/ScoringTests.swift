@@ -303,4 +303,149 @@ struct ScoringTests {
         let threeResult = Baseline.compute(history: three, today: snapshot(offset: 0), calendar: calendar)
         #expect(threeResult.vo2Max != nil)
     }
+
+    // MARK: - 数据不全 / 手动跳过
+
+    /// 手动标记某项后，对应分量直接跳过（即使历史数据齐全也不兜底），
+    /// 其余完整分量不受影响，并在结果中标识为手动跳过。
+    @Test func manualIncompleteSkipsComponentWithoutAffectingOthers() {
+        let history = history(days: 10, steps: 8000, energy: 500)
+        let today = snapshot(offset: 0, steps: 8000, energy: 500)
+        let baseline = ReadinessEngine.evaluate(today: today, history: history, calendar: calendar)
+        let marked = ReadinessEngine.evaluate(
+            today: today, history: history, calendar: calendar,
+            manualIncomplete: [.activity]
+        )
+        #expect(baseline.components.load != nil)
+        #expect(marked.components.load == nil)
+        #expect(marked.components.sleep == baseline.components.sleep)
+        #expect(marked.components.autonomic == baseline.components.autonomic)
+        #expect(marked.components.vitals == baseline.components.vitals)
+        #expect(marked.score != nil)
+        #expect(marked.skipped.contains(where: { $0.source == .activity && $0.reason == .manual }))
+        #expect(marked.completeness == baseline.completeness - 1)
+    }
+
+    /// 系统判定数据不全的项被明确标识为 incomplete。
+    @Test func autoMissingIsIdentifiedAsIncomplete() {
+        let history = history(days: 10)
+        let today = snapshot(offset: 0, sleep: nil, efficiency: nil, deep: nil, rem: nil)
+        let result = ReadinessEngine.evaluate(today: today, history: history, calendar: calendar)
+        #expect(result.components.sleep == nil)
+        #expect(result.skipped.contains(where: { $0.source == .sleep && $0.reason == .incomplete }))
+    }
+
+    /// 体能身体属于稀疏读数：今天没测，但近 28 天有体重记录时不应判为数据不全。
+    @Test func sparseFitnessBodyReadingsCountAsAvailable() {
+        let history = [
+            snapshot(offset: -3, weight: 70),
+            snapshot(offset: -2),
+            snapshot(offset: -1),
+        ]
+        let result = ReadinessEngine.evaluate(
+            today: snapshot(offset: 0), history: history, calendar: calendar
+        )
+        #expect(!result.missing.contains(.fitnessBody))
+    }
+
+    /// 超出 28 天窗口的旧读数不参与可用性判定。
+    @Test func staleFitnessBodyReadingsStillMissing() {
+        var history = (1...30).map { snapshot(offset: -$0) }
+        history.append(snapshot(offset: -40, weight: 70))
+        let result = ReadinessEngine.evaluate(
+            today: snapshot(offset: 0), history: history, calendar: calendar
+        )
+        #expect(result.missing.contains(.fitnessBody))
+    }
+
+    /// 用户手动标记优先于系统判定，跳过原因展示为 manual。
+    @Test func manualMarkTakesPrecedenceOverAutoMissing() {
+        let history = history(days: 10)
+        let today = snapshot(offset: 0, hrv: nil)
+        let result = ReadinessEngine.evaluate(
+            today: today, history: history, calendar: calendar,
+            manualIncomplete: [.hrv]
+        )
+        #expect(result.skipped.contains(where: { $0.source == .hrv && $0.reason == .manual }))
+        #expect(!result.skipped.contains(where: { $0.source == .hrv && $0.reason == .incomplete }))
+    }
+
+    /// 压力评分同样支持跳过对应分量，且只影响该项。
+    @Test func stressManualIncompleteSkipsHRVOnly() {
+        let history = history(days: 10)
+        let today = snapshot(offset: 0)
+        let baseline = StressEngine.evaluate(today: today, history: history, calendar: calendar)
+        let marked = StressEngine.evaluate(
+            today: today, history: history, calendar: calendar,
+            manualIncomplete: [.hrv]
+        )
+        #expect(baseline.components.hrv != nil)
+        #expect(marked.components.hrv == nil)
+        #expect(marked.components.restingHR == baseline.components.restingHR)
+        #expect(marked.skipped.contains(where: { $0.source == .hrv && $0.reason == .manual }))
+    }
+
+    /// 全部数据源被跳过时无法评分：总分 nil、完成度 0、跳过清单覆盖所有类别。
+    @Test func allSourcesSkippedYieldsNilScore() {
+        let history = history(days: 10)
+        let today = snapshot(offset: 0)
+        let result = ReadinessEngine.evaluate(
+            today: today, history: history, calendar: calendar,
+            manualIncomplete: Set(MetricSource.allCases)
+        )
+        #expect(result.score == nil)
+        #expect(result.completeness == 0)
+        #expect(result.skipped.count == MetricSource.allCases.count)
+    }
+
+    /// 跳过原因可编码进 DailyScore.skippedJSON 并原样还原。
+    @Test func sourceSkipRoundTripsThroughJSON() {
+        let skips = [
+            SourceSkip(source: .sleep, reason: .incomplete),
+            SourceSkip(source: .nutrition, reason: .manual),
+        ]
+        let data = try? JSONEncoder().encode(skips)
+        let decoded = data.flatMap { try? JSONDecoder().decode([SourceSkip].self, from: $0) }
+        #expect(decoded == skips)
+    }
+
+    /// 手动标记按 dayKey 隔离，取消标记后不再影响评分。
+    @Test func incompleteMarkerIsIsolatedByDayKey() {
+        let day = "2099-01-01"
+        let otherDay = "2099-01-02"
+        let source = MetricSource.activity
+        IncompleteSourceMarker.clear(dayKey: day)
+        defer { IncompleteSourceMarker.clear(dayKey: day) }
+
+        IncompleteSourceMarker.set(source, marked: true, dayKey: day)
+        #expect(IncompleteSourceMarker.isMarked(source, dayKey: day))
+        #expect(!IncompleteSourceMarker.isMarked(source, dayKey: otherDay))
+
+        IncompleteSourceMarker.set(source, marked: false, dayKey: day)
+        #expect(!IncompleteSourceMarker.isMarked(source, dayKey: day))
+    }
+
+    /// 配置历史日期的不全标记后，只有该日评分受影响，今天与其他历史日保持不变。
+    @Test func historicalDayMarkDoesNotAffectToday() {
+        let history = history(days: 10, steps: 8000, energy: 500)
+        let today = snapshot(offset: 0, steps: 8000, energy: 500)
+        let past = history[0]
+        IncompleteSourceMarker.clear(dayKey: past.dayKey)
+        defer { IncompleteSourceMarker.clear(dayKey: past.dayKey) }
+        IncompleteSourceMarker.set(.activity, marked: true, dayKey: past.dayKey)
+
+        let pastResult = ReadinessEngine.evaluate(
+            today: past, history: Array(history.dropFirst()), calendar: calendar,
+            manualIncomplete: IncompleteSourceMarker.markedSources(for: past.dayKey)
+        )
+        let todayResult = ReadinessEngine.evaluate(
+            today: today, history: history, calendar: calendar,
+            manualIncomplete: IncompleteSourceMarker.markedSources(for: today.dayKey)
+        )
+
+        #expect(pastResult.components.load == nil)
+        #expect(pastResult.skipped.contains(where: { $0.source == .activity && $0.reason == .manual }))
+        #expect(todayResult.components.load != nil)
+        #expect(!todayResult.skipped.contains(where: { $0.reason == .manual }))
+    }
 }
